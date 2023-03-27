@@ -5,11 +5,12 @@ import com.company.Shop;
 import com.company.user.User;
 
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class Customer extends User {
     private float wallet;
-    private ShoppingCart shoppingCart;
-    private Shop shop;
+    private final ShoppingCart shoppingCart;
+    private final Shop shop;
 
     public Customer(String username, String password, float wallet, ShoppingCart shoppingCart, Shop shop) {
         super(username, password);
@@ -30,15 +31,16 @@ public class Customer extends User {
         if (!shoppingCart.isEmpty()) {
             float summaryPrice = 0;
             ArrayList<Good> goods = shoppingCart.getGoodsCart();
-            for (int i = 0; i < goods.size(); i++) {
-                summaryPrice += goods.get(i).getItem().getPrice();
+            for (Good good : goods) {
+                summaryPrice += good.getItem().getPrice();
             }
             System.out.println(summaryPrice);
             System.out.println(wallet);
-            if(summaryPrice<=wallet) {
-                wallet-=summaryPrice;
+            if (summaryPrice <= wallet) {
+                wallet -= summaryPrice;
                 System.out.println("Money left: " + wallet);
                 shop.sell(this);
+                shoppingCart.getGoodsCart().clear();
             } else {
                 System.out.println("You don't have enough money to do that");
             }

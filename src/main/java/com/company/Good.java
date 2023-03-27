@@ -3,13 +3,10 @@ package com.company;
 import java.util.Objects;
 
 public class Good {
-    private Item item;
-    private static int idCounter = 0;
-    private int id;
+    private final Item item;
 
     public Good(Item item) {
         this.item = item;
-        this.id = idCounter++;
     }
 
     @Override

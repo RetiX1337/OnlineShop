@@ -16,14 +16,7 @@ public class Shop {
         this.goodList = goodList;
     }
 
-    public void shop(Customer customer) {
-        int itemId;
-        int amount;
-        goodList.printGoodList();
-        System.out.println("Choose the product: ");
-        itemId = Integer.parseInt(scan.nextLine());
-        System.out.println("Enter the amount: ");
-        amount = Integer.parseInt(scan.nextLine());
+    public void putInCart(Customer customer, int itemId, int amount) {
         Stack<Good> goods = goodList.getGoods(itemId, amount);
         for (int i = 0; i < goods.size(); i++) {
             customer.getShoppingCart().putInCart(goods.elementAt(i));
@@ -32,8 +25,12 @@ public class Shop {
 
     public void sell(Customer customer) {
         ArrayList<Good> goods = customer.getShoppingCart().getGoodsCart();
-        for (int i = 0; i < goods.size(); i++) {
-            goodList.delete(goods.get(i).getItem());
+        for (Good good : goods) {
+            goodList.delete(good.getItem());
         }
+    }
+
+    public GoodList getGoodList() {
+        return goodList;
     }
 }

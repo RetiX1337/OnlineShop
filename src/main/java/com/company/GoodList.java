@@ -53,10 +53,6 @@ public class GoodList {
         }
     }
 
-    public int size() {
-        return goodList.size();
-    }
-
     private void createGood(int itemId) {
         goodList.get(getItem(itemId)).push(new Good(getItem(itemId)));
     }
@@ -67,14 +63,6 @@ public class GoodList {
             goods.add(goodList.get(getItem(itemId)).get(i));
         }
         return goods;
-    }
-
-    public Good getGood(int itemId) {
-        if(!goodList.get(getItem(itemId)).isEmpty()) {
-            return goodList.get(getItem(itemId)).peek();
-        } else {
-            return null;
-        }
     }
 
     public Item getItem(int itemId) {

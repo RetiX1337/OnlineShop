@@ -3,7 +3,7 @@ package com.company;
 import java.util.HashMap;
 
 public class ItemList {
-    private HashMap<Integer, Item> itemList = new HashMap<>();
+    private final HashMap<Integer, Item> itemList = new HashMap<>();
 
     public void fillItemList() {
         itemList.put(0, new Item("ovs1", "Super Platki", "Ovsianka", Type.FOOD, 4.99f));

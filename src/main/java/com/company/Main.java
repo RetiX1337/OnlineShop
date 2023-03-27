@@ -16,12 +16,7 @@ public class Main {
         Shop shop = new Shop(itemList, goodList);
         ShoppingCart shoppingCart = new ShoppingCart(shop);
         Customer customer1 = new Customer("whyretski", "qwerty123", 150.0f, shoppingCart, shop);
-        shop.shop(customer1);
-        customer1.getShoppingCart().printCart();
-        shop.shop(customer1);
-        customer1.getShoppingCart().printCart();
-        customer1.buy();
-        customer1.getShoppingCart().printCart();
-        goodList.printGoodList();
+        Config config = new Config(shop, customer1);
+        Menu.menu(config);
     }
 }

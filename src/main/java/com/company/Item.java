@@ -3,11 +3,11 @@ package com.company;
 import java.util.Objects;
 
 public class Item {
-    private String itemNumber;
-    private String brand;
-    private String name;
-    private Type type;
-    private float price;
+    private final String itemNumber;
+    private final String brand;
+    private final String name;
+    private final Type type;
+    private final float price;
 
     public Item(String itemNumber, String brand, String name, Type type, float price) {
         this.itemNumber = itemNumber;
