@@ -17,9 +17,9 @@ public class GoodList {
 
     public void fillGoodList() {
         boolean flag = true;
-        System.out.println("1. Add a product" +
-                "\n2. Stop adding products");
         while (flag) {
+            System.out.println("1. Add a product" +
+                    "\n2. Stop adding products");
             switch (Integer.parseInt(scan.nextLine())) {
                 case 1 -> {
                     int itemId, quantity;
