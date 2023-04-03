@@ -3,6 +3,7 @@ package com.company;
 import com.company.user.customer.Customer;
 import com.company.user.customer.ShoppingCart;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
