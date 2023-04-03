@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class ItemList {
     private final HashMap<Integer, Item> itemList = new HashMap<>();
-
+    //test commit
     public void fillItemList() {
         itemList.put(0, new Item("ovs1", "Super Platki", "Ovsianka", Type.FOOD, 4.99f));
         itemList.put(1, new Item("ovs2", "Platki Gorskie", "Ovsianka Dziwna", Type.FOOD, 5.49f));
