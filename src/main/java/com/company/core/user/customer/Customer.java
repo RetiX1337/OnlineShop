@@ -1,25 +1,26 @@
-package com.company.user.customer;
+package com.company.core.user.customer;
 
-import com.company.Good;
-import com.company.Shop;
-import com.company.user.User;
+import com.company.core.good.Good;
+import com.company.core.shop.Shop;
+import com.company.core.shop.ShoppingCart;
+import com.company.core.user.User;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Properties;
 
 public class Customer extends User {
-    private float wallet;
+    private BigDecimal wallet;
     private final ShoppingCart shoppingCart;
     private final Shop shop;
 
-    public Customer(String username, String password, float wallet, ShoppingCart shoppingCart, Shop shop) {
+    public Customer(String username, String password, BigDecimal wallet, ShoppingCart shoppingCart, Shop shop) {
         super(username, password);
         this.wallet = wallet;
         this.shoppingCart = shoppingCart;
         this.shop = shop;
     }
 
-    public void setWallet(float wallet) {
+    public void setWallet(BigDecimal wallet) {
         this.wallet = wallet;
     }
 
@@ -29,15 +30,15 @@ public class Customer extends User {
 
     public void buy() {
         if (!shoppingCart.isEmpty()) {
-            float summaryPrice = 0;
+            BigDecimal summaryPrice = new BigDecimal(0);
             ArrayList<Good> goods = shoppingCart.getGoodsCart();
             for (Good good : goods) {
-                summaryPrice += good.getItem().getPrice();
+                summaryPrice = summaryPrice.add(good.getProduct().getPrice());
             }
             System.out.println(summaryPrice);
             System.out.println(wallet);
-            if (summaryPrice <= wallet) {
-                wallet -= summaryPrice;
+            if (summaryPrice.compareTo(wallet) == 0 || summaryPrice.compareTo(wallet) == -1) {
+                wallet = wallet.subtract(summaryPrice);
                 System.out.println("Money left: " + wallet);
                 shop.sell(this);
                 shoppingCart.getGoodsCart().clear();

@@ -1,4 +1,6 @@
-package com.company;
+package com.company.presentation;
+
+import com.company.configuration.Config;
 
 import static com.company.Main.scan;
 
@@ -20,7 +22,7 @@ public class Menu {
                     itemId = Integer.parseInt(scan.nextLine());
                     System.out.println("Enter the amount: ");
                     amount = Integer.parseInt(scan.nextLine());
-                    config.getShop().putInCart(config.getCustomer(), itemId, amount);
+                    config.getCustomer().getShoppingCart().putInCart(itemId, amount);
                 }
                 case 2 -> menu = false;
                 default -> System.out.println("This case doesn't exist");

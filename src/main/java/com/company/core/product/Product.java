@@ -1,23 +1,24 @@
-package com.company;
+package com.company.core.product;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Item {
-    private final String itemNumber;
+public class Product {
+    private final String productId;
     private final String brand;
     private final String name;
     private final Type type;
-    private final float price;
+    private final BigDecimal price;
 
-    public Item(String itemNumber, String brand, String name, Type type, float price) {
-        this.itemNumber = itemNumber;
+    public Product(String productId, String brand, String name, Type type, BigDecimal price) {
+        this.productId = productId;
         this.brand = brand;
         this.name = name;
         this.type = type;
         this.price = price;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -33,18 +34,18 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Item item = (Item) o;
-        return itemNumber.equals(item.itemNumber);
+        Product product = (Product) o;
+        return productId.equals(product.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(itemNumber);
+        return Objects.hash(productId);
     }
 
     @Override
     public String toString() {
-        return "Item Number: " + itemNumber +
+        return "Product ID: " + productId +
                 " Brand: " + brand +
                 " Name: " + name +
                 " Type: " + type +

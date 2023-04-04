@@ -1,9 +1,9 @@
-package com.company.user.customer;
+package com.company.core.shop;
 
-import com.company.Good;
-import com.company.Shop;
+import com.company.core.good.Good;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class ShoppingCart {
     private final Shop shop;
@@ -21,8 +21,11 @@ public class ShoppingCart {
         return shoppingCart;
     }
 
-    public void putInCart(Good good) {
-        shoppingCart.add(good);
+    public void putInCart(int productId, int amount) {
+        Stack<Good> goods = shop.getGoodList().getGoods(productId, amount);
+        for (int i = 0; i < goods.size(); i++) {
+            shoppingCart.add(goods.elementAt(i));
+        }
     }
 
     public boolean isEmpty() {

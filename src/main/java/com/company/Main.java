@@ -1,7 +1,9 @@
 package com.company;
 
-import com.company.user.customer.Customer;
-import com.company.user.customer.ShoppingCart;
+import com.company.configuration.Config;
+import com.company.core.shop.ShoppingCart;
+import com.company.presentation.Menu;
+import com.company.core.user.customer.Customer;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -10,14 +12,9 @@ public class Main {
     public static final Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        ItemList itemList = new ItemList();
-        itemList.fillItemList();
-        GoodList goodList = new GoodList(itemList);
-        goodList.fillGoodList();
-        Shop shop = new Shop(itemList, goodList);
-        ShoppingCart shoppingCart = new ShoppingCart(shop);
-        Customer customer1 = new Customer("whyretski", "qwerty123", 150.0f, shoppingCart, shop);
-        Config config = new Config(shop, customer1);
+        ShoppingCart shoppingCart = new ShoppingCart();
+        Customer customer1 = new Customer("whyretski", "qwerty123", new BigDecimal(150), shoppingCart);
+        Config config = new Config(customer1);
         Menu.menu(config);
     }
 }
