@@ -1,12 +1,13 @@
 package com.company.core.user.customer;
 
 import com.company.core.good.Good;
+import com.company.core.product.Product;
 import com.company.core.shop.Shop;
-import com.company.core.shop.ShoppingCart;
 import com.company.core.user.User;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 public class Customer extends User {
     private BigDecimal wallet;
@@ -31,16 +32,18 @@ public class Customer extends User {
     public void buy() {
         if (!shoppingCart.isEmpty()) {
             BigDecimal summaryPrice = new BigDecimal(0);
-            ArrayList<Good> goods = shoppingCart.getGoodsCart();
-            for (Good good : goods) {
-                summaryPrice = summaryPrice.add(good.getProduct().getPrice());
+            HashMap<Product, Stack<Good>> goods = shoppingCart.getGoodsCart();
+            for (Stack<Good> goodStack : goods.values()) {
+                for (Good good : goodStack) {
+                    summaryPrice = summaryPrice.add(good.getProduct().getPrice());
+                }
             }
             System.out.println(summaryPrice);
             System.out.println(wallet);
             if (summaryPrice.compareTo(wallet) == 0 || summaryPrice.compareTo(wallet) == -1) {
                 wallet = wallet.subtract(summaryPrice);
                 System.out.println("Money left: " + wallet);
-                shop.sell(this);
+                shop.checkout(this);
                 shoppingCart.getGoodsCart().clear();
             } else {
                 System.out.println("You don't have enough money to do that");

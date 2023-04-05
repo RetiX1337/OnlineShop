@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.configuration.Config;
-import com.company.core.shop.ShoppingCart;
+import com.company.core.user.customer.ShoppingCart;
 import com.company.presentation.Menu;
 import com.company.core.user.customer.Customer;
 

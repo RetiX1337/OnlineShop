@@ -4,7 +4,7 @@ import com.company.core.good.GoodList;
 import com.company.core.order.OrderList;
 import com.company.core.product.ProductList;
 import com.company.core.shop.Shop;
-import com.company.core.shop.ShoppingCart;
+import com.company.core.user.customer.ShoppingCart;
 import com.company.core.user.customer.Customer;
 
 public class Config {

@@ -11,12 +11,14 @@ public class Order {
     private final HashMap<Product, OrderElement> order = new HashMap<>();
     private final Customer customer;
 
-    public Order(Customer customer) {
+    public Order(HashMap<Product, Stack<Good>> goods, Customer customer) {
         this.customer = customer;
+        goods.forEach((key, value) -> putInOrder(value));
     }
 
-    public Order() {
+    public Order(HashMap<Product, Stack<Good>> goods) {
         this.customer = null;
+        goods.forEach((key, value) -> putInOrder(value));
     }
 
     public void putInOrder(Stack<Good> goods) {

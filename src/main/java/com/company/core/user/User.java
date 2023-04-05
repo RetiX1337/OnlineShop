@@ -8,4 +8,9 @@ public abstract class User {
         this.username = username;
         this.password = password;
     }
+
+    protected User() {
+        this.username = "Offline";
+        this.password = null;
+    }
 }
