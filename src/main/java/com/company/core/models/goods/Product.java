@@ -1,4 +1,4 @@
-package com.company.core.product;
+package com.company.core.models.goods;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -28,6 +28,10 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     @Override

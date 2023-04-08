@@ -1,4 +1,4 @@
-package com.company.core.user;
+package com.company.core.models.user;
 
 public abstract class User {
     final String username;

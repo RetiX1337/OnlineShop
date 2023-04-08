@@ -1,6 +1,4 @@
-package com.company.core.good;
-
-import com.company.core.product.Product;
+package com.company.core.models.goods;
 
 import java.util.Objects;
 

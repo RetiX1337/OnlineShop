@@ -15,20 +15,14 @@ public class Menu {
             int input = Integer.parseInt(scan.nextLine());
             switch (input) {
                 case 1 -> {
-                    int itemId;
-                    int amount;
-                    config.getShop().getGoodList().printGoodList();
-                    System.out.println("Choose the product: ");
-                    itemId = Integer.parseInt(scan.nextLine());
-                    System.out.println("Enter the amount: ");
-                    amount = Integer.parseInt(scan.nextLine());
-                    config.getCustomer().getShoppingCart().addToCart(itemId, amount);
+                    config.getGoodController().printGoodList();
+                    config.getCustomerController().addToCart();
                 }
                 case 2 -> menu = false;
                 default -> System.out.println("This case doesn't exist");
             }
             boolean innerMenu = true;
-            while(innerMenu) {
+            while (innerMenu) {
                 System.out.println("""
                         1. Keep on looking for goods
                         2. Buy the goods from the cart
@@ -37,8 +31,11 @@ public class Menu {
                 switch (innerInput) {
                     case 1 -> innerMenu = false;
                     case 2 -> {
-                        if(!config.getCustomer().getShoppingCart().isEmpty()) {
-                            config.getCustomer().buy();
+                        if (!config.getCustomer().getShoppingCart().isEmpty()) {
+                            if (config.getCustomerController().buy()) {
+                                System.out.println("checkout");
+                                config.getShopController().checkout(config.getCustomer());
+                            }
                         } else {
                             System.out.println("Your cart is empty");
                         }
@@ -50,6 +47,7 @@ public class Menu {
                     default -> System.out.println("This case doesn't exist");
                 }
             }
+            System.out.println(config.getShop().getOrderList());
         }
     }
 }
