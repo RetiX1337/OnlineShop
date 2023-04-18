@@ -7,22 +7,29 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class Order {
+public class Order implements Identifiable {
     private final HashMap<Product, OrderElement> order = new HashMap<>();
     private final Customer customer;
-    private final int ID;
-    private static int idCounter = 0;
+    private Long id;
 
     public Order(HashMap<Product, Stack<Good>> goods, Customer customer) {
-        ID = idCounter++;
         this.customer = customer;
         goods.forEach((key, value) -> addToOrder(value));
     }
 
     public Order(HashMap<Product, Stack<Good>> goods) {
-        ID = idCounter++;
         this.customer = null;
         goods.forEach((key, value) -> addToOrder(value));
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void addToOrder(Stack<Good> goods) {
@@ -51,7 +58,7 @@ public class Order {
         return order.values();
     }
 
-    public class OrderElement {
+    public static class OrderElement {
         private final Stack<Good> orderElement;
 
         public OrderElement(Stack<Good> goods) {

@@ -2,8 +2,9 @@ package com.company.core.models.goods;
 
 import java.util.Objects;
 
-public class Good {
+public class Good implements Identifiable {
     private final Product product;
+    private Long id;
 
     public Good(Product product) {
         this.product = product;
@@ -29,5 +30,15 @@ public class Good {
 
     public Product getProduct() {
         return product;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }

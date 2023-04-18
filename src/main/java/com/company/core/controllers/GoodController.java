@@ -2,7 +2,7 @@ package com.company.core.controllers;
 
 import com.company.core.models.goods.Good;
 import com.company.core.models.goods.Product;
-import com.company.core.services.GoodService;
+import com.company.core.services.impl.GoodListServiceImpl;
 
 import java.util.Stack;
 
@@ -10,14 +10,10 @@ import static com.company.Main.scan;
 
 public class GoodController {
 
-    private GoodService goodService;
+    private GoodListServiceImpl goodListServiceImpl;
 
-    public GoodController(GoodService goodService) {
-        this.goodService = goodService;
-    }
-
-    public void createGood(int productId) {
-        goodService.createGood(productId);
+    public GoodController(GoodListServiceImpl goodListServiceImpl) {
+        this.goodListServiceImpl = goodListServiceImpl;
     }
 
     public void fillGoodList() {
@@ -32,7 +28,7 @@ public class GoodController {
                     productId = getInt();
                     System.out.println("How many products do you want to add? ");
                     quantity = getInt();
-                    goodService.fillGoodList(productId, quantity);
+                    goodListServiceImpl.addToGoodList((long) productId, quantity);
                     printResult(quantity);
                 }
                 case 2 -> flag = false;
@@ -50,12 +46,14 @@ public class GoodController {
     }
 
     public void printGoodList() {
-        for (int i = 0; i < goodService.getGoodListSize(); i++) {
+        System.out.println("dam");
+        System.out.println(goodListServiceImpl.getGoodListSize());
+        for (int i = 0; i < goodListServiceImpl.getGoodListSize(); i++) {
             System.out.println(i + ". "
                     + getProduct(i).getBrand() + " "
                     + getProduct(i).getName() + ", "
                     + getProduct(i).getPrice()
-                    + " (" + goodService.getGoodListElementSize(i) + ")");
+                    + " (" + goodListServiceImpl.getGoodListElementSize((long) i) + ")");
         }
     }
 
@@ -63,15 +61,7 @@ public class GoodController {
         return Integer.parseInt(scan.nextLine());
     }
 
-    public Stack<Good> getGoods(int productId, int amount) {
-        return goodService.getGoods(productId, amount);
-    }
-
-    public Product getProduct(int productId) {
-        return goodService.getProduct(productId);
-    }
-
-    public Good getGood(int productId) {
-        return goodService.getGood(productId);
+    private Product getProduct(int productId) {
+        return goodListServiceImpl.getProduct((long) productId);
     }
 }

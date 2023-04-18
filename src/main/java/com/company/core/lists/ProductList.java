@@ -7,18 +7,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class ProductList {
-    private final HashMap<Integer, Product> productList = new HashMap<>();
-    //test commit
-    public ProductList() {
-        fillProductList();
-    }
-    private void fillProductList() {
-        productList.put(0, new Product("ovs1", "Super Platki", "Ovsianka", Type.FOOD, new BigDecimal("4.99")));
-        productList.put(1, new Product("ovs2", "Platki Gorskie", "Ovsianka Dziwna", Type.FOOD, new BigDecimal("5.49")));
-        productList.put(2, new Product("pivo1", "Desperados", "Desperados Mochito", Type.ALCOHOL, new BigDecimal("6.49")));
-        productList.put(3, new Product("toipap1", "Miekka dupa", "Rumianek", Type.HOUSEHOLD, new BigDecimal("10.99")));
-        productList.put(4, new Product("cola1", "Coca-Cola", "Coca-Cola", Type.BEVERAGE, new BigDecimal("4.49")));
-    }
+    private final HashMap<Long, Product> productList = new HashMap<>();
 
     public void printProductList() {
         for (int i = 0; i < productList.size(); i++) {
@@ -26,7 +15,7 @@ public class ProductList {
         }
     }
 
-    public Product getProduct(int id) {
+    public Product getProduct(Long id) {
         return productList.get(id);
     }
 
@@ -34,7 +23,7 @@ public class ProductList {
         return productList.size();
     }
 
-    public HashMap<Integer, Product> getProductList() {
+    public HashMap<Long, Product> getProductList() {
         return productList;
     }
 }

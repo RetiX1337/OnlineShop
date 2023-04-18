@@ -1,11 +1,11 @@
 package com.company.presentation;
 
-import com.company.configuration.Config;
+import com.company.configuration.DependencyManager;
 
 import static com.company.Main.scan;
 
 public class Menu {
-    public static void menu(Config config) {
+    public static void menu(DependencyManager dependencyManager) {
         boolean menu = true;
         while (menu) {
             System.out.println("""
@@ -15,8 +15,8 @@ public class Menu {
             int input = Integer.parseInt(scan.nextLine());
             switch (input) {
                 case 1 -> {
-                    config.getGoodController().printGoodList();
-                    config.getCustomerController().addToCart();
+                    dependencyManager.getGoodController().printGoodList();
+                    dependencyManager.getCustomerController().addToCart();
                 }
                 case 2 -> menu = false;
                 default -> System.out.println("This case doesn't exist");
@@ -31,10 +31,10 @@ public class Menu {
                 switch (innerInput) {
                     case 1 -> innerMenu = false;
                     case 2 -> {
-                        if (!config.getCustomer().getShoppingCart().isEmpty()) {
-                            if (config.getCustomerController().buy()) {
+                        if (!dependencyManager.getCustomer().getShoppingCart().isEmpty()) {
+                            if (dependencyManager.getCustomerController().buyFromCart()) {
                                 System.out.println("checkout");
-                                config.getShopController().checkout(config.getCustomer());
+                                dependencyManager.getShopController().checkout(dependencyManager.getCustomer());
                             }
                         } else {
                             System.out.println("Your cart is empty");
@@ -47,7 +47,7 @@ public class Menu {
                     default -> System.out.println("This case doesn't exist");
                 }
             }
-            System.out.println(config.getShop().getOrderList());
+            System.out.println(dependencyManager.getShop().getOrderList());
         }
     }
 }

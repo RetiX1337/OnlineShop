@@ -3,16 +3,13 @@ package com.company.core.lists;
 import com.company.core.models.goods.Order;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OrderList {
-    private final ArrayList<Order> orderList = new ArrayList<>();
+    private final HashMap<Long, Order> orderList = new HashMap<>();
 
-    public void save(Order order) {
-        orderList.add(order);
-    }
-
-    public Order getOrder(int id) {
-        return orderList.get(id);
+    public HashMap<Long, Order> getOrderList() {
+        return orderList;
     }
 
     @Override

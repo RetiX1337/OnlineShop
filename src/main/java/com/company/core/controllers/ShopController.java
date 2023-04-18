@@ -1,13 +1,13 @@
 package com.company.core.controllers;
 
 import com.company.core.models.user.customer.Customer;
-import com.company.core.services.ShopService;
+import com.company.core.services.impl.ShopServiceImpl;
 
 public class ShopController {
-    private final ShopService shopService;
+    private final ShopServiceImpl shopServiceImpl;
 
-    public ShopController(ShopService shopService) {
-        this.shopService = shopService;
+    public ShopController(ShopServiceImpl shopServiceImpl) {
+        this.shopServiceImpl = shopServiceImpl;
     }
 
     public void addToCart() {
@@ -15,6 +15,6 @@ public class ShopController {
     }
 
     public void checkout(Customer customer) {
-        shopService.checkout(customer);
+        shopServiceImpl.checkout(customer);
     }
 }

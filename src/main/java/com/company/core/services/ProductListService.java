@@ -1,4 +1,4 @@
 package com.company.core.services;
 
-public interface ShopService {
+public interface ProductListService {
 }

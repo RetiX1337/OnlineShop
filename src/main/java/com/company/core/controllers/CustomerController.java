@@ -1,20 +1,20 @@
 package com.company.core.controllers;
 
-import com.company.core.services.CustomerService;
+import com.company.core.services.impl.CustomerServiceImpl;
 
 public class CustomerController {
-    private final CustomerService customerService;
+    private final CustomerServiceImpl customerServiceImpl;
     private final ShoppingCartController shoppingCartController;
 
-    public CustomerController(CustomerService customerService, ShoppingCartController shoppingCartController) {
-        this.customerService = customerService;
+    public CustomerController(CustomerServiceImpl customerServiceImpl, ShoppingCartController shoppingCartController) {
+        this.customerServiceImpl = customerServiceImpl;
         this.shoppingCartController = shoppingCartController;
     }
 
-    public boolean buy() {
-        if (customerService.buy()) {
+    public boolean buyFromCart() {
+        if (customerServiceImpl.buyFromCart()) {
             System.out.println("You have bought successfully!");
-            System.out.println("Money left: " + customerService.getWallet());
+            System.out.println("Money left: " + customerServiceImpl.getWallet());
             return true;
         } else {
             System.out.println("You don't have enough money to do that or your cart is empty");

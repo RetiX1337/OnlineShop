@@ -1,14 +1,14 @@
 package com.company.core.controllers;
 
-import com.company.core.services.ShoppingCartService;
+import com.company.core.services.impl.ShoppingCartServiceImpl;
 
 import static com.company.Main.scan;
 
 public class ShoppingCartController {
-    private final ShoppingCartService shoppingCartService;
+    private final ShoppingCartServiceImpl shoppingCartServiceImpl;
 
-    public ShoppingCartController(ShoppingCartService shoppingCartService) {
-        this.shoppingCartService = shoppingCartService;
+    public ShoppingCartController(ShoppingCartServiceImpl shoppingCartServiceImpl) {
+        this.shoppingCartServiceImpl = shoppingCartServiceImpl;
     }
 
     public void addToCart() {
@@ -18,7 +18,7 @@ public class ShoppingCartController {
         productId = getInt();
         System.out.println("Enter the amount: ");
         amount = getInt();
-        shoppingCartService.addToCart(productId, amount);
+        shoppingCartServiceImpl.addToCart((long) productId, amount);
     }
 
     private int getInt() {

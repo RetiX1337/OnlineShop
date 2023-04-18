@@ -7,37 +7,37 @@ import java.util.*;
 
 public class GoodList {
     private final ProductList productList;
-    private final HashMap<Product, Stack<Good>> goodList = new HashMap<>();
+    private final HashMap<Long, GoodListElement> goodList = new HashMap<>();
 
     public GoodList(ProductList productList) {
         this.productList = productList;
-        for (int i = 0; i < productList.getProductList().size(); i++) {
-            goodList.put(productList.getProductList().get(i), new Stack<>());
-        }
     }
 
-    public void save(Good good) {
-        goodList.get(good.getProduct()).push(good);
+    public HashMap<Long, GoodListElement> getGoodList() {
+        return goodList;
     }
 
-    public Good getGood(int productId) {
-        return goodList.get(getProduct(productId)).peek();
-    }
-
-    public int size() {
-        return goodList.size();
-    }
-
-    public int elementSize(Product product) {
-        return goodList.get(product).size();
-    }
-
-    public Product getProduct(int productId) {
+    public Product getProduct(Long productId) {
         return productList.getProductList().get(productId);
     }
 
-    public void delete(Product product) {
-        System.out.println("pop");
-        goodList.get(product).pop();
+    public static class GoodListElement {
+        private final Stack<Good> goodElement = new Stack<>();
+
+        public Good push(Good good) {
+            return goodElement.push(good);
+        }
+
+        public Good peek() {
+            return goodElement.peek();
+        }
+
+        public Good pop() {
+            return goodElement.pop();
+        }
+
+        public Stack<Good> getGoodElement() {
+            return goodElement;
+        }
     }
 }

@@ -1,24 +1,31 @@
 package com.company.core.controllers;
 
 import com.company.core.models.goods.Product;
-import com.company.core.services.ProductService;
+import com.company.core.models.goods.Type;
+import com.company.core.services.impl.ProductListServiceImpl;
+
+import java.math.BigDecimal;
 
 public class ProductController {
-    private final ProductService productService;
+    private final ProductListServiceImpl productListServiceImpl;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductListServiceImpl productListServiceImpl) {
+        this.productListServiceImpl = productListServiceImpl;
     }
 
-    public Product getProduct(int id) {
-        return productService.getProduct(id);
+    public void addProduct(String brand, String name, Type type, BigDecimal price) {
+        productListServiceImpl.addProduct(productListServiceImpl.createProduct(brand, name, type, price));
     }
 
-    public void printProduct(int id) {
-        System.out.println(productService.getProductString(id));
+    public Product getProduct(Long id) {
+        return productListServiceImpl.getProduct(id);
+    }
+
+    public void printProduct(Long id) {
+        System.out.println(productListServiceImpl.getProductString(id));
     }
 
     public void printProductList() {
-        System.out.println(productService.getProductListString());
+        System.out.println(productListServiceImpl.getProductListString());
     }
 }
