@@ -1,6 +1,5 @@
 package com.company.core;
 
-import com.company.Observer;
 import com.company.core.models.goods.Product;
 
 import java.util.ArrayList;

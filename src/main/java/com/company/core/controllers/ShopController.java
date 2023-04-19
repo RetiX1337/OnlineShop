@@ -10,10 +10,6 @@ public class ShopController {
         this.shopServiceImpl = shopServiceImpl;
     }
 
-    public void addToCart() {
-
-    }
-
     public void checkout(Customer customer) {
         shopServiceImpl.checkout(customer);
     }

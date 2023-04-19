@@ -29,7 +29,7 @@ public class ShoppingCartServiceImpl {
     }
 
     private boolean availableOnStorage(Stack<Good> goods, Long productId) {
-        System.out.println(goods.size() + " - " + shoppingCart.getCartElement(goods.peek().getProduct()).size() + " + " + goodListServiceImpl.getGoodListElementSize(productId));
+        if(goods==null) return false;
         Product product = goods.peek().getProduct();
         return goods.size() - (shoppingCart.getCartElement(product).size() + goodListServiceImpl.getGoodListElementSize(productId)) >= 0;
     }

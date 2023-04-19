@@ -1,6 +1,5 @@
 package com.company.core.services.impl;
 
-import com.company.Observer;
 import com.company.core.ProductListObserver;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Product;
@@ -8,8 +7,6 @@ import com.company.core.models.goods.Type;
 import com.company.core.services.persistenceservices.ProductListPersistenceService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductListServiceImpl {
     private final ProductListPersistenceService plps;

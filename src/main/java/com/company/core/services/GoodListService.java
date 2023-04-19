@@ -6,10 +6,10 @@ import com.company.core.models.goods.Product;
 import java.util.Stack;
 
 public interface GoodListService {
-    void createGood(Long productId);
-    void addToGoodList(Long productId, int quantity);
-    Product getProduct(Long productId);
+    Good createGood(Long productId);
+    void addGood(Good good);
+    void deleteGood(Long productId);
+    void addGoodListElement(Product product);
+    void deleteGoodListElement(Product product);
     Stack<Good> getGoods(Long productId, int quantity);
-    int getGoodListSize();
-    int getGoodListElementSize(Long productId);
 }

@@ -3,7 +3,6 @@ package com.company.core.models.user.customer;
 import com.company.core.models.goods.Good;
 import com.company.core.models.goods.Product;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -15,7 +14,6 @@ public class ShoppingCart {
     }
 
     public void updateCart(Product product, Good good) {
-        System.out.println("push that");
         shoppingCart.get(product).push(good);
     }
 

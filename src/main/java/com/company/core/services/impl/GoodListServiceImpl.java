@@ -1,14 +1,15 @@
 package com.company.core.services.impl;
 
-import com.company.Observer;
+import com.company.core.Observer;
 import com.company.core.ProductListObserver;
 import com.company.core.models.goods.Good;
 import com.company.core.models.goods.Product;
+import com.company.core.services.GoodListService;
 import com.company.core.services.persistenceservices.GoodListPersistenceService;
 
 import java.util.Stack;
 
-public class GoodListServiceImpl implements Observer<Product> {
+public class GoodListServiceImpl implements GoodListService, Observer<Product> {
     private final GoodListPersistenceService glps;
     private final ProductListServiceImpl productListServiceImpl;
     private final ProductListObserver productListObserver;
@@ -26,21 +27,44 @@ public class GoodListServiceImpl implements Observer<Product> {
         if (productListServiceImpl.productIsPresent(product)) {
             addGoodListElement(product);
         } else {
-            removeGoodListElement(product);
+            deleteGoodListElement(product);
         }
     }
 
+    @Override
     public Good createGood(Long productId) {
         return new Good(getProduct(productId));
     }
 
+    @Override
     public void addGood(Good good) {
         glps.save(good);
     }
 
+    @Override
     public void deleteGood(Long productId) {
         glps.deleteById(productId);
-        System.out.println("Deleted probably");
+    }
+
+    @Override
+    public void addGoodListElement(Product product) {
+        glps.addGoodListElement(product);
+    }
+
+    @Override
+    public void deleteGoodListElement(Product product) {
+        glps.removeGoodListElement(product);
+    }
+
+    @Override
+    public Stack<Good> getGoods(Long productId, int quantity) {
+        Stack<Good> goods = new Stack<>();
+        if (quantity <= glps.findAllByProductId(productId).size()) {
+            for (int i = 0; i < quantity; i++) {
+                goods.add(glps.findByProductId(productId));
+            }
+        }
+        return goods;
     }
 
     public void addToGoodList(Long productId, int quantity) {
@@ -49,32 +73,16 @@ public class GoodListServiceImpl implements Observer<Product> {
         }
     }
 
-    private void addGoodListElement(Product product) {
-        glps.addGoodListElement(product);
-    }
-
-    private void removeGoodListElement(Product product) {
-        glps.removeGoodListElement(product);
-    }
-
-    public Product getProduct(Long productId) {
-        return productListServiceImpl.getProduct(productId);
-    }
-
-    public Stack<Good> getGoods(Long productId, int quantity) {
-        Stack<Good> goods = new Stack<>();
-        for (int i = 0; i < quantity; i++) {
-            goods.add(glps.findByProductId(productId));
-        }
-        return goods;
-    }
-
     public int getGoodListSize() {
         return glps.findAllProducts().size();
     }
 
     public int getGoodListElementSize(Long productId) {
         return glps.findAllByProductId(productId).size();
+    }
+
+    public Product getProduct(Long productId) {
+        return productListServiceImpl.getProduct(productId);
     }
 
     public static GoodListServiceImpl getInstance(GoodListPersistenceService glps, ProductListServiceImpl productListServiceImpl, ProductListObserver productListObserver) {

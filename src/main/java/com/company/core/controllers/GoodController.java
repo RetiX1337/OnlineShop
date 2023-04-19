@@ -10,7 +10,7 @@ import static com.company.Main.scan;
 
 public class GoodController {
 
-    private GoodListServiceImpl goodListServiceImpl;
+    private final GoodListServiceImpl goodListServiceImpl;
 
     public GoodController(GoodListServiceImpl goodListServiceImpl) {
         this.goodListServiceImpl = goodListServiceImpl;
@@ -46,8 +46,6 @@ public class GoodController {
     }
 
     public void printGoodList() {
-        System.out.println("dam");
-        System.out.println(goodListServiceImpl.getGoodListSize());
         for (int i = 0; i < goodListServiceImpl.getGoodListSize(); i++) {
             System.out.println(i + ". "
                     + getProduct(i).getBrand() + " "
