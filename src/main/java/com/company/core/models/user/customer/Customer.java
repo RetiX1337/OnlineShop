@@ -1,13 +1,9 @@
 package com.company.core.models.user.customer;
 
-import com.company.core.models.goods.Good;
-import com.company.core.models.goods.Product;
 import com.company.core.Shop;
 import com.company.core.models.user.User;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Stack;
 
 public class Customer extends User {
     private BigDecimal wallet;

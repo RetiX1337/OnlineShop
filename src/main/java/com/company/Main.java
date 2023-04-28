@@ -12,7 +12,6 @@ public class Main {
         DependencyManager dependencyManager = new DependencyManager();
         PreFiller.fillProductList(dependencyManager.getProductController());
         dependencyManager.getProductController().printProductList();
-        dependencyManager.getGoodController().fillGoodList();
         Menu.menu(dependencyManager);
     }
 }

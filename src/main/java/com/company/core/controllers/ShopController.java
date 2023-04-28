@@ -11,6 +11,11 @@ public class ShopController {
     }
 
     public void checkout(Customer customer) {
-        shopServiceImpl.checkout(customer);
+        if (shopServiceImpl.checkout(customer)) {
+            System.out.println("You have bought successfully!");
+            System.out.println("Money left: " + customer.getWallet());
+        } else {
+            System.out.println("You don't have enough money to do that or your cart is empty");
+        }
     }
 }

@@ -18,12 +18,16 @@ public class ProductListServiceImpl {
         this.productListObserver = productListObserver;
     }
 
-    public Product createProduct(String brand, String name, Type type, BigDecimal price) {
-        return new Product(brand, name, type, price);
+    public Product createProduct(String brand, String name, Type type, BigDecimal price, Integer quantity) {
+        return new Product(brand, name, type, price, quantity);
     }
 
     public void addProduct(Product product) {
         productListObserver.notifyObservers(plps.save(product));
+    }
+
+    public void updateProductQuantity(Product product, Integer quantity) {
+        product.updateQuantity(quantity);
     }
 
     public void deleteProduct(Product product) {
@@ -52,7 +56,8 @@ public class ProductListServiceImpl {
                 " Brand: " + getProduct(id).getBrand() +
                 " Name: " + getProduct(id).getName() +
                 " Type: " + getProduct(id).getType() +
-                " Price: " + getProduct(id).getPrice();
+                " Price: " + getProduct(id).getPrice() +
+                " Quantity: " + getProduct(id).getQuantity();
     }
 
     public String getProductListString() {

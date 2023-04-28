@@ -1,42 +1,61 @@
 package com.company.core.services.impl;
 
-import com.company.core.models.goods.Good;
+import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.ShoppingCart;
 
-import java.util.Stack;
-
 public class ShoppingCartServiceImpl {
     private final ShoppingCart shoppingCart;
-    private final GoodListServiceImpl goodListServiceImpl;
     private static ShoppingCartServiceImpl instance;
+    private final ItemServiceImpl itemService;
 
-    private ShoppingCartServiceImpl(ShoppingCart shoppingCart, GoodListServiceImpl goodListServiceImpl) {
+    private ShoppingCartServiceImpl(ShoppingCart shoppingCart, ItemServiceImpl itemService) {
         this.shoppingCart = shoppingCart;
-        this.goodListServiceImpl = goodListServiceImpl;
+        this.itemService = itemService;
     }
 
-    public void addToCart(Long productId, int quantity) {
-        if (shoppingCart.getGoodsCart().containsKey(goodListServiceImpl.getProduct(productId))) {
-            if (availableOnStorage(goodListServiceImpl.getGoods(productId, quantity), productId)) {
-                goodListServiceImpl.getGoods(productId, quantity).forEach(good -> shoppingCart.updateCart(goodListServiceImpl.getProduct(productId), good));
+    private void addOrUpdate(Item item) {
+        if (shoppingCart.containsProduct(item.getProduct().getId())) {
+            addToCartItem(item);
+        } else {
+            shoppingCart.addItem(item);
+        }
+        countPrice();
+    }
+
+    public void addToCart(Long productId, Integer quantity) {
+        System.out.println(shoppingCart.containsProduct(productId));
+        if (shoppingCart.containsProduct(productId)) {
+            if (availableOnStorage(itemService.createItem(productId, quantity))) {
+                addOrUpdate(itemService.createItem(productId, quantity));
             } else {
                 System.out.println("You've picked more than available on the storage");
             }
         } else {
-            shoppingCart.addToCart(goodListServiceImpl.getProduct(productId), goodListServiceImpl.getGoods(productId, quantity));
+            addOrUpdate(itemService.createItem(productId, quantity));
         }
     }
 
-    private boolean availableOnStorage(Stack<Good> goods, Long productId) {
-        if(goods==null) return false;
-        Product product = goods.peek().getProduct();
-        return goods.size() - (shoppingCart.getCartElement(product).size() + goodListServiceImpl.getGoodListElementSize(productId)) >= 0;
+    public void addToCartItem(Item item) {
+        itemService.addToItem(item);
     }
 
-    public static ShoppingCartServiceImpl getInstance(ShoppingCart shoppingCart, GoodListServiceImpl goodListServiceImpl) {
+    private void countPrice() {
+        for (Item it : shoppingCart.getShoppingCart().values()) {
+            shoppingCart.setSummaryPrice(shoppingCart.getSummaryPrice().add(it.getPrice()));
+        }
+        System.out.println(shoppingCart.getSummaryPrice());
+    }
+
+    private boolean availableOnStorage(Item item) {
+        if (item == null) return false;
+        Product product = item.getProduct();
+        return item.getQuantity() - (shoppingCart.getItem(product.getId()).getQuantity() + item.getProduct().getQuantity()) >= 0;
+    }
+
+    public static ShoppingCartServiceImpl getInstance(ShoppingCart shoppingCart, ItemServiceImpl itemService) {
         if (instance == null) {
-            instance = new ShoppingCartServiceImpl(shoppingCart, goodListServiceImpl);
+            instance = new ShoppingCartServiceImpl(shoppingCart, itemService);
         }
         return instance;
     }

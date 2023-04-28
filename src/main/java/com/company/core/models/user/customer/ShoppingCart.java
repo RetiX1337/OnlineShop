@@ -1,28 +1,42 @@
 package com.company.core.models.user.customer;
 
-import com.company.core.models.goods.Good;
+import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Stack;
 
 public class ShoppingCart {
-    private final HashMap<Product, Stack<Good>> shoppingCart = new HashMap<>();
+    private final HashMap<Product, Item> shoppingCart = new HashMap<>();
+    private BigDecimal summaryPrice = new BigDecimal(0);
 
-    public HashMap<Product, Stack<Good>> getGoodsCart() {
+    public HashMap<Product, Item> getShoppingCart() {
         return shoppingCart;
     }
 
-    public void updateCart(Product product, Good good) {
-        shoppingCart.get(product).push(good);
+    public boolean containsProduct(Long productId) {
+        return shoppingCart.values().stream().anyMatch(item -> item.getProduct().getId().equals(productId));
     }
 
-    public void addToCart(Product product, Stack<Good> goods) {
-        shoppingCart.put(product, goods);
+    public void addItem(Item item) {
+        shoppingCart.put(item.getProduct(), item);
     }
 
-    public Stack<Good> getCartElement(Product product) {
-        return shoppingCart.get(product);
+    public Item getItem(Long productId) {
+        return shoppingCart.values().stream().filter(item -> item.getProduct().getId().equals(productId)).findFirst().get();
+    }
+
+    public void setSummaryPrice(BigDecimal summaryPrice) {
+        this.summaryPrice = summaryPrice;
+    }
+
+    public BigDecimal getSummaryPrice() {
+        return summaryPrice;
+    }
+
+    public void clear() {
+        shoppingCart.clear();
+        summaryPrice = new BigDecimal(0);
     }
 
     public boolean isEmpty() {

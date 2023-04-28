@@ -1,6 +1,6 @@
 package com.company.core.services.impl;
 
-import com.company.core.models.goods.Good;
+import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 
@@ -16,29 +16,14 @@ public class CustomerServiceImpl {
         this.customer = customer;
     }
 
-    public boolean buyFromCart() {
-        if (!customer.getShoppingCart().isEmpty()) {
-            BigDecimal summaryPrice = new BigDecimal(0);
-            HashMap<Product, Stack<Good>> goods = customer.getShoppingCart().getGoodsCart();
-            summaryPrice = countPrice(summaryPrice, goods);
-            if (summaryPrice.compareTo(customer.getWallet()) == 0 || summaryPrice.compareTo(customer.getWallet()) == -1) {
-                customer.setWallet(customer.getWallet().subtract(summaryPrice));
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
-    }
-
     public BigDecimal getWallet() {
         return customer.getWallet();
     }
 
-    private BigDecimal countPrice(BigDecimal summaryPrice, HashMap<Product, Stack<Good>> goods) {
-        for (Stack<Good> goodStack : goods.values()) {
-            for (Good good : goodStack) {
-                summaryPrice = summaryPrice.add(good.getProduct().getPrice());
+    private BigDecimal countPrice(BigDecimal summaryPrice, HashMap<Product, Stack<Item>> goods) {
+        for (Stack<Item> itemStack : goods.values()) {
+            for (Item item : itemStack) {
+                summaryPrice = summaryPrice.add(item.getProduct().getPrice());
             }
         }
         return summaryPrice;

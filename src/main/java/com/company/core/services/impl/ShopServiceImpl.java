@@ -1,37 +1,40 @@
 package com.company.core.services.impl;
 
 import com.company.core.Shop;
-import com.company.core.models.goods.Good;
-import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 
-import java.util.HashMap;
-import java.util.Stack;
+import java.math.BigDecimal;
 
 public class ShopServiceImpl {
     private final Shop shop;
-    private final GoodListServiceImpl goodListServiceImpl;
     private final OrderListServiceImpl orderListServiceImpl;
     private static ShopServiceImpl instance;
 
-    private ShopServiceImpl(Shop shop, GoodListServiceImpl goodListServiceImpl, OrderListServiceImpl orderListServiceImpl) {
+    private ShopServiceImpl(Shop shop, OrderListServiceImpl orderListServiceImpl) {
         this.shop = shop;
-        this.goodListServiceImpl = goodListServiceImpl;
         this.orderListServiceImpl = orderListServiceImpl;
     }
 
-    public void checkout(Customer customer) {
-        HashMap<Product, Stack<Good>> goods = customer.getShoppingCart().getGoodsCart();
-        goods.forEach((key, value)
-                -> value.forEach(good
-                -> goodListServiceImpl.deleteGood(good.getProduct().getId())));
-        orderListServiceImpl.createOrder(goods, customer);
-        customer.getShoppingCart().getGoodsCart().clear();
+    public boolean checkout(Customer customer) {
+        if (!customer.getShoppingCart().isEmpty()) {
+            BigDecimal summaryPrice = customer.getShoppingCart().getSummaryPrice();
+            if (summaryPrice.compareTo(customer.getWallet()) == 0 || summaryPrice.compareTo(customer.getWallet()) == -1) {
+                customer.getShoppingCart().getShoppingCart().forEach((product, item) ->
+                    item.getProduct().setQuantity(product.getQuantity()-item.getQuantity()));
+                orderListServiceImpl.addOrder(orderListServiceImpl.createOrder(customer.getShoppingCart().getShoppingCart(), customer));
+                customer.getShoppingCart().clear();
+                customer.setWallet(customer.getWallet().subtract(summaryPrice));
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
-    public static ShopServiceImpl getInstance(Shop shop, GoodListServiceImpl goodListServiceImpl, OrderListServiceImpl orderListServiceImpl) {
+    public static ShopServiceImpl getInstance(Shop shop, OrderListServiceImpl orderListServiceImpl) {
         if (instance == null) {
-            instance = new ShopServiceImpl(shop, goodListServiceImpl, orderListServiceImpl);
+            instance = new ShopServiceImpl(shop, orderListServiceImpl);
         }
         return instance;
     }

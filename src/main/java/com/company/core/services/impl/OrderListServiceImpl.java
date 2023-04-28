@@ -1,13 +1,14 @@
 package com.company.core.services.impl;
 
 import com.company.core.models.EntityNotFoundException;
-import com.company.core.models.goods.Good;
+import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.OrderListPersistenceService;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -20,12 +21,8 @@ public class OrderListServiceImpl {
         this.olps = olps;
     }
 
-    public Order createOrder(HashMap<Product, Stack<Good>> goods, Customer customer) {
-        return new Order(goods, customer);
-    }
-
-    public Order createOrder(HashMap<Product, Stack<Good>> goods) {
-        return new Order(goods);
+    public Order createOrder(HashMap<Product, Item> items, Customer customer) {
+        return new Order(items, customer);
     }
 
     public void addOrder(Order order) {
@@ -45,16 +42,12 @@ public class OrderListServiceImpl {
     }
 
     public BigDecimal getPrice(Long id) {
-        BigDecimal summaryPrice = new BigDecimal(0);
-        for (Order.OrderElement oe : olps.findById(id).getOrderElements()) {
-            summaryPrice = summaryPrice.add(oe.getPrice());
-        }
-        return summaryPrice;
+        return olps.findById(id).getSummaryPrice();
     }
 
     public String getOrderString(Long id) {
         return "\nOrder: " +
-                olps.findById(id).getOrderElements() +
+                olps.findById(id).getItems() +
                 "\nTotal price: " +
                 getPrice(id) +
                 "\n";

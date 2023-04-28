@@ -13,8 +13,8 @@ public class ProductController {
         this.productListServiceImpl = productListServiceImpl;
     }
 
-    public void addProduct(String brand, String name, Type type, BigDecimal price) {
-        productListServiceImpl.addProduct(productListServiceImpl.createProduct(brand, name, type, price));
+    public void addProduct(String brand, String name, Type type, BigDecimal price, Integer quantity) {
+        productListServiceImpl.addProduct(productListServiceImpl.createProduct(brand, name, type, price, quantity));
     }
 
     public Product getProduct(Long id) {
