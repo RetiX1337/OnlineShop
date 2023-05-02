@@ -1,17 +1,19 @@
 package com.company.core.controllers;
 
 import com.company.core.models.user.customer.Customer;
+import com.company.core.services.CustomerService;
+import com.company.core.services.ShopService;
 import com.company.core.services.impl.CustomerServiceImpl;
 import com.company.core.services.impl.ShopServiceImpl;
 
 import static com.company.Main.scan;
 
 public class CustomerController {
-    private final CustomerServiceImpl customerServiceImpl;
-    private final ShopServiceImpl shopService;
+    private final CustomerService customerService;
+    private final ShopService shopService;
 
-    public CustomerController(CustomerServiceImpl customerServiceImpl, ShopServiceImpl shopService) {
-        this.customerServiceImpl = customerServiceImpl;
+    public CustomerController(CustomerService customerService, ShopService shopService) {
+        this.customerService = customerService;
         this.shopService = shopService;
     }
 
@@ -41,7 +43,7 @@ public class CustomerController {
         productId = getInt();
         System.out.println("Enter the amount: ");
         amount = getInt();
-        if (customerServiceImpl.addToCart(customer, (long) productId, amount)) {
+        if (customerService.addToCart(customer, (long) productId, amount)) {
             System.out.println("Added successfully!");
         } else {
             System.out.println("You've picked more than available on the storage!");

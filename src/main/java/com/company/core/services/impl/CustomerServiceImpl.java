@@ -6,7 +6,7 @@ import com.company.core.services.ShoppingCartService;
 
 public class CustomerServiceImpl implements CustomerService {
     private final ShoppingCartService shoppingCartService;
-    private static CustomerServiceImpl instance;
+    private static CustomerService instance;
 
     private CustomerServiceImpl(ShoppingCartService shoppingCartService) {
         this.shoppingCartService = shoppingCartService;
@@ -17,7 +17,7 @@ public class CustomerServiceImpl implements CustomerService {
         return shoppingCartService.addToCart(customer.getShoppingCart(), productId, quantity);
     }
 
-    public static CustomerServiceImpl getInstance(ShoppingCartServiceImpl shoppingCartService) {
+    public static CustomerService getInstance(ShoppingCartService shoppingCartService) {
         if (instance == null) {
             instance = new CustomerServiceImpl(shoppingCartService);
         }

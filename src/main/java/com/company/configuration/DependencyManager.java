@@ -7,6 +7,7 @@ import com.company.core.lists.ProductList;
 import com.company.core.Shop;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.ShoppingCart;
+import com.company.core.services.*;
 import com.company.core.services.impl.*;
 import com.company.core.services.persistenceservices.CustomerListPersistenceService;
 import com.company.core.services.persistenceservices.OrderListPersistenceService;
@@ -15,7 +16,6 @@ import com.company.core.services.persistenceservices.ProductListPersistenceServi
 public class DependencyManager {
     private final ProductController productController;
     private final CustomerController customerController;
-    private final ShopController shopController;
     private final CustomerListPersistenceService clps;
 
     public DependencyManager() {
@@ -30,23 +30,22 @@ public class DependencyManager {
                 .build();
 
         ProductListPersistenceService plps = ProductListPersistenceService.getInstance(shop.getProductList());
-        ProductListServiceImpl productListServiceImpl = ProductListServiceImpl.getInstance(plps);
-        this.productController = new ProductController(productListServiceImpl);
+        ProductListService productListService = ProductListServiceImpl.getInstance(plps);
+        this.productController = new ProductController(productListService);
 
         OrderListPersistenceService olps = OrderListPersistenceService.getInstance(shop.getOrderList());
-        OrderListServiceImpl orderListServiceImpl = OrderListServiceImpl.getInstance(olps);
+        OrderListService orderListService = OrderListServiceImpl.getInstance(olps);
 
-        ItemServiceImpl itemService = ItemServiceImpl.getInstance(productListServiceImpl);
+        ItemService itemService = ItemServiceImpl.getInstance(productListService);
 
-        ShoppingCartServiceImpl shoppingCartServiceImpl = ShoppingCartServiceImpl.getInstance(itemService, productListServiceImpl);
+        ShoppingCartService shoppingCartService = ShoppingCartServiceImpl.getInstance(itemService, productListService);
 
         this.clps = CustomerListPersistenceService.getInstance(shop.getCustomerList());
-        CustomerServiceImpl customerServiceImpl = CustomerServiceImpl.getInstance(shoppingCartServiceImpl);
+        CustomerService customerService = CustomerServiceImpl.getInstance(shoppingCartService);
 
-        ShopServiceImpl shopServiceImpl = ShopServiceImpl.getInstance(shop, orderListServiceImpl, productListServiceImpl, customerServiceImpl);
+        ShopService shopService = ShopServiceImpl.getInstance(shop, orderListService, productListService, customerService);
 
-        this.customerController = new CustomerController(customerServiceImpl, shopServiceImpl);
-        this.shopController = new ShopController(shopServiceImpl);
+        this.customerController = new CustomerController(customerService, shopService);
     }
 
     public Customer testCustomerCreateMethod() {
@@ -61,7 +60,4 @@ public class DependencyManager {
         return customerController;
     }
 
-    public ShopController getShopController() {
-        return shopController;
-    }
 }
