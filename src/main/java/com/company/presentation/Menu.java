@@ -14,6 +14,7 @@ public class Menu {
                     1. Yes
                     2. No""");
             int input = Integer.parseInt(scan.nextLine());
+            dependencyManager.getCustomerController().displayProducts();
             switch (input) {
                 case 1 -> {
                     dependencyManager.getCustomerController().addToCart(customer);
@@ -29,9 +30,12 @@ public class Menu {
                         3. Leave without buying""");
                 int innerInput = Integer.parseInt(scan.nextLine());
                 switch (innerInput) {
-                    case 1 -> innerMenu = false;
+                    case 1 ->  {
+                        innerMenu = false;
+                        menu = true;
+                    }
                     case 2 -> {
-                        dependencyManager.getShopController().checkout(customer);
+                        dependencyManager.getCustomerController().checkoutCart(customer);
                     }
                     case 3 -> {
                         innerMenu = false;
@@ -40,7 +44,7 @@ public class Menu {
                     default -> System.out.println("This case doesn't exist");
                 }
             }
-            System.out.println(dependencyManager.getShop().getOrderList());
+            dependencyManager.getCustomerController().displayOrders(customer);
         }
     }
 }

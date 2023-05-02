@@ -3,8 +3,9 @@ package com.company.core.services.impl;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.ShoppingCart;
+import com.company.core.services.ShoppingCartService;
 
-public class ShoppingCartServiceImpl {
+public class ShoppingCartServiceImpl implements ShoppingCartService {
     private static ShoppingCartServiceImpl instance;
     private final ItemServiceImpl itemService;
     private final ProductListServiceImpl productListService;
@@ -14,6 +15,7 @@ public class ShoppingCartServiceImpl {
         this.productListService = productListService;
     }
 
+    @Override
     public boolean addToCart(ShoppingCart shoppingCart, Long productId, Integer quantity) {
         if (containsProduct(shoppingCart, productListService.getProduct(productId))) {
             if (notMoreThanAvailable(shoppingCart, itemService.createItem(productId, quantity))) {

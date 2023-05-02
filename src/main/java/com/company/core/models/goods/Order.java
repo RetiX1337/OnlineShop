@@ -52,9 +52,9 @@ public class Order implements Identifiable {
     @Override
     public String toString() {
         return "ID: " + id +
-                " Items: " + items +
-                " Customer: " + customer +
-                " summaryPrice=" + summaryPrice;
+                ", Items: " + items.values() +
+                ", Customer: " + customer.getUsername() +
+                ", Summary Price: " + summaryPrice + "\n";
     }
 
     private void addItem(Item item) {

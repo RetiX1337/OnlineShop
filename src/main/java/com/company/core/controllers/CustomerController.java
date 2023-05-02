@@ -4,8 +4,6 @@ import com.company.core.models.user.customer.Customer;
 import com.company.core.services.impl.CustomerServiceImpl;
 import com.company.core.services.impl.ShopServiceImpl;
 
-import java.math.BigDecimal;
-
 import static com.company.Main.scan;
 
 public class CustomerController {
@@ -28,7 +26,11 @@ public class CustomerController {
      */
 
     public void displayProducts() {
-        System.out.println(shopService.showProducts());
+        System.out.println(shopService.getProductsString());
+    }
+
+    public void displayOrders(Customer customer) {
+        System.out.println(shopService.getCustomerOrdersString(customer));
     }
 
     public void addToCart(Customer customer) {

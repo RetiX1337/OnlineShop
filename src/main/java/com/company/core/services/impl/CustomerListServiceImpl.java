@@ -5,6 +5,8 @@ import com.company.core.models.user.customer.ShoppingCart;
 import com.company.core.services.persistenceservices.CustomerListPersistenceService;
 
 public class CustomerListServiceImpl {
+    //WILL BE USED IN FUTURE
+
     private final CustomerListPersistenceService clps;
     private static CustomerListServiceImpl instance;
 

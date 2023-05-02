@@ -3,6 +3,7 @@ package com.company;
 import com.company.configuration.DependencyManager;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.ShoppingCart;
+import com.company.core.services.persistenceservices.CustomerListPersistenceService;
 import com.company.presentation.Menu;
 
 import java.util.Scanner;
@@ -14,10 +15,9 @@ public class Main {
     public static void main(String[] args) {
         DependencyManager dependencyManager = new DependencyManager();
 
-        customer = new Customer("whyretski", "123456", new ShoppingCart());
+        customer = dependencyManager.testCustomerCreateMethod();
 
         PreFiller.fillProductList(dependencyManager.getProductController());
-        dependencyManager.getProductController().printProductList();
         Menu.menu(dependencyManager, customer);
     }
 }

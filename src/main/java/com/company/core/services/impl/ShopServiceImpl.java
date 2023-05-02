@@ -4,12 +4,13 @@ import com.company.core.Shop;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
+import com.company.core.services.ShopService;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
-public class ShopServiceImpl {
+public class ShopServiceImpl implements ShopService {
     private final Shop shop;
     private final OrderListServiceImpl orderListServiceImpl;
     private final ProductListServiceImpl productListService;
@@ -23,6 +24,7 @@ public class ShopServiceImpl {
         this.customerService = customerService;
     }
 
+    @Override
     public boolean checkout(Customer customer) {
         if (!customer.getShoppingCart().isEmpty()) {
             BigDecimal summaryPrice = customer.getShoppingCart().getSummaryPrice();
@@ -39,13 +41,19 @@ public class ShopServiceImpl {
         return false;
     }
 
-    public String showProducts() {
+    @Override
+    public String getProductsString() {
         List<Product> products = productListService.getAllProducts();
         String result = "";
         for (Product p : products) {
             result = result.concat(p + "\n");
         }
         return result;
+    }
+
+    @Override
+    public String getCustomerOrdersString(Customer customer) {
+        return orderListServiceImpl.findByCustomer(customer).toString();
     }
 
     private void createOrder(Customer customer) {

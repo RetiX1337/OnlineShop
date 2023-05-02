@@ -36,7 +36,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return product.getBrand() + " " + product.getName() + ", " + product.getPrice();
+        return product.getBrand() + " " + product.getName() + ", Quantity: " + quantity + ", Price for one: " + product.getPrice();
     }
 
     @Override

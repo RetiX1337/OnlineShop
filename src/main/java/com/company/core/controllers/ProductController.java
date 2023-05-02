@@ -16,16 +16,4 @@ public class ProductController {
     public void addProduct(String brand, String name, Type type, BigDecimal price, Integer quantity) {
         productListServiceImpl.addProduct(productListServiceImpl.createProduct(brand, name, type, price, quantity));
     }
-
-    public Product getProduct(Long id) {
-        return productListServiceImpl.getProduct(id);
-    }
-
-    public void printProduct(Long id) {
-        System.out.println(productListServiceImpl.getProductString(id));
-    }
-
-    public void printProductList() {
-        System.out.println(productListServiceImpl.getProductListString());
-    }
 }

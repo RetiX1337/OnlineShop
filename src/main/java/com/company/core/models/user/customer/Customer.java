@@ -8,11 +8,15 @@ import java.math.BigDecimal;
 
 public class Customer extends User implements Identifiable {
     private Long id;
+    private final String username;
+    private final String password;
     private BigDecimal wallet;
     private final ShoppingCart shoppingCart;
 
     public Customer(String username, String password, ShoppingCart shoppingCart) {
         super(username, password);
+        this.username = username;
+        this.password = password;
         this.wallet = new BigDecimal(500);
         this.shoppingCart = shoppingCart;
     }
@@ -27,6 +31,10 @@ public class Customer extends User implements Identifiable {
 
     public ShoppingCart getShoppingCart() {
         return shoppingCart;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     @Override
