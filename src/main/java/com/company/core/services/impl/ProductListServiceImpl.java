@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProductListServiceImpl implements ProductListService {
     private final ProductListPersistenceService plps;
-    private static ProductListServiceImpl instance;
+    private static ProductListService instance;
 
     private ProductListServiceImpl(ProductListPersistenceService plps) {
         this.plps = plps;
@@ -51,7 +51,7 @@ public class ProductListServiceImpl implements ProductListService {
         return plps.findById(id);
     }
 
-    public static ProductListServiceImpl getInstance(ProductListPersistenceService plps) {
+    public static ProductListService getInstance(ProductListPersistenceService plps) {
         if (instance == null) {
             instance = new ProductListServiceImpl(plps);
         }

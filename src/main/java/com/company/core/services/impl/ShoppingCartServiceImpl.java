@@ -3,14 +3,16 @@ package com.company.core.services.impl;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.ShoppingCart;
+import com.company.core.services.ItemService;
+import com.company.core.services.ProductListService;
 import com.company.core.services.ShoppingCartService;
 
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    private static ShoppingCartServiceImpl instance;
-    private final ItemServiceImpl itemService;
-    private final ProductListServiceImpl productListService;
+    private static ShoppingCartService instance;
+    private final ItemService itemService;
+    private final ProductListService productListService;
 
-    private ShoppingCartServiceImpl(ItemServiceImpl itemService, ProductListServiceImpl productListService) {
+    private ShoppingCartServiceImpl(ItemService itemService, ProductListService productListService) {
         this.itemService = itemService;
         this.productListService = productListService;
     }
@@ -60,7 +62,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         countPrice(shoppingCart);
     }
 
-    public static ShoppingCartServiceImpl getInstance(ItemServiceImpl itemService, ProductListServiceImpl productListService) {
+    public static ShoppingCartService getInstance(ItemService itemService, ProductListService productListService) {
         if (instance == null) {
             instance = new ShoppingCartServiceImpl(itemService, productListService);
         }

@@ -3,12 +3,13 @@ package com.company.core.services.impl;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.services.ItemService;
+import com.company.core.services.ProductListService;
 
 public class ItemServiceImpl implements ItemService {
-    private static ItemServiceImpl instance;
-    private final ProductListServiceImpl productListService;
+    private static ItemService instance;
+    private final ProductListService productListService;
 
-    private ItemServiceImpl(ProductListServiceImpl productListService) {
+    private ItemServiceImpl(ProductListService productListService) {
         this.productListService = productListService;
     }
 
@@ -22,7 +23,7 @@ public class ItemServiceImpl implements ItemService {
         item.update(item.getQuantity());
     }
 
-    public static ItemServiceImpl getInstance(ProductListServiceImpl productListService) {
+    public static ItemService getInstance(ProductListService productListService) {
         if (instance == null) {
             instance = new ItemServiceImpl(productListService);
         }

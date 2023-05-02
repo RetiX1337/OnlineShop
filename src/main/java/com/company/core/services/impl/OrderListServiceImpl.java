@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class OrderListServiceImpl implements OrderListService {
 
     private OrderListPersistenceService olps;
-    private static OrderListServiceImpl instance;
+    private static OrderListService instance;
 
     private OrderListServiceImpl(OrderListPersistenceService olps) {
         this.olps = olps;
@@ -50,7 +50,7 @@ public class OrderListServiceImpl implements OrderListService {
         return olps.findAll().stream().filter(order -> order.getCustomer().getId().equals(customer.getId())).toList();
     }
 
-    public static OrderListServiceImpl getInstance(OrderListPersistenceService olps) {
+    public static OrderListService getInstance(OrderListPersistenceService olps) {
         if (instance == null) {
             instance = new OrderListServiceImpl(olps);
         }

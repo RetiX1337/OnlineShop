@@ -4,6 +4,9 @@ import com.company.core.Shop;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
+import com.company.core.services.CustomerService;
+import com.company.core.services.OrderListService;
+import com.company.core.services.ProductListService;
 import com.company.core.services.ShopService;
 
 import java.math.BigDecimal;
@@ -12,14 +15,14 @@ import java.util.List;
 
 public class ShopServiceImpl implements ShopService {
     private final Shop shop;
-    private final OrderListServiceImpl orderListServiceImpl;
-    private final ProductListServiceImpl productListService;
-    private final CustomerServiceImpl customerService;
-    private static ShopServiceImpl instance;
+    private final OrderListService orderListService;
+    private final ProductListService productListService;
+    private final CustomerService customerService;
+    private static ShopService instance;
 
-    private ShopServiceImpl(Shop shop, OrderListServiceImpl orderListServiceImpl, ProductListServiceImpl productListService, CustomerServiceImpl customerService) {
+    private ShopServiceImpl(Shop shop, OrderListService orderListService, ProductListService productListService, CustomerService customerService) {
         this.shop = shop;
-        this.orderListServiceImpl = orderListServiceImpl;
+        this.orderListService = orderListService;
         this.productListService = productListService;
         this.customerService = customerService;
     }
@@ -53,11 +56,11 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public String getCustomerOrdersString(Customer customer) {
-        return orderListServiceImpl.findByCustomer(customer).toString();
+        return orderListService.findByCustomer(customer).toString();
     }
 
     private void createOrder(Customer customer) {
-        orderListServiceImpl.addOrder(orderListServiceImpl.createOrder(customer.getShoppingCart().getProductsFromCart(), customer));
+        orderListService.addOrder(orderListService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer));
     }
 
     private void removeProductsFromProductList(Collection<Item> items) {
@@ -72,9 +75,9 @@ public class ShopServiceImpl implements ShopService {
         return summaryPrice.compareTo(customer.getWallet()) == 0 || summaryPrice.compareTo(customer.getWallet()) == -1;
     }
 
-    public static ShopServiceImpl getInstance(Shop shop, OrderListServiceImpl orderListServiceImpl, ProductListServiceImpl productListService, CustomerServiceImpl customerService) {
+    public static ShopService getInstance(Shop shop, OrderListService orderListService, ProductListService productListService, CustomerService customerService) {
         if (instance == null) {
-            instance = new ShopServiceImpl(shop, orderListServiceImpl, productListService, customerService);
+            instance = new ShopServiceImpl(shop, orderListService, productListService, customerService);
         }
         return instance;
     }
