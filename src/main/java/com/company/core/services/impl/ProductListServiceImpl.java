@@ -7,15 +7,14 @@ import com.company.core.models.goods.Type;
 import com.company.core.services.persistenceservices.ProductListPersistenceService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ProductListServiceImpl {
     private final ProductListPersistenceService plps;
-    private final ProductListObserver productListObserver;
     private static ProductListServiceImpl instance;
 
-    private ProductListServiceImpl(ProductListPersistenceService plps, ProductListObserver productListObserver) {
+    private ProductListServiceImpl(ProductListPersistenceService plps) {
         this.plps = plps;
-        this.productListObserver = productListObserver;
     }
 
     public Product createProduct(String brand, String name, Type type, BigDecimal price, Integer quantity) {
@@ -23,7 +22,7 @@ public class ProductListServiceImpl {
     }
 
     public void addProduct(Product product) {
-        productListObserver.notifyObservers(plps.save(product));
+        plps.save(product);
     }
 
     public void updateProductQuantity(Product product, Integer quantity) {
@@ -32,7 +31,6 @@ public class ProductListServiceImpl {
 
     public void deleteProduct(Product product) {
         plps.deleteById(product.getId());
-        productListObserver.notifyObservers(product);
     }
 
     public void updateProduct(Product product) {
@@ -45,6 +43,10 @@ public class ProductListServiceImpl {
 
     public boolean productIsPresent(Product product) {
         return plps.productIsPresent(product);
+    }
+
+    public List<Product> getAllProducts() {
+        return plps.findAll();
     }
 
     public Product getProduct(Long id) {
@@ -68,9 +70,9 @@ public class ProductListServiceImpl {
         return result;
     }
 
-    public static ProductListServiceImpl getInstance(ProductListPersistenceService plps, ProductListObserver productListObserver) {
+    public static ProductListServiceImpl getInstance(ProductListPersistenceService plps) {
         if (instance == null) {
-            instance = new ProductListServiceImpl(plps, productListObserver);
+            instance = new ProductListServiceImpl(plps);
         }
         return instance;
     }

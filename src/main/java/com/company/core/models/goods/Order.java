@@ -13,10 +13,10 @@ public class Order implements Identifiable {
     private OrderStatus orderStatus;
     private BigDecimal summaryPrice = new BigDecimal(0);
 
-    public Order(HashMap<Product, Item> items, Customer customer) {
+    public Order(Collection<Item> items, Customer customer) {
         this.customer = customer;
-        for (Item it : items.values()) {
-            items.put(it.getProduct(), it);
+        for (Item it : items) {
+            this.items.put(it.getProduct(), it);
         }
         countPrice();
     }
@@ -25,6 +25,10 @@ public class Order implements Identifiable {
         for (Item it : items.values()) {
             summaryPrice = summaryPrice.add(it.getPrice());
         }
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public BigDecimal getSummaryPrice() {

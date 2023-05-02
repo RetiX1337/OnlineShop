@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.core.controllers.CustomerController;
 import com.company.core.controllers.ProductController;
 import com.company.core.models.goods.Type;
 
@@ -12,5 +13,9 @@ public class PreFiller {
         productController.addProduct("Desperados", "Desperados Mochito", Type.ALCOHOL, new BigDecimal("6.49"), 1000);
         productController.addProduct("Miekka dupa", "Rumianek", Type.HOUSEHOLD, new BigDecimal("10.99"), 1000);
         productController.addProduct("Coca-Cola", "Coca-Cola", Type.BEVERAGE, new BigDecimal("4.49"), 1000);
+    }
+
+    public static void fillCustomerList(CustomerController customerController) {
+
     }
 }

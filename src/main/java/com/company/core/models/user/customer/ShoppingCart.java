@@ -4,18 +4,15 @@ import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class ShoppingCart {
     private final HashMap<Product, Item> shoppingCart = new HashMap<>();
     private BigDecimal summaryPrice = new BigDecimal(0);
 
-    public HashMap<Product, Item> getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public boolean containsProduct(Long productId) {
-        return shoppingCart.values().stream().anyMatch(item -> item.getProduct().getId().equals(productId));
+    public Collection<Item> getProductsFromCart() {
+        return shoppingCart.values();
     }
 
     public void addItem(Item item) {

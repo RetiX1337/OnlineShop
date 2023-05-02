@@ -5,57 +5,62 @@ import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.ShoppingCart;
 
 public class ShoppingCartServiceImpl {
-    private final ShoppingCart shoppingCart;
     private static ShoppingCartServiceImpl instance;
     private final ItemServiceImpl itemService;
+    private final ProductListServiceImpl productListService;
 
-    private ShoppingCartServiceImpl(ShoppingCart shoppingCart, ItemServiceImpl itemService) {
-        this.shoppingCart = shoppingCart;
+    private ShoppingCartServiceImpl(ItemServiceImpl itemService, ProductListServiceImpl productListService) {
         this.itemService = itemService;
+        this.productListService = productListService;
     }
 
-    private void addOrUpdate(Item item) {
-        if (shoppingCart.containsProduct(item.getProduct().getId())) {
-            addToCartItem(item);
-        } else {
-            shoppingCart.addItem(item);
-        }
-        countPrice();
-    }
-
-    public void addToCart(Long productId, Integer quantity) {
-        System.out.println(shoppingCart.containsProduct(productId));
-        if (shoppingCart.containsProduct(productId)) {
-            if (availableOnStorage(itemService.createItem(productId, quantity))) {
-                addOrUpdate(itemService.createItem(productId, quantity));
+    public boolean addToCart(ShoppingCart shoppingCart, Long productId, Integer quantity) {
+        if (containsProduct(shoppingCart, productListService.getProduct(productId))) {
+            if (notMoreThanAvailable(shoppingCart, itemService.createItem(productId, quantity))) {
+                addOrUpdate(shoppingCart, itemService.createItem(productId, quantity));
+                return true;
             } else {
-                System.out.println("You've picked more than available on the storage");
+                return false;
             }
         } else {
-            addOrUpdate(itemService.createItem(productId, quantity));
+            addOrUpdate(shoppingCart, itemService.createItem(productId, quantity));
+            return true;
         }
     }
 
-    public void addToCartItem(Item item) {
+    private void addToCartItem(Item item) {
         itemService.addToItem(item);
     }
 
-    private void countPrice() {
-        for (Item it : shoppingCart.getShoppingCart().values()) {
+    private void countPrice(ShoppingCart shoppingCart) {
+        for (Item it : shoppingCart.getProductsFromCart()) {
             shoppingCart.setSummaryPrice(shoppingCart.getSummaryPrice().add(it.getPrice()));
         }
         System.out.println(shoppingCart.getSummaryPrice());
     }
 
-    private boolean availableOnStorage(Item item) {
+    private boolean notMoreThanAvailable(ShoppingCart shoppingCart, Item item) {
         if (item == null) return false;
         Product product = item.getProduct();
         return item.getQuantity() - (shoppingCart.getItem(product.getId()).getQuantity() + item.getProduct().getQuantity()) >= 0;
     }
 
-    public static ShoppingCartServiceImpl getInstance(ShoppingCart shoppingCart, ItemServiceImpl itemService) {
+    private boolean containsProduct(ShoppingCart shoppingCart, Product product) {
+        return shoppingCart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().getId().equals(product.getId()));
+    }
+
+    private void addOrUpdate(ShoppingCart shoppingCart, Item item) {
+        if (containsProduct(shoppingCart, item.getProduct())) {
+            addToCartItem(item);
+        } else {
+            shoppingCart.addItem(item);
+        }
+        countPrice(shoppingCart);
+    }
+
+    public static ShoppingCartServiceImpl getInstance(ItemServiceImpl itemService, ProductListServiceImpl productListService) {
         if (instance == null) {
-            instance = new ShoppingCartServiceImpl(shoppingCart, itemService);
+            instance = new ShoppingCartServiceImpl(itemService, productListService);
         }
         return instance;
     }

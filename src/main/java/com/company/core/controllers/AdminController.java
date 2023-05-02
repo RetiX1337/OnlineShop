@@ -1,4 +1,4 @@
 package com.company.core.controllers;
 
-public class MainController {
+public class AdminController {
 }

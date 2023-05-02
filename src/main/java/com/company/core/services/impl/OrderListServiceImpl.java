@@ -3,14 +3,11 @@ package com.company.core.services.impl;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
-import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.OrderListPersistenceService;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.Collection;
 
 public class OrderListServiceImpl {
 
@@ -21,7 +18,7 @@ public class OrderListServiceImpl {
         this.olps = olps;
     }
 
-    public Order createOrder(HashMap<Product, Item> items, Customer customer) {
+    public Order createOrder(Collection<Item> items, Customer customer) {
         return new Order(items, customer);
     }
 

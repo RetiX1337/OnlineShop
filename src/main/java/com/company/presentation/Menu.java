@@ -1,11 +1,12 @@
 package com.company.presentation;
 
 import com.company.configuration.DependencyManager;
+import com.company.core.models.user.customer.Customer;
 
 import static com.company.Main.scan;
 
 public class Menu {
-    public static void menu(DependencyManager dependencyManager) {
+    public static void menu(DependencyManager dependencyManager, Customer customer) {
         boolean menu = true;
         while (menu) {
             System.out.println("""
@@ -15,8 +16,7 @@ public class Menu {
             int input = Integer.parseInt(scan.nextLine());
             switch (input) {
                 case 1 -> {
-                    dependencyManager.getProductController().printProductList();
-                    dependencyManager.getCustomerController().addToCart();
+                    dependencyManager.getCustomerController().addToCart(customer);
                 }
                 case 2 -> menu = false;
                 default -> System.out.println("This case doesn't exist");
@@ -31,7 +31,7 @@ public class Menu {
                 switch (innerInput) {
                     case 1 -> innerMenu = false;
                     case 2 -> {
-                        dependencyManager.getShopController().checkout(dependencyManager.getCustomer());
+                        dependencyManager.getShopController().checkout(customer);
                     }
                     case 3 -> {
                         innerMenu = false;
