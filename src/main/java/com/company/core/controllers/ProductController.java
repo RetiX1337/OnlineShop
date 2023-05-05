@@ -1,9 +1,7 @@
 package com.company.core.controllers;
 
-import com.company.core.models.goods.Product;
 import com.company.core.models.goods.Type;
 import com.company.core.services.ProductListService;
-import com.company.core.services.impl.ProductListServiceImpl;
 
 import java.math.BigDecimal;
 

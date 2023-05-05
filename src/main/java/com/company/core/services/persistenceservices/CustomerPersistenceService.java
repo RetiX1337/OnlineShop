@@ -2,19 +2,19 @@ package com.company.core.services.persistenceservices;
 
 
 import com.company.core.lists.CustomerList;
-import com.company.core.lists.OrderList;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
+import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class CustomerListPersistenceService implements PersistenceInterface<Customer> {
-    private static CustomerListPersistenceService instance;
+
+public class CustomerPersistenceService implements PersistenceInterface<Customer> {
     private final CustomerList customerList;
     private static Long idCounter = 0L;
 
-    private CustomerListPersistenceService(CustomerList customerList) {
+    public CustomerPersistenceService(CustomerList customerList) {
         this.customerList = customerList;
     }
 
@@ -60,10 +60,4 @@ public class CustomerListPersistenceService implements PersistenceInterface<Cust
         getList().remove(entity.getId(), entity);
     }
 
-    public static CustomerListPersistenceService getInstance(CustomerList customerList) {
-        if (instance == null) {
-            instance = new CustomerListPersistenceService(customerList);
-        }
-        return instance;
-    }
 }

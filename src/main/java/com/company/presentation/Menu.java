@@ -18,6 +18,7 @@ public class Menu {
             switch (input) {
                 case 1 -> {
                     dependencyManager.getCustomerController().addToCart(customer);
+                    dependencyManager.getCustomerController().deleteFromCart(customer);
                 }
                 case 2 -> menu = false;
                 default -> System.out.println("This case doesn't exist");

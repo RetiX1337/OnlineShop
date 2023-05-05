@@ -7,12 +7,11 @@ import com.company.core.models.goods.Product;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProductListPersistenceService implements PersistenceInterface<Product> {
-    private static ProductListPersistenceService instance;
+public class ProductPersistenceService implements PersistenceInterface<Product> {
     private final ProductList productList;
     private static Long idCounter = 0L;
 
-    private ProductListPersistenceService(ProductList productList) {
+    public ProductPersistenceService(ProductList productList) {
         this.productList = productList;
     }
 
@@ -45,7 +44,7 @@ public class ProductListPersistenceService implements PersistenceInterface<Produ
         } else {
             throw new EntityNotFoundException();
         }
-        return null;
+        return entity;
     }
 
     @Override
@@ -62,10 +61,4 @@ public class ProductListPersistenceService implements PersistenceInterface<Produ
         return getList().containsKey(product.getId());
     }
 
-    public static ProductListPersistenceService getInstance(ProductList productList) {
-        if (instance == null) {
-            instance = new ProductListPersistenceService(productList);
-        }
-        return instance;
-    }
 }

@@ -2,8 +2,6 @@ package com.company;
 
 import com.company.configuration.DependencyManager;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.models.user.customer.ShoppingCart;
-import com.company.core.services.persistenceservices.CustomerListPersistenceService;
 import com.company.presentation.Menu;
 
 import java.util.Scanner;

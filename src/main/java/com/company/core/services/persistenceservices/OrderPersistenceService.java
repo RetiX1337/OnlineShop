@@ -4,16 +4,14 @@ import com.company.core.lists.OrderList;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Order;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OrderListPersistenceService implements PersistenceInterface<Order> {
-    private static OrderListPersistenceService instance;
+public class OrderPersistenceService implements PersistenceInterface<Order> {
     private final OrderList orderList;
     private static Long idCounter = 0L;
 
-    private OrderListPersistenceService(OrderList orderList) {
+    public OrderPersistenceService(OrderList orderList) {
         this.orderList = orderList;
     }
 
@@ -46,7 +44,7 @@ public class OrderListPersistenceService implements PersistenceInterface<Order> 
         } else {
             throw new EntityNotFoundException();
         }
-        return null;
+        return entity;
     }
 
     @Override
@@ -57,12 +55,5 @@ public class OrderListPersistenceService implements PersistenceInterface<Order> 
     @Override
     public void delete(Order entity) {
         getList().remove(entity.getId(), entity);
-    }
-
-    public static OrderListPersistenceService getInstance(OrderList orderList) {
-        if (instance == null) {
-            instance = new OrderListPersistenceService(orderList);
-        }
-        return instance;
     }
 }

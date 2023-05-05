@@ -31,12 +31,12 @@ public class Order implements Identifiable {
         this.orderStatus = orderStatus;
     }
 
-    public BigDecimal getSummaryPrice() {
-        return summaryPrice;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public Collection<Item> getItems() {
-        return items.values();
+    public BigDecimal getSummaryPrice() {
+        return summaryPrice;
     }
 
     @Override
@@ -54,12 +54,10 @@ public class Order implements Identifiable {
         return "ID: " + id +
                 ", Items: " + items.values() +
                 ", Customer: " + customer.getUsername() +
-                ", Summary Price: " + summaryPrice + "\n";
+                ", Summary Price: " + summaryPrice +
+                ", Order Status: " + orderStatus + "\n";
     }
 
-    private void addItem(Item item) {
-        items.put(item.getProduct(), item);
-    }
 
     public Customer getCustomer() {
         return customer;

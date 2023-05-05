@@ -4,6 +4,7 @@ import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -19,8 +20,8 @@ public class ShoppingCart {
         shoppingCart.put(item.getProduct(), item);
     }
 
-    public Item getItem(Long productId) {
-        return shoppingCart.values().stream().filter(item -> item.getProduct().getId().equals(productId)).findFirst().get();
+    public Item getItem(Product product) {
+        return shoppingCart.get(product);
     }
 
     public void setSummaryPrice(BigDecimal summaryPrice) {
@@ -38,5 +39,15 @@ public class ShoppingCart {
 
     public boolean isEmpty() {
         return shoppingCart.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+        ArrayList<Item> items = new ArrayList<>(shoppingCart.values());
+        for (int i = 0; i < shoppingCart.values().size(); i++) {
+            result = result.concat(i + ". " + items.get(i) + ", Summary Price: " + summaryPrice + "\n");
+        }
+        return result;
     }
 }

@@ -7,9 +7,9 @@ import com.company.core.models.user.customer.Customer;
 import java.util.Collection;
 import java.util.List;
 
-public interface OrderListService {
+public interface OrderService {
     Order createOrder(Collection<Item> items, Customer customer);
-    void addOrder(Order order);
+    Order addOrder(Order order);
     void updateOrder(Order order);
     void deleteOrder(Long id);
     List<Order> findByCustomer(Customer customer);

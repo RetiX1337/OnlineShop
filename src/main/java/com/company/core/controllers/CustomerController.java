@@ -35,6 +35,10 @@ public class CustomerController {
         System.out.println(shopService.getCustomerOrdersString(customer));
     }
 
+    public void displayCart(Customer customer) {
+        System.out.println(customer.getShoppingCart());
+    }
+
     public void addToCart(Customer customer) {
         int productId;
         int amount;
@@ -50,9 +54,20 @@ public class CustomerController {
         }
     }
 
+    public void deleteFromCart(Customer customer) {
+        int productId;
+        int amount;
+        displayCart(customer);
+        System.out.println("Choose the product: ");
+        productId = getInt();
+        System.out.println("Enter the amount: ");
+        amount = getInt();
+    }
+
     public void checkoutCart(Customer customer) {
-        if (shopService.checkout(customer)) {
-            System.out.println("You have bought successfully!");
+        displayCart(customer);
+        if (shopService.checkoutCart(customer)) {
+            System.out.println("Order successfully created.");
             System.out.println("Money left: " + customer.getWallet());
         } else {
             System.out.println("You don't have enough money to do that or your cart is empty");

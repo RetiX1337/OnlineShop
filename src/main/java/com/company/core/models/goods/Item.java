@@ -3,7 +3,8 @@ package com.company.core.models.goods;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Item {
+public class Item implements Identifiable {
+    private Long id;
     private final Product product;
     private Integer quantity;
     private BigDecimal price = new BigDecimal(0);
@@ -54,5 +55,15 @@ public class Item {
 
     public Product getProduct() {
         return product;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }

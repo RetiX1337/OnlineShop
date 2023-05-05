@@ -8,11 +8,10 @@ import com.company.core.services.ProductListService;
 import com.company.core.services.ShoppingCartService;
 
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    private static ShoppingCartService instance;
     private final ItemService itemService;
     private final ProductListService productListService;
 
-    private ShoppingCartServiceImpl(ItemService itemService, ProductListService productListService) {
+    public ShoppingCartServiceImpl(ItemService itemService, ProductListService productListService) {
         this.itemService = itemService;
         this.productListService = productListService;
     }
@@ -46,7 +45,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private boolean notMoreThanAvailable(ShoppingCart shoppingCart, Item item) {
         if (item == null) return false;
         Product product = item.getProduct();
-        return item.getQuantity() - (shoppingCart.getItem(product.getId()).getQuantity() + item.getProduct().getQuantity()) >= 0;
+        return item.getQuantity() - (shoppingCart.getItem(product).getQuantity() + item.getProduct().getQuantity()) >= 0;
     }
 
     private boolean containsProduct(ShoppingCart shoppingCart, Product product) {
@@ -58,14 +57,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             addToCartItem(item);
         } else {
             shoppingCart.addItem(item);
+            itemService.addItem(item);
         }
         countPrice(shoppingCart);
-    }
-
-    public static ShoppingCartService getInstance(ItemService itemService, ProductListService productListService) {
-        if (instance == null) {
-            instance = new ShoppingCartServiceImpl(itemService, productListService);
-        }
-        return instance;
     }
 }
