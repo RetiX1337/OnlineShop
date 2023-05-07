@@ -10,42 +10,27 @@ public class Menu {
         boolean menu = true;
         while (menu) {
             System.out.println("""
-                    Do you want to put some items in the cart?
-                    1. Yes
-                    2. No""");
+                    1. Put some items in cart
+                    2. Buy the items from cart
+                    3. Delete the items from cart
+                    4. Display your orders
+                    5. Display products
+                    6. Display cart
+                    7. Leave""");
             int input = Integer.parseInt(scan.nextLine());
-            dependencyManager.getCustomerController().displayProducts();
             switch (input) {
-                case 1 -> {
-                    dependencyManager.getCustomerController().addToCart(customer);
-                    dependencyManager.getCustomerController().deleteFromCart(customer);
+                case 1 -> dependencyManager.getCustomerController().addToCart(customer);
+                case 2 -> dependencyManager.getCustomerController().checkoutCart(customer);
+                case 3 -> dependencyManager.getCustomerController().deleteFromCart(customer);
+                case 4 -> dependencyManager.getCustomerController().displayOrders(customer);
+                case 5 -> dependencyManager.getCustomerController().displayProducts();
+                case 6 -> dependencyManager.getCustomerController().displayCart(customer);
+                case 7 -> {
+                    System.out.println("Bye!");
+                    menu = false;
                 }
-                case 2 -> menu = false;
                 default -> System.out.println("This case doesn't exist");
             }
-            boolean innerMenu = true;
-            while (innerMenu) {
-                System.out.println("""
-                        1. Keep on looking for items
-                        2. Buy the items from the cart
-                        3. Leave without buying""");
-                int innerInput = Integer.parseInt(scan.nextLine());
-                switch (innerInput) {
-                    case 1 ->  {
-                        innerMenu = false;
-                        menu = true;
-                    }
-                    case 2 -> {
-                        dependencyManager.getCustomerController().checkoutCart(customer);
-                    }
-                    case 3 -> {
-                        innerMenu = false;
-                        menu = false;
-                    }
-                    default -> System.out.println("This case doesn't exist");
-                }
-            }
-            dependencyManager.getCustomerController().displayOrders(customer);
         }
     }
 }

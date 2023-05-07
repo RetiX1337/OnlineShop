@@ -7,5 +7,7 @@ public interface ItemService {
 
     Item addItem(Item item);
 
-    void addToItem(Item item);
+    void addToItem(Item item, Integer quantity);
+
+    void deleteFromItem(Item item, Integer quantity);
 }

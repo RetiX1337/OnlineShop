@@ -43,7 +43,7 @@ public class CustomerController {
         int productId;
         int amount;
         displayProducts();
-        System.out.println("Choose the product: ");
+        System.out.println("Choose the product ID: ");
         productId = getInt();
         System.out.println("Enter the amount: ");
         amount = getInt();
@@ -62,6 +62,11 @@ public class CustomerController {
         productId = getInt();
         System.out.println("Enter the amount: ");
         amount = getInt();
+        if (customerService.deleteFromCart(customer, (long) productId, amount)){
+            System.out.println("Deleted successfully");
+        } else {
+            System.out.println("This product doesn't exist");
+        }
     }
 
     public void checkoutCart(Customer customer) {

@@ -15,16 +15,18 @@ public class Item implements Identifiable {
         countPrice();
     }
 
-    public void update(Integer quantity) {
-        this.quantity = quantity;
+    public void increaseQuantity(Integer quantity) {
+        this.quantity += quantity;
+        countPrice();
+    }
+
+    public void decreaseQuantity(Integer quantity) {
+        this.quantity -= quantity;
         countPrice();
     }
 
     private void countPrice() {
-        System.out.println(quantity);
-        System.out.println(product.getPrice());
         price = product.getPrice().multiply(BigDecimal.valueOf(quantity));
-        System.out.println(price);
     }
 
     public BigDecimal getPrice() {
@@ -37,7 +39,7 @@ public class Item implements Identifiable {
 
     @Override
     public String toString() {
-        return product.getBrand() + " " + product.getName() + ", Quantity: " + quantity + ", Price for one: " + product.getPrice();
+        return product.getBrand() + " " + product.getName() + ", Quantity: " + quantity + ", Price for one: " + product.getPrice() + ", Summary price: " + price;
     }
 
     @Override

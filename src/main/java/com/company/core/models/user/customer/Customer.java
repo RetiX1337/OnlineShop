@@ -1,6 +1,5 @@
 package com.company.core.models.user.customer;
 
-import com.company.core.Shop;
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.user.User;
 
@@ -11,14 +10,14 @@ public class Customer extends User implements Identifiable {
     private final String username;
     private final String password;
     private BigDecimal wallet;
-    private final ShoppingCart shoppingCart;
+    private final Cart cart;
 
-    public Customer(String username, String password, ShoppingCart shoppingCart) {
+    public Customer(String username, String password, Cart cart) {
         super(username, password);
         this.username = username;
         this.password = password;
         this.wallet = new BigDecimal(500);
-        this.shoppingCart = shoppingCart;
+        this.cart = cart;
     }
 
     public BigDecimal getWallet() {
@@ -29,8 +28,8 @@ public class Customer extends User implements Identifiable {
         this.wallet = wallet;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
+    public Cart getShoppingCart() {
+        return cart;
     }
 
     public String getUsername() {

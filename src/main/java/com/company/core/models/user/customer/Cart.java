@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class ShoppingCart {
-    private final HashMap<Product, Item> shoppingCart = new HashMap<>();
+public class Cart {
+    private final HashMap<Product, Item> cart = new HashMap<>();
     private BigDecimal summaryPrice = new BigDecimal(0);
 
     public Collection<Item> getProductsFromCart() {
-        return shoppingCart.values();
+        return cart.values();
     }
 
     public void addItem(Item item) {
-        shoppingCart.put(item.getProduct(), item);
+        cart.put(item.getProduct(), item);
     }
 
     public Item getItem(Product product) {
-        return shoppingCart.get(product);
+        return cart.get(product);
     }
 
     public void setSummaryPrice(BigDecimal summaryPrice) {
@@ -33,21 +33,21 @@ public class ShoppingCart {
     }
 
     public void clear() {
-        shoppingCart.clear();
+        cart.clear();
         summaryPrice = new BigDecimal(0);
     }
 
     public boolean isEmpty() {
-        return shoppingCart.isEmpty();
+        return cart.isEmpty();
     }
 
     @Override
     public String toString() {
         String result = "";
-        ArrayList<Item> items = new ArrayList<>(shoppingCart.values());
-        for (int i = 0; i < shoppingCart.values().size(); i++) {
-            result = result.concat(i + ". " + items.get(i) + ", Summary Price: " + summaryPrice + "\n");
+        ArrayList<Item> items = new ArrayList<>(cart.values());
+        for (Item item : items) {
+            result = result.concat("> " + item + ", Product ID: " + item.getProduct().getId() + "\n");
         }
-        return result;
+        return result.concat("Summary price: " + summaryPrice);
     }
 }

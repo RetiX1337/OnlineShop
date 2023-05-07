@@ -25,8 +25,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void addToItem(Item item) {
-        item.update(item.getQuantity());
+    public void addToItem(Item item, Integer quantity) {
+        item.increaseQuantity(quantity);
+    }
+
+    @Override
+    public void deleteFromItem(Item item, Integer quantity) {
+        item.decreaseQuantity(quantity);
     }
 
 }

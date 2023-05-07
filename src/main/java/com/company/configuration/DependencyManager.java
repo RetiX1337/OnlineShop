@@ -7,7 +7,7 @@ import com.company.core.lists.OrderList;
 import com.company.core.lists.ProductList;
 import com.company.core.Shop;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.models.user.customer.ShoppingCart;
+import com.company.core.models.user.customer.Cart;
 import com.company.core.services.*;
 import com.company.core.services.impl.*;
 import com.company.core.services.persistenceservices.CustomerPersistenceService;
@@ -42,10 +42,10 @@ public class DependencyManager {
         ItemPersistenceService ips = new ItemPersistenceService(itemList);
         ItemService itemService = new ItemServiceImpl(productListService, ips);
 
-        ShoppingCartService shoppingCartService = new ShoppingCartServiceImpl(itemService, productListService);
+        CartService cartService = new CartServiceImpl(itemService, productListService);
 
         this.cps = new CustomerPersistenceService(shop.getCustomerList());
-        CustomerService customerService = new CustomerServiceImpl(shoppingCartService, cps);
+        CustomerService customerService = new CustomerServiceImpl(cartService, cps);
 
         ShopService shopService = new ShopServiceImpl(shop, orderService, productListService, customerService);
 
@@ -53,7 +53,7 @@ public class DependencyManager {
     }
 
     public Customer testCustomerCreateMethod() {
-        return cps.save(new Customer("whyretski", "123456", new ShoppingCart()));
+        return cps.save(new Customer("whyretski", "123456", new Cart()));
     }
 
     public ProductController getProductController() {

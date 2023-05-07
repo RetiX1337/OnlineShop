@@ -3,6 +3,7 @@ package com.company.core.models.goods;
 import com.company.core.models.user.customer.Customer;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -51,11 +52,16 @@ public class Order implements Identifiable {
 
     @Override
     public String toString() {
-        return "ID: " + id +
-                ", Items: " + items.values() +
-                ", Customer: " + customer.getUsername() +
-                ", Summary Price: " + summaryPrice +
-                ", Order Status: " + orderStatus + "\n";
+        String result = "";
+        ArrayList<Item> list = new ArrayList<>(items.values());
+        result = result.concat("ID: " + id +
+                "\nCustomer: " + customer.getUsername() +
+                "\nOrder Status: " + orderStatus +
+                "\nItems: ");
+        for (Item item : list) {
+            result = result.concat("> " + item.getProduct().getBrand() + " " + item.getProduct().getName() + ", Price: " + item.getProduct().getPrice() + "\n");
+        }
+        return result.concat("Summary price: " + summaryPrice + "\n");
     }
 
 
