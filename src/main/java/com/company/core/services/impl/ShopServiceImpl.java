@@ -7,7 +7,7 @@ import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.CustomerService;
 import com.company.core.services.OrderService;
-import com.company.core.services.ProductListService;
+import com.company.core.services.ProductService;
 import com.company.core.services.ShopService;
 
 import java.math.BigDecimal;
@@ -16,13 +16,13 @@ import java.util.List;
 public class ShopServiceImpl implements ShopService {
     private final Shop shop;
     private final OrderService orderService;
-    private final ProductListService productListService;
+    private final ProductService productService;
     private final CustomerService customerService;
 
-    public ShopServiceImpl(Shop shop, OrderService orderService, ProductListService productListService, CustomerService customerService) {
+    public ShopServiceImpl(Shop shop, OrderService orderService, ProductService productService, CustomerService customerService) {
         this.shop = shop;
         this.orderService = orderService;
-        this.productListService = productListService;
+        this.productService = productService;
         this.customerService = customerService;
     }
 
@@ -41,7 +41,7 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public String getProductsString() {
-        List<Product> products = productListService.getAllProducts();
+        List<Product> products = productService.getAllProducts();
         String result = "";
         for (Product p : products) {
             result = result.concat(p + "\n");

@@ -10,7 +10,7 @@ public abstract class User {
     }
 
     protected User() {
-        this.username = "Offline";
+        this.username = "default";
         this.password = null;
     }
 }

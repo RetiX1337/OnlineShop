@@ -5,17 +5,17 @@ import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.models.goods.Type;
-import com.company.core.services.ProductListService;
+import com.company.core.services.ProductService;
 import com.company.core.services.persistenceservices.ProductPersistenceService;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductServiceImpl implements ProductListService {
-    private final ProductPersistenceService pps;
+public class ProductServiceImpl implements ProductService {
+    private final ProductPersistenceService productPersistenceService;
 
-    public ProductServiceImpl(ProductPersistenceService pps) {
-        this.pps = pps;
+    public ProductServiceImpl(ProductPersistenceService productPersistenceService) {
+        this.productPersistenceService = productPersistenceService;
     }
 
     @Override
@@ -25,30 +25,38 @@ public class ProductServiceImpl implements ProductListService {
 
     @Override
     public void addProduct(Product product) {
-        pps.save(product);
+        productPersistenceService.save(product);
     }
 
     @Override
-    public void deleteProduct(Product product) {
-        pps.deleteById(product.getId());
+    public void deleteProduct(Long id) throws EntityNotFoundException {
+        if (productPersistenceService.isPresent(id)) {
+            productPersistenceService.deleteById(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
-    public void updateProduct(Product product) {
-        try {
-            pps.update(product);
-        } catch (EntityNotFoundException e) {
-            System.out.println("This product doesn't exist, can't update");
+    public Product updateProduct(Product product, Long id) throws EntityNotFoundException {
+        if (productPersistenceService.isPresent(id)) {
+            return productPersistenceService.update(product, id);
+        } else {
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return pps.findAll();
+        return productPersistenceService.findAll();
     }
 
     @Override
-    public Product getProduct(Long id) {
-        return pps.findById(id);
+    public Product getProduct(Long id) throws EntityNotFoundException {
+        if (productPersistenceService.isPresent(id)) {
+            return productPersistenceService.findById(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

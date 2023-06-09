@@ -1,6 +1,5 @@
 package com.company.core.services.persistenceservices;
 
-import com.company.core.lists.ItemList;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 
@@ -8,20 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ItemPersistenceService implements PersistenceInterface<Item> {
-    private final ItemList itemList;
+    private final HashMap<Long, Item> items;
     private static Long idCounter = 0L;
 
-    public ItemPersistenceService(ItemList itemList) {
-        this.itemList = itemList;
-    }
-
-    private HashMap<Long, Item> getList() {
-        return itemList.getItemList();
+    public ItemPersistenceService() {
+        items = new HashMap<>();
     }
 
     @Override
     public Item save(Item entity) {
-        getList().put(idCounter, entity);
+        items.put(idCounter, entity);
         entity.setId(idCounter);
         idCounter++;
         return entity;
@@ -29,31 +24,32 @@ public class ItemPersistenceService implements PersistenceInterface<Item> {
 
     @Override
     public Item findById(Long id) {
-        return getList().get(id);
+        return items.get(id);
     }
 
     @Override
     public List<Item> findAll() {
-        return getList().values().stream().toList();
+        return items.values().stream().toList();
     }
 
     @Override
-    public Item update(Item entity) throws EntityNotFoundException {
-        if (getList().containsKey(entity.getId())) {
-            getList().put(entity.getId(), entity);
-        } else {
-            throw new EntityNotFoundException();
-        }
+    public Item update(Item entity, Long id) {
+        items.put(id, entity);
         return entity;
     }
 
     @Override
     public void deleteById(Long id) {
-        getList().remove(id);
+        items.remove(id);
     }
 
     @Override
     public void delete(Item entity) {
-        getList().remove(entity.getId());
+        items.remove(entity.getId());
+    }
+
+    @Override
+    public boolean isPresent(Long id){
+        return items.containsKey(id);
     }
 }

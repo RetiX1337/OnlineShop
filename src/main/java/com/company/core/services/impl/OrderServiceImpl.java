@@ -11,10 +11,10 @@ import java.util.Collection;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
-    private OrderPersistenceService ops;
+    private OrderPersistenceService orderPersistenceService;
 
-    public OrderServiceImpl(OrderPersistenceService ops) {
-        this.ops = ops;
+    public OrderServiceImpl(OrderPersistenceService orderPersistenceService) {
+        this.orderPersistenceService = orderPersistenceService;
     }
 
     @Override
@@ -24,25 +24,38 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order addOrder(Order order) {
-        return ops.save(order);
+        return orderPersistenceService.save(order);
     }
 
     @Override
-    public void updateOrder(Order order) {
-        try {
-            ops.update(order);
-        } catch (EntityNotFoundException e) {
-            System.out.println("This order doesn't exist, can't update");
+    public Order updateOrder(Order order, Long id) throws EntityNotFoundException {
+        if (orderPersistenceService.isPresent(id)) {
+            return orderPersistenceService.update(order, id);
+        } else {
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public void deleteOrder(Long id) {
-        ops.deleteById(id);
+    public void deleteOrder(Long id) throws EntityNotFoundException {
+        if (orderPersistenceService.isPresent(id)) {
+            orderPersistenceService.deleteById(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
+    public Order findOrder(Long id) throws EntityNotFoundException {
+        if (orderPersistenceService.isPresent(id)) {
+            return orderPersistenceService.findById(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
     public List<Order> findByCustomer(Customer customer) {
-        return ops.findAll().stream().filter(order -> order.getCustomer().getId().equals(customer.getId())).toList();
+        return orderPersistenceService.findAll().stream().filter(order -> order.getCustomer().getId().equals(customer.getId())).toList();
     }
 }

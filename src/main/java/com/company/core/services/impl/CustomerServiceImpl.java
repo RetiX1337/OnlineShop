@@ -1,35 +1,52 @@
 package com.company.core.services.impl;
 
+import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.services.CustomerService;
-import com.company.core.services.CartService;
 import com.company.core.services.persistenceservices.CustomerPersistenceService;
 
 public class CustomerServiceImpl implements CustomerService {
-    private final CartService cartService;
-    private final CustomerPersistenceService cps;
+    private final CustomerPersistenceService customerPersistenceService;
 
-    public CustomerServiceImpl(CartService cartService, CustomerPersistenceService cps) {
-        this.cartService = cartService;
-        this.cps = cps;
+    public CustomerServiceImpl(CustomerPersistenceService customerPersistenceService) {
+        this.customerPersistenceService = customerPersistenceService;
     }
 
+    @Override
     public Customer createCustomer(String name, String password) {
         return new Customer(name, password, new Cart());
     }
 
+    @Override
     public Customer addCustomer(Customer customer) {
-        return cps.save(customer);
+        return customerPersistenceService.save(customer);
     }
 
     @Override
-    public boolean addToCart(Customer customer, Long productId, Integer quantity) {
-        return cartService.addToCart(customer.getShoppingCart(), productId, quantity);
+    public Customer updateCustomer(Customer customer, Long id) throws EntityNotFoundException {
+        if (customerPersistenceService.isPresent(id)) {
+            return customerPersistenceService.update(customer, id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
-    public boolean deleteFromCart(Customer customer, Long productId, Integer quantity) {
-        return cartService.deleteFromCart(customer.getShoppingCart(), productId, quantity);
+    public void deleteById(Long id) throws EntityNotFoundException {
+        if (customerPersistenceService.isPresent(id)) {
+            customerPersistenceService.deleteById(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
+
+    @Override
+    public Customer findCustomer(Long id) throws EntityNotFoundException {
+        if (customerPersistenceService.isPresent(id)) {
+            return customerPersistenceService.findById(id);
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 }

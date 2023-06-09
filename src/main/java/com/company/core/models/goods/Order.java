@@ -12,7 +12,7 @@ public class Order implements Identifiable {
     private final Customer customer;
     private Long id;
     private OrderStatus orderStatus;
-    private BigDecimal summaryPrice = new BigDecimal(0);
+    private BigDecimal summaryPrice = BigDecimal.valueOf(0);
 
     public Order(Collection<Item> items, Customer customer) {
         this.customer = customer;

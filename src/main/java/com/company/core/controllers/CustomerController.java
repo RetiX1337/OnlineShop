@@ -9,6 +9,7 @@ import com.company.core.services.impl.ShopServiceImpl;
 import static com.company.Main.scan;
 
 public class CustomerController {
+    //TODO CONTROLLERS WILL BE REMADE
     private final CustomerService customerService;
     private final ShopService shopService;
 
@@ -16,16 +17,6 @@ public class CustomerController {
         this.customerService = customerService;
         this.shopService = shopService;
     }
-
-    /*
-    public void register(String name, String password) {
-        customerServiceImpl.addCustomer(customerServiceImpl.createCustomer(name, password));
-    }
-
-    public boolean login(String name, String password) {
-
-    }
-     */
 
     public void displayProducts() {
         System.out.println(shopService.getProductsString());
@@ -39,7 +30,7 @@ public class CustomerController {
         System.out.println(customer.getShoppingCart());
     }
 
-    public void addToCart(Customer customer) {
+    public void addToCart(Customer customer) {/*
         int productId;
         int amount;
         displayProducts();
@@ -52,9 +43,11 @@ public class CustomerController {
         } else {
             System.out.println("You've picked more than available on the storage!");
         }
+        */
     }
 
     public void deleteFromCart(Customer customer) {
+        /*
         int productId;
         int amount;
         displayCart(customer);
@@ -67,6 +60,8 @@ public class CustomerController {
         } else {
             System.out.println("This product doesn't exist");
         }
+
+         */
     }
 
     public void checkoutCart(Customer customer) {

@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class Cart {
     private final HashMap<Product, Item> cart = new HashMap<>();
-    private BigDecimal summaryPrice = new BigDecimal(0);
+    private BigDecimal summaryPrice = BigDecimal.valueOf(0);
 
     public Collection<Item> getProductsFromCart() {
         return cart.values();

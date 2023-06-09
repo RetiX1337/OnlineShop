@@ -1,27 +1,21 @@
 package com.company.core.services.persistenceservices;
 
-import com.company.core.lists.OrderList;
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Order;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class OrderPersistenceService implements PersistenceInterface<Order> {
-    private final OrderList orderList;
+    private final HashMap<Long, Order> orders;
     private static Long idCounter = 0L;
 
-    public OrderPersistenceService(OrderList orderList) {
-        this.orderList = orderList;
-    }
-
-    private HashMap<Long, Order> getList() {
-        return orderList.getOrderList();
+    public OrderPersistenceService() {
+        orders = new HashMap<>();
     }
 
     @Override
     public Order save(Order entity) {
-        getList().put(idCounter, entity);
+        orders.put(idCounter, entity);
         entity.setId(idCounter);
         idCounter++;
         return entity;
@@ -29,31 +23,32 @@ public class OrderPersistenceService implements PersistenceInterface<Order> {
 
     @Override
     public Order findById(Long id) {
-        return getList().get(id);
+        return orders.get(id);
     }
 
     @Override
     public List<Order> findAll() {
-        return getList().values().stream().toList();
+        return orders.values().stream().toList();
     }
 
     @Override
-    public Order update(Order entity) throws EntityNotFoundException {
-        if (getList().containsKey(entity.getId())) {
-            getList().put(entity.getId(), entity);
-        } else {
-            throw new EntityNotFoundException();
-        }
+    public Order update(Order entity, Long id){
+        orders.put(id, entity);
         return entity;
     }
 
     @Override
     public void deleteById(Long id) {
-        getList().remove(id);
+        orders.remove(id);
     }
 
     @Override
     public void delete(Order entity) {
-        getList().remove(entity.getId(), entity);
+        orders.remove(entity.getId(), entity);
+    }
+
+    @Override
+    public boolean isPresent(Long id){
+        return orders.containsKey(id);
     }
 }

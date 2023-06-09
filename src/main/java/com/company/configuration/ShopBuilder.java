@@ -1,31 +1,31 @@
 package com.company.configuration;
 
 import com.company.core.Shop;
-import com.company.core.lists.CustomerList;
-import com.company.core.lists.OrderList;
-import com.company.core.lists.ProductList;
+import com.company.core.services.persistenceservices.CustomerPersistenceService;
+import com.company.core.services.persistenceservices.OrderPersistenceService;
+import com.company.core.services.persistenceservices.ProductPersistenceService;
 
 public class ShopBuilder {
-    private CustomerList customerList;
-    private OrderList orderList;
-    private ProductList productList;
+    private CustomerPersistenceService customerPersistenceService;
+    private OrderPersistenceService orderPersistenceService;
+    private ProductPersistenceService productPersistenceService;
 
-    public ShopBuilder withOrders(OrderList orderList) {
-        this.orderList = orderList;
+    public ShopBuilder withOrders(OrderPersistenceService orderPersistenceService) {
+        this.orderPersistenceService = orderPersistenceService;
         return this;
     }
 
-    public ShopBuilder withProducts(ProductList productList) {
-        this.productList = productList;
+    public ShopBuilder withProducts(ProductPersistenceService productPersistenceService) {
+        this.productPersistenceService = productPersistenceService;
         return this;
     }
 
-    public ShopBuilder withCustomers(CustomerList customerList) {
-        this.customerList = customerList;
+    public ShopBuilder withCustomers(CustomerPersistenceService customerPersistenceService) {
+        this.customerPersistenceService = customerPersistenceService;
         return this;
     }
 
     public Shop build() {
-        return new Shop(orderList, productList, customerList);
+        return new Shop(orderPersistenceService, productPersistenceService, customerPersistenceService);
     }
 }

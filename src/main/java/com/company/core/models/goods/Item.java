@@ -7,7 +7,7 @@ public class Item implements Identifiable {
     private Long id;
     private final Product product;
     private Integer quantity;
-    private BigDecimal price = new BigDecimal(0);
+    private BigDecimal price = BigDecimal.valueOf(0);
 
     public Item(Product product, Integer quantity) {
         this.product = product;
