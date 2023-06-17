@@ -43,10 +43,6 @@ public class ItemPersistenceService implements PersistenceInterface<Item> {
         items.remove(id);
     }
 
-    @Override
-    public void delete(Item entity) {
-        items.remove(entity.getId());
-    }
 
     @Override
     public boolean isPresent(Long id){

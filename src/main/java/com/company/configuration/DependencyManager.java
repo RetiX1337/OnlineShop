@@ -1,25 +1,28 @@
 package com.company.configuration;
 
+import com.company.JDBCConnectionPool;
 import com.company.core.controllers.*;
-import com.company.core.Shop;
+import com.company.core.models.Shop;
+import com.company.core.models.goods.Item;
+import com.company.core.models.goods.Order;
+import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.services.*;
 import com.company.core.services.impl.*;
-import com.company.core.services.persistenceservices.CustomerPersistenceService;
-import com.company.core.services.persistenceservices.ItemPersistenceService;
-import com.company.core.services.persistenceservices.OrderPersistenceService;
-import com.company.core.services.persistenceservices.ProductPersistenceService;
+import com.company.core.services.persistenceservices.*;
 
 public class DependencyManager {
     private final ProductController productController;
     private final CustomerController customerController;
-    private final CustomerPersistenceService customerPersistenceService;
+    private final PersistenceInterface<Customer> customerPersistenceService;
 
     public DependencyManager() {
-        ProductPersistenceService productPersistenceService = new ProductPersistenceService();
-        OrderPersistenceService orderPersistenceService = new OrderPersistenceService();
-        ItemPersistenceService itemPersistenceService = new ItemPersistenceService();
+        JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "matretsk82004");
+
+        PersistenceInterface<Product> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
+        PersistenceInterface<Order> orderPersistenceService = new OrderPersistenceService();
+        PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceService();
         customerPersistenceService = new CustomerPersistenceService();
 
         Shop shop = new ShopBuilder()
@@ -41,7 +44,7 @@ public class DependencyManager {
 
         ShopService shopService = new ShopServiceImpl(shop, orderService, productService, customerService);
 
-        this.customerController = new CustomerController(customerService, shopService);
+        this.customerController = new CustomerController(customerService, shopService, cartService);
     }
 
     public Customer testCustomerCreateMethod() {

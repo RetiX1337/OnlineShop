@@ -1,6 +1,6 @@
 package com.company.core.services.impl;
 
-import com.company.core.Shop;
+import com.company.core.models.Shop;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.OrderStatus;
 import com.company.core.models.goods.Product;

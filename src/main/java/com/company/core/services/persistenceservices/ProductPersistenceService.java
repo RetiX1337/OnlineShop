@@ -43,10 +43,6 @@ public class ProductPersistenceService implements PersistenceInterface<Product> 
         products.remove(id);
     }
 
-    @Override
-    public void delete(Product product) {
-        products.remove(product.getId());
-    }
 
     @Override
     public boolean isPresent(Long id){

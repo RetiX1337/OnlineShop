@@ -4,23 +4,24 @@ import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
-import com.company.core.models.goods.Type;
+import com.company.core.models.goods.ProductType;
 import com.company.core.services.ProductService;
+import com.company.core.services.persistenceservices.PersistenceInterface;
 import com.company.core.services.persistenceservices.ProductPersistenceService;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private final ProductPersistenceService productPersistenceService;
+    private final PersistenceInterface<Product> productPersistenceService;
 
-    public ProductServiceImpl(ProductPersistenceService productPersistenceService) {
+    public ProductServiceImpl(PersistenceInterface<Product> productPersistenceService) {
         this.productPersistenceService = productPersistenceService;
     }
 
     @Override
-    public Product createProduct(String brand, String name, Type type, BigDecimal price, Integer quantity) {
-        return new ProductWithQuantity(new ProductBase(brand, name, type, price), quantity);
+    public Product createProduct(String brand, String name, ProductType productType, BigDecimal price, Integer quantity) {
+        return new ProductWithQuantity(new ProductBase(brand, name, productType, price), quantity);
     }
 
     @Override

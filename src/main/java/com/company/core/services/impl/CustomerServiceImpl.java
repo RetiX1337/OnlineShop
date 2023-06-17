@@ -5,11 +5,12 @@ import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.services.CustomerService;
 import com.company.core.services.persistenceservices.CustomerPersistenceService;
+import com.company.core.services.persistenceservices.PersistenceInterface;
 
 public class CustomerServiceImpl implements CustomerService {
-    private final CustomerPersistenceService customerPersistenceService;
+    private final PersistenceInterface<Customer> customerPersistenceService;
 
-    public CustomerServiceImpl(CustomerPersistenceService customerPersistenceService) {
+    public CustomerServiceImpl(PersistenceInterface<Customer> customerPersistenceService) {
         this.customerPersistenceService = customerPersistenceService;
     }
 

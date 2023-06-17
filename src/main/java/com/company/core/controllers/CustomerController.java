@@ -1,6 +1,8 @@
 package com.company.core.controllers;
 
+import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
+import com.company.core.services.CartService;
 import com.company.core.services.CustomerService;
 import com.company.core.services.ShopService;
 import com.company.core.services.impl.CustomerServiceImpl;
@@ -12,10 +14,12 @@ public class CustomerController {
     //TODO CONTROLLERS WILL BE REMADE
     private final CustomerService customerService;
     private final ShopService shopService;
+    private final CartService cartService;
 
-    public CustomerController(CustomerService customerService, ShopService shopService) {
+    public CustomerController(CustomerService customerService, ShopService shopService, CartService cartService) {
         this.customerService = customerService;
         this.shopService = shopService;
+        this.cartService = cartService;
     }
 
     public void displayProducts() {
@@ -30,7 +34,7 @@ public class CustomerController {
         System.out.println(customer.getShoppingCart());
     }
 
-    public void addToCart(Customer customer) {/*
+    public void addToCart(Customer customer) {
         int productId;
         int amount;
         displayProducts();
@@ -38,16 +42,20 @@ public class CustomerController {
         productId = getInt();
         System.out.println("Enter the amount: ");
         amount = getInt();
-        if (customerService.addToCart(customer, (long) productId, amount)) {
-            System.out.println("Added successfully!");
-        } else {
-            System.out.println("You've picked more than available on the storage!");
+        try {
+            if (cartService.addToCart(customer.getShoppingCart(), (long) productId, amount)) {
+                System.out.println("Added successfully!");
+            } else {
+                System.out.println("You've picked more than available on the storage!");
+            }
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        */
+
     }
 
     public void deleteFromCart(Customer customer) {
-        /*
+
         int productId;
         int amount;
         displayCart(customer);
@@ -55,13 +63,17 @@ public class CustomerController {
         productId = getInt();
         System.out.println("Enter the amount: ");
         amount = getInt();
-        if (customerService.deleteFromCart(customer, (long) productId, amount)){
-            System.out.println("Deleted successfully");
-        } else {
-            System.out.println("This product doesn't exist");
+        try {
+            if (cartService.deleteFromCart(customer.getShoppingCart(), (long) productId, amount)){
+                System.out.println("Deleted successfully");
+            } else {
+                System.out.println("This product doesn't exist");
+            }
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
-         */
+
     }
 
     public void checkoutCart(Customer customer) {

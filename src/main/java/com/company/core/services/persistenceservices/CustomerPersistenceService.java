@@ -44,10 +44,6 @@ public class CustomerPersistenceService implements PersistenceInterface<Customer
         customers.remove(id);
     }
 
-    @Override
-    public void delete(Customer entity) {
-        customers.remove(entity.getId(), entity);
-    }
 
     @Override
     public boolean isPresent(Long id) {

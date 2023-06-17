@@ -42,10 +42,6 @@ public class OrderPersistenceService implements PersistenceInterface<Order> {
         orders.remove(id);
     }
 
-    @Override
-    public void delete(Order entity) {
-        orders.remove(entity.getId(), entity);
-    }
 
     @Override
     public boolean isPresent(Long id){

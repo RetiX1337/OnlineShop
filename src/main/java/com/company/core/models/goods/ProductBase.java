@@ -7,13 +7,20 @@ public class ProductBase implements Product, Identifiable {
     private Long id;
     private final String brand;
     private final String name;
-    private final Type type;
+    private final ProductType productType;
     private final BigDecimal price;
 
-    public ProductBase(String brand, String name, Type type, BigDecimal price) {
+    public ProductBase(String brand, String name, ProductType productType, BigDecimal price) {
         this.brand = brand;
         this.name = name;
-        this.type = type;
+        this.productType = productType;
+        this.price = price;
+    }
+    public ProductBase(Long id, String brand, String name, ProductType productType, BigDecimal price) {
+        this.id = id;
+        this.brand = brand;
+        this.name = name;
+        this.productType = productType;
         this.price = price;
     }
 
@@ -43,6 +50,11 @@ public class ProductBase implements Product, Identifiable {
     }
 
     @Override
+    public ProductType getType() {
+        return productType;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -60,7 +72,7 @@ public class ProductBase implements Product, Identifiable {
         return "Product ID: " + id +
                 " Brand: " + brand +
                 " Name: " + name +
-                " Type: " + type +
+                " Type: " + productType +
                 " Price: " + price;
     }
 }

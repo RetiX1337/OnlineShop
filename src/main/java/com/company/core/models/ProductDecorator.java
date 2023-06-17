@@ -1,6 +1,7 @@
 package com.company.core.models;
 
 import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductType;
 
 import java.math.BigDecimal;
 
@@ -34,5 +35,10 @@ public class ProductDecorator implements Product {
     @Override
     public String getName() {
         return decoratedProduct.getName();
+    }
+
+    @Override
+    public ProductType getType() {
+        return decoratedProduct.getType();
     }
 }

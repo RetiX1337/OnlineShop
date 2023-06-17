@@ -6,14 +6,15 @@ import com.company.core.models.goods.Order;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.OrderService;
 import com.company.core.services.persistenceservices.OrderPersistenceService;
+import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.util.Collection;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
-    private OrderPersistenceService orderPersistenceService;
+    private PersistenceInterface<Order> orderPersistenceService;
 
-    public OrderServiceImpl(OrderPersistenceService orderPersistenceService) {
+    public OrderServiceImpl(PersistenceInterface<Order> orderPersistenceService) {
         this.orderPersistenceService = orderPersistenceService;
     }
 

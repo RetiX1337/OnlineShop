@@ -12,6 +12,5 @@ public interface PersistenceInterface<T extends Identifiable> {
     List<T> findAll();
     T update(T entity, Long id);
     void deleteById(Long id);
-    void delete(T entity);
     boolean isPresent(Long id);
 }

@@ -6,4 +6,5 @@ public interface Product extends Identifiable {
     BigDecimal getPrice();
     String getBrand();
     String getName();
+    ProductType getType();
 }
