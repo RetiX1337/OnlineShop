@@ -1,4 +1,4 @@
-package com.company.core.services;
+package com.company.core.services.logicservices;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Cart;

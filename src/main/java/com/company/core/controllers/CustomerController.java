@@ -2,11 +2,9 @@ package com.company.core.controllers;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.services.CartService;
-import com.company.core.services.CustomerService;
-import com.company.core.services.ShopService;
-import com.company.core.services.impl.CustomerServiceImpl;
-import com.company.core.services.impl.ShopServiceImpl;
+import com.company.core.services.logicservices.CartService;
+import com.company.core.services.logicservices.CustomerService;
+import com.company.core.services.logicservices.ShopService;
 
 import static com.company.Main.scan;
 

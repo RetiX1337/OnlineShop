@@ -1,10 +1,9 @@
-package com.company.core.services.impl;
+package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.Cart;
-import com.company.core.services.CustomerService;
-import com.company.core.services.persistenceservices.CustomerPersistenceService;
+import com.company.core.services.logicservices.CustomerService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 public class CustomerServiceImpl implements CustomerService {

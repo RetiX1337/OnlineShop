@@ -1,24 +1,39 @@
-package com.company.core.services.persistenceservices;
+package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
+import com.company.core.services.persistenceservices.PersistenceInterface;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ProductPersistenceServiceDatabase implements PersistenceInterface<Product> {
     private final JDBCConnectionPool pool;
-    private final String DELETE_SQL = "DELETE FROM product WHERE product.id = ?";
-    private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type_id = ? WHERE product.id = ?";
-    private final String ALL_SQL = "SELECT * FROM product";
-    private final String SAVE_SQL = "INSERT INTO product (id, brand, name, price, product_type_id) VALUES (?, ?, ?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id WHERE product.id = ?";
-    private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id";
-    private static Long idCounter = 1L;
+    private Properties sqlProps;
+
+    {
+        sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileInputStream("src\\main\\java\\com\\company\\core\\sql_queries\\product.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private final String DELETE_SQL = sqlProps.getProperty("DELETE_SQL");
+    private final String UPDATE_SQL = sqlProps.getProperty("UPDATE_SQL");
+    private final String ALL_SQL = sqlProps.getProperty("ALL_SQL");
+    private final String SAVE_SQL = sqlProps.getProperty("SAVE_SQL");
+    private final String FIND_BY_ID_SQL = sqlProps.getProperty("FIND_BY_ID_SQL");
+    private final String FIND_ALL_SQL = sqlProps.getProperty("FIND_ALL_SQL");
+    private Long idCounter;
 
     public ProductPersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
@@ -30,7 +45,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             Connection con = pool.checkOut();
             ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
             rs.last();
-            idCounter = Long.valueOf(rs.getInt("id")) + 1;
+            idCounter = rs.getLong("id") + 1;
             pool.checkIn(con);
             System.out.println(idCounter);
         } catch (SQLException e) {
@@ -44,11 +59,11 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(SAVE_SQL);
-            prep.setInt(1, Math.toIntExact(entity.getId()));
+            prep.setLong(1, entity.getId());
             prep.setString(2, entity.getBrand());
             prep.setString(3, entity.getName());
             prep.setBigDecimal(4, entity.getPrice());
-            prep.setInt(5, entity.getType().ordinal() + 1);
+            prep.setLong(5, entity.getType().ordinal() + 1);
             prep.executeUpdate();
             pool.checkIn(con);
             idCounter++;
@@ -63,7 +78,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
         try {
             Connection con = pool.checkOut();
             PreparedStatement p = con.prepareStatement(FIND_BY_ID_SQL);
-            p.setInt(1, Math.toIntExact(id));
+            p.setLong(1, id);
             ResultSet rs = p.executeQuery();
             rs.next();
             String brand = rs.getString("brand");
@@ -85,7 +100,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
             while (rs.next()) {
-                Long id = Long.valueOf(rs.getInt("id"));
+                Long id = rs.getLong("id");
                 String brand = rs.getString("brand");
                 String name = rs.getString("name");
                 BigDecimal price = rs.getBigDecimal("price");
@@ -107,8 +122,8 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             prep.setString(1, entity.getBrand());
             prep.setString(2, entity.getName());
             prep.setBigDecimal(3, entity.getPrice());
-            prep.setInt(4, entity.getType().ordinal() + 1);
-            prep.setInt(5, id.intValue());
+            prep.setLong(4, entity.getType().ordinal() + 1);
+            prep.setLong(5, id);
             prep.executeUpdate();
             entity.setId(id);
             pool.checkIn(con);
@@ -123,7 +138,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(DELETE_SQL);
-            prep.setInt(1, id.intValue());
+            prep.setLong(1, id);
             prep.executeUpdate();
             pool.checkIn(con);
         } catch (SQLException e) {
@@ -136,7 +151,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(FIND_BY_ID_SQL);
-            prep.setInt(1, Math.toIntExact(id));
+            prep.setLong(1, id);
             ResultSet rs = prep.executeQuery();
             pool.checkIn(con);
             return rs.isBeforeFirst();

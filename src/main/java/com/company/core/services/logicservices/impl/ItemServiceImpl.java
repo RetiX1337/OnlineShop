@@ -1,10 +1,9 @@
-package com.company.core.services.impl;
+package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
-import com.company.core.services.ItemService;
-import com.company.core.services.ProductService;
-import com.company.core.services.persistenceservices.ItemPersistenceService;
+import com.company.core.services.logicservices.ItemService;
+import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 public class ItemServiceImpl implements ItemService {

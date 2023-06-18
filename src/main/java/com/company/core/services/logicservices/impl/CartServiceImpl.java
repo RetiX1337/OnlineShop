@@ -1,12 +1,12 @@
-package com.company.core.services.impl;
+package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Cart;
-import com.company.core.services.ItemService;
-import com.company.core.services.ProductService;
-import com.company.core.services.CartService;
+import com.company.core.services.logicservices.ItemService;
+import com.company.core.services.logicservices.ProductService;
+import com.company.core.services.logicservices.CartService;
 
 import java.math.BigDecimal;
 

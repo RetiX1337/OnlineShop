@@ -1,11 +1,10 @@
-package com.company.core.services.impl;
+package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.services.OrderService;
-import com.company.core.services.persistenceservices.OrderPersistenceService;
+import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.util.Collection;

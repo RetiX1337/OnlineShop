@@ -8,9 +8,13 @@ import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.models.user.customer.Cart;
-import com.company.core.services.*;
-import com.company.core.services.impl.*;
+import com.company.core.services.logicservices.impl.*;
+import com.company.core.services.logicservices.*;
 import com.company.core.services.persistenceservices.*;
+import com.company.core.services.persistenceservices.dbimpl.ProductPersistenceServiceDatabase;
+import com.company.core.services.persistenceservices.mapimpl.CustomerPersistenceService;
+import com.company.core.services.persistenceservices.mapimpl.ItemPersistenceService;
+import com.company.core.services.persistenceservices.mapimpl.OrderPersistenceService;
 
 public class DependencyManager {
     private final ProductController productController;

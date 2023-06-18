@@ -1,13 +1,12 @@
-package com.company.core.services.impl;
+package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.models.goods.ProductType;
-import com.company.core.services.ProductService;
+import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
-import com.company.core.services.persistenceservices.ProductPersistenceService;
 
 import java.math.BigDecimal;
 import java.util.List;

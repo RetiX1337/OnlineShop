@@ -1,14 +1,14 @@
-package com.company.core.services.impl;
+package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.Shop;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.OrderStatus;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.services.CustomerService;
-import com.company.core.services.OrderService;
-import com.company.core.services.ProductService;
-import com.company.core.services.ShopService;
+import com.company.core.services.logicservices.CustomerService;
+import com.company.core.services.logicservices.OrderService;
+import com.company.core.services.logicservices.ProductService;
+import com.company.core.services.logicservices.ShopService;
 
 import java.math.BigDecimal;
 import java.util.List;
