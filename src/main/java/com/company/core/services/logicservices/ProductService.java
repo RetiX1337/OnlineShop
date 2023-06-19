@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(String brand, String name, ProductType productType, BigDecimal price, Integer quantity);
+    Product createProduct(String brand, String name, ProductType productType, BigDecimal price);
     void addProduct(Product product);
     void deleteProduct(Long id) throws EntityNotFoundException;
     Product updateProduct(Product product, Long id) throws EntityNotFoundException;

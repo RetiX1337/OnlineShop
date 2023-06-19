@@ -12,7 +12,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    public void addProduct(String brand, String name, ProductType productType, BigDecimal price, Integer quantity) {
-        productService.addProduct(productService.createProduct(brand, name, productType, price, quantity));
+    public void addProduct(String brand, String name, ProductType productType, BigDecimal price) {
+        productService.addProduct(productService.createProduct(brand, name, productType, price));
     }
 }

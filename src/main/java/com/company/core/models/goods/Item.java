@@ -5,11 +5,11 @@ import java.util.Objects;
 
 public class Item implements Identifiable {
     private Long id;
-    private final Product product;
+    private final ProductWithQuantity product;
     private Integer quantity;
     private BigDecimal price = BigDecimal.valueOf(0);
 
-    public Item(Product product, Integer quantity) {
+    public Item(ProductWithQuantity product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
         countPrice();
@@ -55,7 +55,7 @@ public class Item implements Identifiable {
         return Objects.hash(product);
     }
 
-    public Product getProduct() {
+    public ProductWithQuantity getProduct() {
         return product;
     }
 

@@ -22,8 +22,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean addToCart(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
         if (containsProduct(cart, productService.getProduct(productId))) {
-            if (true) {
-//          if (notMoreThanAvailable(shoppingCart, itemService.createItem(productId, quantity))) {
+            if (notMoreThanAvailable(cart, itemService.createItem(productId, quantity))) {
                 addOrUpdate(cart, productId, quantity);
                 return true;
             } else {
@@ -56,13 +55,12 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    /*
-    private boolean notMoreThanAvailable(ShoppingCart shoppingCart, Item item) {
+    private boolean notMoreThanAvailable(Cart cart, Item item) {
         if (item == null) return false;
         Product product = item.getProduct();
-        return item.getQuantity() - (shoppingCart.getItem(product).getQuantity() + item.getProduct().getQuantity()) >= 0;
+        return item.getQuantity() - (cart.getItem(product).getQuantity() + item.getProduct().getQuantity()) >= 0;
     }
-     */
+
 
     private boolean containsProduct(Cart cart, Product product) {
         return cart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().getId().equals(product.getId()));
@@ -74,7 +72,6 @@ public class CartServiceImpl implements CartService {
         } else {
             Item item = itemService.createItem(productId, quantity);
             cart.addItem(item);
-            itemService.addItem(item);
         }
         countPrice(cart);
     }

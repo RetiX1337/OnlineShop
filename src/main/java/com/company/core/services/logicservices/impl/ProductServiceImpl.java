@@ -6,6 +6,7 @@ import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.models.goods.ProductType;
 import com.company.core.services.logicservices.ProductService;
+import com.company.core.services.logicservices.ProductStorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.math.BigDecimal;
@@ -19,8 +20,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(String brand, String name, ProductType productType, BigDecimal price, Integer quantity) {
-        return new ProductWithQuantity(new ProductBase(brand, name, productType, price), quantity);
+    public Product createProduct(String brand, String name, ProductType productType, BigDecimal price) {
+        return new ProductBase(brand, name, productType, price);
     }
 
     @Override

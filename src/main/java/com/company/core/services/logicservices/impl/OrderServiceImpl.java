@@ -24,7 +24,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order addOrder(Order order) {
-        return orderPersistenceService.save(order);
+        Order savedOrder = orderPersistenceService.save(order);
+        savedOrder.getItems().forEach(item -> item.);
+        return savedOrder;
     }
 
     @Override

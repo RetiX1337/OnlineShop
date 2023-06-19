@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class Order implements Identifiable {
     private final HashMap<Product, Item> items = new HashMap<>();
@@ -38,6 +39,10 @@ public class Order implements Identifiable {
 
     public BigDecimal getSummaryPrice() {
         return summaryPrice;
+    }
+
+    public Collection<Item> getItems() {
+        return items.values();
     }
 
     @Override

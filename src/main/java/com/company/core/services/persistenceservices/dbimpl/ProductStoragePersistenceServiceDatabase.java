@@ -1,7 +1,7 @@
-package com.company.core.services.persistenceservices;
+package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
-import com.company.core.models.user.customer.Customer;
+import com.company.core.services.persistenceservices.ProductStoragePersistence;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,10 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Properties;
 
-public class ProductStoragePersistenceService {
+public class ProductStoragePersistenceServiceDatabase implements ProductStoragePersistence {
     private final JDBCConnectionPool pool;
     private Long idCounter;
     private Properties sqlProps;
@@ -27,8 +26,9 @@ public class ProductStoragePersistenceService {
     }
     private final String GET_QUANTITY_SQL = sqlProps.getProperty("GET_QUANTITY_SQL");
     private final String UPDATE_QUANTITY_SQL = sqlProps.getProperty("UPDATE_QUANTITY_SQL");
+    private final String ADD_QUANTITY_SQL = sqlProps.getProperty("ADD_QUANTITY_SQL");
     private final String ALL_SQL = sqlProps.getProperty("ALL_SQL");
-    public ProductStoragePersistenceService(JDBCConnectionPool pool) {
+    public ProductStoragePersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
         initCounter();
     }
@@ -45,6 +45,7 @@ public class ProductStoragePersistenceService {
             throw new RuntimeException(e);
         }
     }
+    @Override
     public Integer getQuantity(Long storageId, Long productId) {
         try {
             Connection con = pool.checkOut();
@@ -61,7 +62,8 @@ public class ProductStoragePersistenceService {
         }
     }
 
-    public boolean updateQuantity(Integer quantity, Long storageId, Long productId) {
+    @Override
+    public void updateQuantity(Integer quantity, Long storageId, Long productId) {
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(UPDATE_QUANTITY_SQL);
@@ -70,11 +72,38 @@ public class ProductStoragePersistenceService {
             prep.setLong(3, productId);
             prep.executeUpdate();
             pool.checkIn(con);
-            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
+    public void addQuantity(Integer quantity, Long storageId, Long productId) {
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(ADD_QUANTITY_SQL);
+            prep.setLong(1, storageId);
+            prep.setLong(2, productId);
+            prep.setInt(3, quantity);
+            prep.executeUpdate();
+            pool.checkIn(con);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Override
+    public boolean isPresent(Long storageId, Long productId) {
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(GET_QUANTITY_SQL);
+            prep.setLong(1, storageId);
+            prep.setLong(2, productId);
+            ResultSet rs = prep.executeQuery();
+            pool.checkIn(con);
+            return rs.isBeforeFirst();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

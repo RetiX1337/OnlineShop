@@ -27,13 +27,9 @@ public class DependencyManager {
         PersistenceInterface<Product> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
         PersistenceInterface<Order> orderPersistenceService = new OrderPersistenceService();
         PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceService();
-        customerPersistenceService = new CustomerPersistenceService();
+        this.customerPersistenceService = new CustomerPersistenceService();
 
-        Shop shop = new ShopBuilder()
-                .withCustomers(customerPersistenceService)
-                .withOrders(orderPersistenceService)
-                .withProducts(productPersistenceService)
-                .build();
+        Shop shop = new Shop();
 
         ProductService productService = new ProductServiceImpl(productPersistenceService);
         this.productController = new ProductController(productService);
