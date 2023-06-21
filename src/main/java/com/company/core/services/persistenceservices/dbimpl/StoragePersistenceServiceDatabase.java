@@ -2,13 +2,11 @@ package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
 import com.company.core.models.Shop;
-import com.company.core.models.goods.ProductBase;
-import com.company.core.models.goods.ProductType;
+import com.company.core.models.Storage;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,14 +14,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop> {
+public class StoragePersistenceServiceDatabase implements PersistenceInterface<Storage> {
     private final JDBCConnectionPool pool;
     private Long idCounter;
 
-    private final String ALL_SQL = "SELECT * FROM shop";
-    private final String FIND_BY_ID_SQL = "SELECT * FROM shop WHERE id = ?";
+    private final String ALL_SQL = "SELECT * FROM storage";
+    private final String FIND_BY_ID_SQL = "SELECT * FROM storage WHERE id = ?";
 
-    public ShopPersistenceServiceDatabase(JDBCConnectionPool pool) {
+    public StoragePersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
         initCounter();
     }
@@ -42,12 +40,12 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
     }
 
     @Override
-    public Shop save(Shop entity) {
+    public Storage save(Storage entity) {
         return null;
     }
 
     @Override
-    public Shop findById(Long id) {
+    public Storage findById(Long id) {
         try {
             Connection con = pool.checkOut();
             PreparedStatement p = con.prepareStatement(FIND_BY_ID_SQL);
@@ -57,19 +55,19 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             String name = rs.getString("name");
             String address = rs.getString("address");
             pool.checkIn(con);
-            return new Shop(id, name, address);
+            return new Storage(id, name, address);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<Shop> findAll() {
+    public List<Storage> findAll() {
         return null;
     }
 
     @Override
-    public Shop update(Shop entity, Long id) {
+    public Storage update(Storage entity, Long id) {
         return null;
     }
 

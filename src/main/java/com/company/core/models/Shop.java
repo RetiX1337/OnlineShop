@@ -19,6 +19,10 @@ public class Shop implements Identifiable {
         this.name = name;
         this.address = address;
     }
+    public Shop(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
     @Override
     public Long getId() {
@@ -28,5 +32,13 @@ public class Shop implements Identifiable {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }

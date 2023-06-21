@@ -11,6 +11,7 @@ import java.util.List;
 public interface OrderService {
     Order createOrder(Collection<Item> items, Customer customer);
     Order addOrder(Order order);
+    boolean processOrder(Order order, Customer customer);
     Order updateOrder(Order order, Long id) throws EntityNotFoundException;
     void deleteOrder(Long id) throws EntityNotFoundException;
     Order findOrder(Long id) throws EntityNotFoundException;

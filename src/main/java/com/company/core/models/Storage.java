@@ -7,6 +7,12 @@ public class Storage implements Identifiable {
     private String name;
     private String address;
 
+    public Storage(Long id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
+
     public Storage(String name, String address) {
         this.name = name;
         this.address = address;
@@ -20,5 +26,13 @@ public class Storage implements Identifiable {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }

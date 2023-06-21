@@ -3,10 +3,12 @@ package com.company.core.services.logicservices.impl;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
+import com.company.core.models.goods.OrderStatus;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,13 +21,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Collection<Item> items, Customer customer) {
-        return new Order(items, customer);
+        Order order = new Order(items, customer);
+        order.setOrderStatus(OrderStatus.NEW);
+        return order;
+    }
+
+    @Override
+    public boolean processOrder(Order order, Customer customer) {
+        if (processPayment(customer, order)) {
+            order.setOrderStatus(OrderStatus.PAID);
+            addOrder(order);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public Order addOrder(Order order) {
         Order savedOrder = orderPersistenceService.save(order);
-        savedOrder.getItems().forEach(item -> item.);
+        savedOrder.setOrderStatus(OrderStatus.PAID);
+    //    savedOrder.getItems().forEach(item -> item.);
         return savedOrder;
     }
 
@@ -59,5 +74,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findByCustomer(Customer customer) {
         return orderPersistenceService.findAll().stream().filter(order -> order.getCustomer().getId().equals(customer.getId())).toList();
+    }
+
+    private boolean processPayment(Customer customer, Order order) {
+        if (enoughMoney(customer.getWallet(), order.getSummaryPrice())) {
+            customer.setWallet(customer.getWallet().subtract(order.getSummaryPrice()));
+            return true;
+        }
+        return false;
+    }
+
+    private boolean enoughMoney(BigDecimal wallet, BigDecimal summaryPrice) {
+        return summaryPrice.compareTo(wallet) == 0 || summaryPrice.compareTo(wallet) == -1;
     }
 }

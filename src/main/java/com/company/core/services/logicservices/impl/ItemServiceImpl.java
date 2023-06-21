@@ -3,22 +3,22 @@ package com.company.core.services.logicservices.impl;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.services.logicservices.ItemService;
-import com.company.core.services.logicservices.ProductFormerService;
-import com.company.core.services.logicservices.ProductService;
+import com.company.core.services.logicservices.ProductManagerService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 public class ItemServiceImpl implements ItemService {
-    private final ProductFormerService productFormerService;
+    private final ProductManagerService productManagerService;
     private final PersistenceInterface<Item> itemPersistenceService;
 
-    public ItemServiceImpl(ProductFormerService productFormerService, PersistenceInterface<Item> itemPersistenceService) {
-        this.productFormerService = productFormerService;
+    public ItemServiceImpl(ProductManagerService productManagerService, PersistenceInterface<Item> itemPersistenceService) {
+        this.productManagerService = productManagerService;
         this.itemPersistenceService = itemPersistenceService;
     }
 
     @Override
     public Item createItem(Long productId, Integer quantity) throws EntityNotFoundException {
-        return new Item(productFormerService.getProductWithQuantity(productId), quantity);
+        return// new Item(productManagerService.getProductWithQuantity(productId), quantity);
+        null;
     }
 
     @Override

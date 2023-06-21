@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 public class ProductStoragePersistenceServiceDatabase implements ProductStoragePersistence {
@@ -24,10 +25,12 @@ public class ProductStoragePersistenceServiceDatabase implements ProductStorageP
             throw new RuntimeException(e);
         }
     }
+
     private final String GET_QUANTITY_SQL = sqlProps.getProperty("GET_QUANTITY_SQL");
     private final String UPDATE_QUANTITY_SQL = sqlProps.getProperty("UPDATE_QUANTITY_SQL");
     private final String ADD_QUANTITY_SQL = sqlProps.getProperty("ADD_QUANTITY_SQL");
     private final String ALL_SQL = sqlProps.getProperty("ALL_SQL");
+
     public ProductStoragePersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
         initCounter();
@@ -45,6 +48,7 @@ public class ProductStoragePersistenceServiceDatabase implements ProductStorageP
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public Integer getQuantity(Long storageId, Long productId) {
         try {
@@ -54,9 +58,8 @@ public class ProductStoragePersistenceServiceDatabase implements ProductStorageP
             prep.setLong(2, productId);
             ResultSet rs = prep.executeQuery();
             rs.next();
-            Integer quantity = rs.getInt(1);
             pool.checkIn(con);
-            return quantity;
+            return rs.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

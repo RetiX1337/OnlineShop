@@ -2,9 +2,12 @@ package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
+import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Cart;
+import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.ItemService;
+import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.CartService;
 
@@ -13,10 +16,12 @@ import java.math.BigDecimal;
 public class CartServiceImpl implements CartService {
     private final ItemService itemService;
     private final ProductService productService;
+    private final OrderService orderService;
 
-    public CartServiceImpl(ItemService itemService, ProductService productService) {
+    public CartServiceImpl(ItemService itemService, ProductService productService, OrderService orderService) {
         this.itemService = itemService;
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -44,6 +49,15 @@ public class CartServiceImpl implements CartService {
         return false;
     }
 
+    public boolean checkoutCart(Customer customer) {
+        Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
+        if (orderService.processOrder(order, customer)) {
+            customer.getShoppingCart().clear();
+            return true;
+        }
+        return false;
+    }
+
     private void addToCartItem(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
         itemService.addToItem(cart.getItem(productService.getProduct(productId)), quantity);
     }
@@ -60,7 +74,6 @@ public class CartServiceImpl implements CartService {
         Product product = item.getProduct();
         return item.getQuantity() - (cart.getItem(product).getQuantity() + item.getProduct().getQuantity()) >= 0;
     }
-
 
     private boolean containsProduct(Cart cart, Product product) {
         return cart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().getId().equals(product.getId()));
