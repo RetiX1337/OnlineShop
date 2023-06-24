@@ -20,6 +20,10 @@ public class Cart {
         cart.put(item.getProduct(), item);
     }
 
+    public void deleteItem(Item item) {
+        cart.remove(item.getProduct(), item);
+    }
+
     public Item getItem(Product product) {
         return cart.get(product);
     }

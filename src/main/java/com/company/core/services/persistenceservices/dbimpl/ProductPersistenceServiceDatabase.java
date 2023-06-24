@@ -16,23 +16,12 @@ import java.util.Properties;
 
 public class ProductPersistenceServiceDatabase implements PersistenceInterface<Product> {
     private final JDBCConnectionPool pool;
-    private Properties sqlProps;
-
-    {
-        sqlProps = new Properties();
-        try {
-            sqlProps.load(new FileInputStream("src\\main\\java\\com\\company\\core\\sql_queries\\product.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private final String DELETE_SQL = sqlProps.getProperty("DELETE_SQL");
-    private final String UPDATE_SQL = sqlProps.getProperty("UPDATE_SQL");
-    private final String ALL_SQL = sqlProps.getProperty("ALL_SQL");
-    private final String SAVE_SQL = sqlProps.getProperty("SAVE_SQL");
-    private final String FIND_BY_ID_SQL = sqlProps.getProperty("FIND_BY_ID_SQL");
-    private final String FIND_ALL_SQL = sqlProps.getProperty("FIND_ALL_SQL");
+    private final String DELETE_SQL = "DELETE FROM product WHERE product.id = ?";
+    private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type_id = ? WHERE product.id = ?";
+    private final String ALL_SQL = "SELECT * FROM product";
+    private final String SAVE_SQL = "INSERT INTO product (id, brand, name, price, product_type_id) VALUES (?, ?, ?, ?, ?)";
+    private final String FIND_BY_ID_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id WHERE product.id = ?";
+    private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id";
     private Long idCounter;
 
     public ProductPersistenceServiceDatabase(JDBCConnectionPool pool) {
@@ -158,5 +147,17 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Integer getQuantity(Long storageId, Long productId) {
+
+    }
+
+    private void updateQuantity(Integer quantity, Long storageId, Long productId) {
+
+    }
+
+    private void saveQuantity(Integer quantity, Long storageId, Long productId) {
+
     }
 }

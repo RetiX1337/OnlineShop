@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     public Order addOrder(Order order) {
         Order savedOrder = orderPersistenceService.save(order);
         savedOrder.setOrderStatus(OrderStatus.PAID);
-    //    savedOrder.getItems().forEach(item -> item.);
+        savedOrder.getItems().forEach(item -> item.setOrderId(savedOrder.getId()));
         return savedOrder;
     }
 

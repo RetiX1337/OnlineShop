@@ -2,9 +2,11 @@ package com.company.core.models.goods;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Properties;
 
 public class Item implements Identifiable {
     private Long id;
+    private Long orderId;
     private final ProductWithQuantity product;
     private Integer quantity;
     private BigDecimal price = BigDecimal.valueOf(0);
@@ -13,6 +15,14 @@ public class Item implements Identifiable {
         this.product = product;
         this.quantity = quantity;
         countPrice();
+    }
+
+    public Item(Long id, ProductWithQuantity product, Integer quantity, BigDecimal price, Long orderId) {
+        this.id = id;
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+        this.orderId = orderId;
     }
 
     public void increaseQuantity(Integer quantity) {
@@ -35,6 +45,14 @@ public class Item implements Identifiable {
 
     public Integer getQuantity() {
         return quantity;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     @Override

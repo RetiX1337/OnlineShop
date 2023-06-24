@@ -13,15 +13,18 @@ public class Shop implements Identifiable {
     private Long id;
     private String name;
     private String address;
+    private final List<Long> storages;
 
-    public Shop(Long id, String name, String address) {
+    public Shop(Long id, String name, String address, List<Long> storages) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.storages = storages;
     }
     public Shop(String name, String address) {
         this.name = name;
         this.address = address;
+        this.storages = new ArrayList<>();
     }
 
     @Override
@@ -40,5 +43,17 @@ public class Shop implements Identifiable {
 
     public String getAddress() {
         return address;
+    }
+
+    public List<Long> getStorages() {
+        return storages.stream().toList();
+    }
+
+    public void addToStorages(Long storageId) {
+        storages.add(storageId);
+    }
+
+    public void deleteFromStorages(Long storageId) {
+        storages.remove(storageId);
     }
 }

@@ -42,7 +42,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean deleteFromCart(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
         if (containsProduct(cart, productService.getProduct(productId))) {
-            itemService.deleteFromItem(cart.getItem(productService.getProduct(productId)), quantity);
+            Item item = cart.getItem(productService.getProduct(productId));
+            if (item.getQuantity().equals(quantity)) {
+                cart.deleteItem(item);
+            } else {
+                item.decreaseQuantity(quantity);
+            }
             countPrice(cart);
             return true;
         }
@@ -59,7 +64,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private void addToCartItem(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
-        itemService.addToItem(cart.getItem(productService.getProduct(productId)), quantity);
+        cart.getItem(productService.getProduct(productId)).increaseQuantity(quantity);
     }
 
     private void countPrice(Cart cart) {

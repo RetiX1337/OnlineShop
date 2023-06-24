@@ -15,21 +15,11 @@ import java.util.Properties;
 public class ProductStoragePersistenceServiceDatabase implements ProductStoragePersistence {
     private final JDBCConnectionPool pool;
     private Long idCounter;
-    private Properties sqlProps;
 
-    {
-        sqlProps = new Properties();
-        try {
-            sqlProps.load(new FileInputStream("src\\main\\java\\com\\company\\core\\sql_queries\\product.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private final String GET_QUANTITY_SQL = sqlProps.getProperty("GET_QUANTITY_SQL");
-    private final String UPDATE_QUANTITY_SQL = sqlProps.getProperty("UPDATE_QUANTITY_SQL");
-    private final String ADD_QUANTITY_SQL = sqlProps.getProperty("ADD_QUANTITY_SQL");
-    private final String ALL_SQL = sqlProps.getProperty("ALL_SQL");
+    private final String GET_QUANTITY_SQL = "SELECT quantity FROM product_storage WHERE storage_id = ? AND product_id = ?";
+    private final String UPDATE_QUANTITY_SQL = "UPDATE product_storage SET quantity = ? WHERE storage_id = ? AND product_id = ?";
+    private final String ADD_QUANTITY_SQL = "INSERT INTO product_storage (storage_id, product_id, quantity) VALUES (?, ?, ?)";
+    private final String ALL_SQL = "SELECT * FROM product_storage";
 
     public ProductStoragePersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
