@@ -148,16 +148,4 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             throw new RuntimeException(e);
         }
     }
-
-    private Integer getQuantity(Long storageId, Long productId) {
-
-    }
-
-    private void updateQuantity(Integer quantity, Long storageId, Long productId) {
-
-    }
-
-    private void saveQuantity(Integer quantity, Long storageId, Long productId) {
-
-    }
 }

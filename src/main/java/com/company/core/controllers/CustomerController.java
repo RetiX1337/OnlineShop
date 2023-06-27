@@ -9,7 +9,7 @@ import com.company.core.services.logicservices.ShopService;
 import static com.company.Main.scan;
 
 public class CustomerController {
-    //TODO CONTROLLERS WILL BE REMADE
+    //TODO CONTROLLERS WILL BE REWORKED
     private final CustomerService customerService;
     private final ShopService shopService;
     private final CartService cartService;
@@ -32,16 +32,16 @@ public class CustomerController {
         System.out.println(customer.getShoppingCart());
     }
 
-    public void addToCart(Customer customer) {
+    public void addToCart(Customer customer, Long shopId) {
         int productId;
-        int amount;
+        int quantity;
         displayProducts();
         System.out.println("Choose the product ID: ");
         productId = getInt();
         System.out.println("Enter the amount: ");
-        amount = getInt();
+        quantity = getInt();
         try {
-            if (cartService.addToCart(customer.getShoppingCart(), (long) productId, amount)) {
+            if (cartService.addToCart(customer.getShoppingCart(), (long) productId, quantity, shopId)) {
                 System.out.println("Added successfully!");
             } else {
                 System.out.println("You've picked more than available on the storage!");

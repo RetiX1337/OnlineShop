@@ -6,10 +6,7 @@ import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.services.logicservices.ItemService;
-import com.company.core.services.logicservices.OrderService;
-import com.company.core.services.logicservices.ProductService;
-import com.company.core.services.logicservices.CartService;
+import com.company.core.services.logicservices.*;
 
 import java.math.BigDecimal;
 
@@ -17,17 +14,19 @@ public class CartServiceImpl implements CartService {
     private final ItemService itemService;
     private final ProductService productService;
     private final OrderService orderService;
+    private final StorageService storageService;
 
-    public CartServiceImpl(ItemService itemService, ProductService productService, OrderService orderService) {
+    public CartServiceImpl(ItemService itemService, ProductService productService, OrderService orderService, StorageService storageService) {
         this.itemService = itemService;
         this.productService = productService;
         this.orderService = orderService;
+        this.storageService = storageService;
     }
 
     @Override
-    public boolean addToCart(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
+    public boolean addToCart(Cart cart, Long productId, Integer quantity, Long shopId) throws EntityNotFoundException {
         if (containsProduct(cart, productService.getProduct(productId))) {
-            if (notMoreThanAvailable(cart, itemService.createItem(productId, quantity))) {
+            if (!moreThanAvailable(cart, itemService.createItem(productId, quantity), shopId)) {
                 addOrUpdate(cart, productId, quantity);
                 return true;
             } else {
@@ -54,6 +53,7 @@ public class CartServiceImpl implements CartService {
         return false;
     }
 
+    @Override
     public boolean checkoutCart(Customer customer) {
         Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
         if (orderService.processOrder(order, customer)) {
@@ -74,10 +74,10 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    private boolean notMoreThanAvailable(Cart cart, Item item) {
+    private boolean moreThanAvailable(Cart cart, Item item, Long shopId) {
         if (item == null) return false;
         Product product = item.getProduct();
-        return item.getQuantity() - (cart.getItem(product).getQuantity() + item.getProduct().getQuantity()) >= 0;
+        return item.getQuantity() - (cart.getItem(product).getQuantity() + storageService.getQuantityPerShop(shopId, product.getId())) >= 0;
     }
 
     private boolean containsProduct(Cart cart, Product product) {

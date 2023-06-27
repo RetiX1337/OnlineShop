@@ -7,17 +7,17 @@ import java.util.Properties;
 public class Item implements Identifiable {
     private Long id;
     private Long orderId;
-    private final ProductWithQuantity product;
+    private final Product product;
     private Integer quantity;
     private BigDecimal price = BigDecimal.valueOf(0);
 
-    public Item(ProductWithQuantity product, Integer quantity) {
+    public Item(Product product, Integer quantity) {
         this.product = product;
         this.quantity = quantity;
         countPrice();
     }
 
-    public Item(Long id, ProductWithQuantity product, Integer quantity, BigDecimal price, Long orderId) {
+    public Item(Long id, Product product, Integer quantity, BigDecimal price, Long orderId) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
@@ -73,7 +73,7 @@ public class Item implements Identifiable {
         return Objects.hash(product);
     }
 
-    public ProductWithQuantity getProduct() {
+    public Product getProduct() {
         return product;
     }
 

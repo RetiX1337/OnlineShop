@@ -1,10 +1,6 @@
 package com.company.core.models;
 
 import com.company.core.models.goods.Identifiable;
-import com.company.core.models.goods.Order;
-import com.company.core.models.goods.Product;
-import com.company.core.models.user.customer.Customer;
-import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +45,11 @@ public class Shop implements Identifiable {
         return storages.stream().toList();
     }
 
-    public void addToStorages(Long storageId) {
+    public void addStorage(Long storageId) {
         storages.add(storageId);
     }
 
-    public void deleteFromStorages(Long storageId) {
+    public void deleteStorage(Long storageId) {
         storages.remove(storageId);
     }
 }

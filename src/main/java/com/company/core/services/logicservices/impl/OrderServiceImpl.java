@@ -5,6 +5,7 @@ import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.OrderStatus;
 import com.company.core.models.user.customer.Customer;
+import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
@@ -14,9 +15,12 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
     private PersistenceInterface<Order> orderPersistenceService;
+    private ItemService itemService;
 
-    public OrderServiceImpl(PersistenceInterface<Order> orderPersistenceService) {
+    public OrderServiceImpl(PersistenceInterface<Order> orderPersistenceService,
+                            ItemService itemService) {
         this.orderPersistenceService = orderPersistenceService;
+        this.itemService = itemService;
     }
 
     @Override
@@ -40,13 +44,21 @@ public class OrderServiceImpl implements OrderService {
     public Order addOrder(Order order) {
         Order savedOrder = orderPersistenceService.save(order);
         savedOrder.setOrderStatus(OrderStatus.PAID);
-        savedOrder.getItems().forEach(item -> item.setOrderId(savedOrder.getId()));
+        savedOrder.getItems().forEach(item -> {
+            item.setOrderId(savedOrder.getId());
+            itemService.addItem(item);
+        });
         return savedOrder;
     }
 
     @Override
     public Order updateOrder(Order order, Long id) throws EntityNotFoundException {
         if (orderPersistenceService.isPresent(id)) {
+            Order updatedOrder = orderPersistenceService.update(order, id);
+            updatedOrder.getItems().forEach(item -> {
+                item.setOrderId(updatedOrder.getId());
+                itemService.addItem(item);
+            });
             return orderPersistenceService.update(order, id);
         } else {
             throw new EntityNotFoundException();
@@ -56,6 +68,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(Long id) throws EntityNotFoundException {
         if (orderPersistenceService.isPresent(id)) {
+            Order orderToDelete = orderPersistenceService.findById(id);
+            for (Item item : orderToDelete.getItems()) {
+                itemService.deleteItem(item.getId());
+            }
             orderPersistenceService.deleteById(id);
         } else {
             throw new EntityNotFoundException();

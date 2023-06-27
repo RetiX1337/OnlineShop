@@ -23,6 +23,17 @@ public class Order implements Identifiable {
         countPrice();
     }
 
+    public Order(Long id, Collection<Item> items, Customer customer, BigDecimal summaryPrice, OrderStatus orderStatus) {
+        this.id = id;
+        this.customer = customer;
+        this.summaryPrice = summaryPrice;
+        this.orderStatus = orderStatus;
+        for (Item it : items) {
+            this.items.put(it.getProduct(), it);
+        }
+        countPrice();
+    }
+
     private void countPrice() {
         for (Item it : items.values()) {
             summaryPrice = summaryPrice.add(it.getPrice());

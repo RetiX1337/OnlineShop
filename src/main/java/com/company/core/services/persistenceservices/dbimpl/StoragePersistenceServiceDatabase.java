@@ -1,21 +1,24 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
-import com.company.core.models.Shop;
 import com.company.core.models.Storage;
+import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 public class StoragePersistenceServiceDatabase implements PersistenceInterface<Storage> {
     private final JDBCConnectionPool pool;
+    private final PersistenceInterface<Product> productPersistenceService;
     private Long idCounter;
 
+    private final String FIND_QUANTITY_SQL = "SELECT * FROM product_storage WHERE product_id = ? AND storage_id = ?";
+    private final String UPDATE_QUANTITY_SQL = "UPDATE product_storage SET quantity = ? WHERE storage_id = ? AND product_id = ?";
+    private final String ADD_QUANTITY_SQL = "INSERT INTO product_storage (storage_id, product_id, quantity) VALUES (?, ?, ?)";
     private final String SAVE_SQL = "INSERT INTO storage (id, name, address) VALUES (?, ?, ?)";
     private final String FIND_ALL_SQL = "SELECT id, name, address FROM storage";
     private final String UPDATE_SQL = "UPDATE storage SET id = ?, name = ?, address = ? WHERE id = ?";
@@ -26,9 +29,11 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     private final String FIND_BOND_SQL = "SELECT * FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
     private final String ALL_SQL = "SELECT * FROM storage";
     private final String FIND_BY_ID_SQL = "SELECT * FROM storage WHERE id = ?";
+    private final String GET_QUANTITIES_SQL = "SELECT product_id, quantity FROM product_storage WHERE storage_id = ?";
 
-    public StoragePersistenceServiceDatabase(JDBCConnectionPool pool) {
+    public StoragePersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Product> productPersistenceService) {
         this.pool = pool;
+        this.productPersistenceService = productPersistenceService;
         initCounter();
     }
 
@@ -59,6 +64,10 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
                 addBond(shopId, idCounter);
             }
 
+            for (ProductWithQuantity p : entity.getProductQuantities().values()) {
+                addQuantity(p, entity.getId());
+            }
+
             prep.executeUpdate();
             pool.checkIn(con);
             idCounter++;
@@ -79,8 +88,9 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             String name = rs.getString("name");
             String address = rs.getString("address");
             List<Long> shops = getShopsByStorage(id);
+            HashMap<Long, ProductWithQuantity> productQuantities = getQuantities(id);
             pool.checkIn(con);
-            return new Storage(id, name, address, shops);
+            return new Storage(id, name, address, shops, productQuantities);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -98,7 +108,8 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
                 String name = rs.getString("name");
                 String address = rs.getString("address");
                 List<Long> shops = getShopsByStorage(storageId);
-                storages.add(new Storage(storageId, name, address, shops));
+                HashMap<Long, ProductWithQuantity> productQuantities = getQuantities(storageId);
+                storages.add(new Storage(storageId, name, address, shops, productQuantities));
             }
             pool.checkIn(con);
             return storages;
@@ -129,6 +140,15 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             for (Long oldShopId : oldShops) {
                 if (!newShops.contains(oldShopId)) {
                     deleteBond(id, oldShopId);
+                }
+            }
+
+            HashMap<Long, ProductWithQuantity> productQuantities = entity.getProductQuantities();
+            for (ProductWithQuantity productWithQuantity : productQuantities.values()) {
+                if (!quantityIsPresent(productWithQuantity.getProduct().getId(), id)) {
+                    addQuantity(productWithQuantity, id);
+                } else {
+                    updateQuantity(productWithQuantity, id);
                 }
             }
 
@@ -205,6 +225,68 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             }
             pool.checkIn(con);
             return shops;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private HashMap<Long, ProductWithQuantity> getQuantities(Long storageId) {
+        try {
+            HashMap<Long, ProductWithQuantity> productQuantities = new HashMap<>();
+
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(GET_QUANTITIES_SQL);
+            prep.setLong(1, storageId);
+            ResultSet rs = prep.executeQuery();
+            pool.checkIn(con);
+            while (rs.next()) {
+                Product product = productPersistenceService.findById(rs.getLong("product_id"));
+                Integer quantity = rs.getInt("quantity");
+                productQuantities.put(product.getId(), new ProductWithQuantity(product, quantity));
+            }
+            return productQuantities;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void updateQuantity(ProductWithQuantity productWithQuantity, Long storageId) {
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(UPDATE_QUANTITY_SQL);
+            prep.setInt(1, productWithQuantity.getQuantity());
+            prep.setLong(2, storageId);
+            prep.setLong(3, productWithQuantity.getProduct().getId());
+            prep.executeUpdate();
+            pool.checkIn(con);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addQuantity(ProductWithQuantity productWithQuantity, Long storageId) {
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(ADD_QUANTITY_SQL);
+            prep.setLong(1, storageId);
+            prep.setLong(2, productWithQuantity.getProduct().getId());
+            prep.setInt(3, productWithQuantity.getQuantity());
+            prep.executeUpdate();
+            pool.checkIn(con);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean quantityIsPresent(Long productId, Long storageId) {
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(FIND_QUANTITY_SQL);
+            prep.setLong(1, productId);
+            prep.setLong(2, storageId);
+            ResultSet rs = prep.executeQuery();
+            pool.checkIn(con);
+            return rs.isBeforeFirst();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

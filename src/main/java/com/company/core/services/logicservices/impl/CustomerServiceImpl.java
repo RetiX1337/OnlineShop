@@ -14,8 +14,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer createCustomer(String name, String password) {
-        return new Customer(name, password, new Cart());
+    public Customer createCustomer(String name, String password, String email) {
+        return new Customer(name, password, email);
     }
 
     @Override

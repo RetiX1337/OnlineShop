@@ -45,6 +45,10 @@ public class ProductWithQuantity extends ProductDecorator {
         return quantity;
     }
 
+    public Product getProduct() {
+        return decoratedProduct;
+    }
+
     @Override
     public String toString() {
         return decoratedProduct +

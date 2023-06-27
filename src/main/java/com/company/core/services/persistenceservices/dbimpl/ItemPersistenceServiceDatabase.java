@@ -7,10 +7,8 @@ import com.company.core.services.persistenceservices.PersistenceInterface;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -81,7 +79,6 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
 
             pool.checkIn(con);
             return new Item(id, product, quantity, price, orderId);
-        //    return new Item();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,21 +86,71 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
 
     @Override
     public List<Item> findAll() {
-        return null;
+        try {
+            List<Item> itemList = new ArrayList<>();
+            Connection con = pool.checkOut();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Long productId = rs.getLong("product_id");
+                Integer quantity = rs.getInt("quantity");
+                BigDecimal price = rs.getBigDecimal("price");
+                Long orderId = rs.getLong("order_id");
+
+                Product product = productPersistenceService.findById(productId);
+                itemList.add(new Item(id, product, quantity, price, orderId));
+            }
+            pool.checkIn(con);
+            return itemList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Item update(Item entity, Long id) {
-        return null;
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
+            prep.setLong(1, entity.getProduct().getId());
+            prep.setInt(2, entity.getQuantity());
+            prep.setBigDecimal(3, entity.getPrice());
+            prep.setLong(4, entity.getOrderId());
+            prep.setLong(5, id);
+            prep.executeUpdate();
+            entity.setId(id);
+            pool.checkIn(con);
+            return entity;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void deleteById(Long id) {
-
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(DELETE_SQL);
+            prep.setLong(1, id);
+            prep.executeUpdate();
+            pool.checkIn(con);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean isPresent(Long id) {
-        return false;
+        try {
+            Connection con = pool.checkOut();
+            PreparedStatement prep = con.prepareStatement(FIND_BY_ID_SQL);
+            prep.setLong(1, id);
+            ResultSet rs = prep.executeQuery();
+            pool.checkIn(con);
+            return rs.isBeforeFirst();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

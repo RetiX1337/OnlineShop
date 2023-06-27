@@ -9,15 +9,24 @@ public class Customer extends User implements Identifiable {
     private Long id;
     private final String username;
     private final String password;
+    private final String email;
     private BigDecimal wallet;
     private final Cart cart;
 
-    public Customer(String username, String password, Cart cart) {
-        super(username, password);
+    public Customer(String username, String password, String email) {
         this.username = username;
         this.password = password;
+        this.email = email;
         this.wallet = new BigDecimal(500);
-        this.cart = cart;
+        this.cart = new Cart();
+    }
+
+    public Customer(Long id, String username, String password, String email, BigDecimal wallet) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.cart = new Cart();
     }
 
     public BigDecimal getWallet() {
@@ -34,6 +43,14 @@ public class Customer extends User implements Identifiable {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
