@@ -19,53 +19,51 @@ import com.company.core.services.persistenceservices.mapimpl.OrderPersistenceSer
 
 public class DependencyManager {
     private final ProductController productController;
-    private final CustomerController customerController;
+    private final TestController testController;
     private final PersistenceInterface<Customer> customerPersistenceService;
 
     public DependencyManager() {
         JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "matretsk82004");
 
         PersistenceInterface<Product> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
-        ProductStoragePersistence productStoragePersistence = new ProductStoragePersistenceServiceDatabase(pool);
-        ShopStoragePersistence shopStoragePersistence = new ShopStoragePersistenceServiceDatabase(pool);
-        PersistenceInterface<Order> orderPersistenceService = new OrderPersistenceService();
-        PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceService();
+        PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceServiceDatabase(pool, productPersistenceService);
         PersistenceInterface<Shop> shopPersistenceService = new ShopPersistenceServiceDatabase(pool);
-        PersistenceInterface<Storage> storagePersistenceService = new StoragePersistenceServiceDatabase(pool);
-        this.customerPersistenceService = new CustomerPersistenceService();
+        PersistenceInterface<Storage> storagePersistenceService = new StoragePersistenceServiceDatabase(pool, productPersistenceService);
+        this.customerPersistenceService = new CustomerPersistenceServiceDatabase(pool);
+        PersistenceInterface<Order> orderPersistenceService = new OrderPersistenceServiceDatabase(pool, itemPersistenceService, customerPersistenceService);
+
 
         Shop shop = shopPersistenceService.findById(1L);
 
-        ShopStorageService shopStorageService = new ShopStorageServiceImpl(shopStoragePersistence);
         ProductService productService = new ProductServiceImpl(productPersistenceService);
-        ProductStorageService productStorageService = new ProductStorageServiceImpl(productStoragePersistence, shopStorageService);
-        ProductManagerService productManagerService = new ProductManagerServiceImpl(productService, productStorageService);
 
         this.productController = new ProductController(productService);
 
-        OrderService orderService = new OrderServiceImpl(orderPersistenceService);
+        ItemService itemService = new ItemServiceImpl(itemPersistenceService, productService);
 
-        ItemService itemService = new ItemServiceImpl(productManagerService, itemPersistenceService);
+        StorageService storageService = new StorageServiceImpl(storagePersistenceService, shopPersistenceService, productService);
 
-        CartService cartService = new CartServiceImpl(itemService, productService, orderService);
+        OrderService orderService = new OrderServiceImpl(orderPersistenceService, itemService, storageService);
+
+        CartService cartService = new CartServiceImpl(itemService, productService, orderService, storageService);
 
         CustomerService customerService = new CustomerServiceImpl(customerPersistenceService);
 
-        ShopService shopService = new ShopServiceImpl(shopPersistenceService);
+        ShopService shopService = new ShopServiceImpl(shopPersistenceService, storagePersistenceService);
 
-        this.customerController = new CustomerController(customerService, shopService, cartService);
+        this.testController = new TestController(cartService, orderService, productService, customerService, storageService);
     }
 
-    public Customer testCustomerCreateMethod() {
-        return customerPersistenceService.save(new Customer("whyretski", "123456", new Cart()));
+    public Customer testCustomerGetMethod() {
+        return customerPersistenceService.findById(1L);
     }
 
     public ProductController getProductController() {
         return productController;
     }
 
-    public CustomerController getCustomerController() {
-        return customerController;
+    public TestController getTestController() {
+        return testController;
     }
 
 }

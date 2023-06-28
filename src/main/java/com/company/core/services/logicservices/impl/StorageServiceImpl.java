@@ -9,6 +9,7 @@ import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class StorageServiceImpl implements StorageService {
@@ -53,11 +54,10 @@ public class StorageServiceImpl implements StorageService {
         List<Long> storages = shopPersistenceService.findById(shopId).getStorages();
         Integer finalQuantity = 0;
         for (Long storage : storages) {
-            finalQuantity += storagePersistenceService
-                    .findById(storage)
-                    .getProductQuantities()
-                    .get(productId)
-                    .getQuantity();
+            HashMap<Long, ProductWithQuantity> productQuantities = storagePersistenceService.findById(storage).getProductQuantities();
+            if (productQuantities.get(productId) != null) {
+                finalQuantity += productQuantities.get(productId).getQuantity();
+            }
         }
         return finalQuantity;
     }
@@ -92,7 +92,7 @@ public class StorageServiceImpl implements StorageService {
         Storage storage = storagePersistenceService.findById(storageId);
         if (storage.getProductQuantities().containsKey(productId)) {
             ProductWithQuantity oldProductWithQuantity = storage.getProductQuantities().get(productId);
-            oldProductWithQuantity.setQuantity(oldProductWithQuantity.getQuantity()+quantity);
+            oldProductWithQuantity.setQuantity(oldProductWithQuantity.getQuantity() + quantity);
         } else {
             storage.getProductQuantities().put(productId, productWithQuantity);
         }
@@ -104,8 +104,8 @@ public class StorageServiceImpl implements StorageService {
         Storage storage = storagePersistenceService.findById(storageId);
         if (storage.getProductQuantities().containsKey(productId)) {
             ProductWithQuantity productWithQuantity = storage.getProductQuantities().get(productId);
-            if (productWithQuantity.getQuantity()-quantity>=0) {
-                productWithQuantity.setQuantity(productWithQuantity.getQuantity()-quantity);
+            if (productWithQuantity.getQuantity() - quantity >= 0) {
+                productWithQuantity.setQuantity(productWithQuantity.getQuantity() - quantity);
             } else {
                 productWithQuantity.setQuantity(0);
             }

@@ -54,9 +54,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean checkoutCart(Customer customer) {
+    public boolean checkoutCart(Customer customer, Long shopId) {
         Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
-        if (orderService.processOrder(order, customer)) {
+        if (orderService.processOrder(order, customer, shopId)) {
             customer.getShoppingCart().clear();
             return true;
         }

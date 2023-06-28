@@ -7,6 +7,7 @@ import com.company.core.models.goods.OrderStatus;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.OrderService;
+import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.math.BigDecimal;
@@ -15,12 +16,15 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
     private PersistenceInterface<Order> orderPersistenceService;
+    private final StorageService storageService;
     private ItemService itemService;
 
     public OrderServiceImpl(PersistenceInterface<Order> orderPersistenceService,
-                            ItemService itemService) {
+                            ItemService itemService,
+                            StorageService storageService) {
         this.orderPersistenceService = orderPersistenceService;
         this.itemService = itemService;
+        this.storageService = storageService;
     }
 
     @Override
@@ -31,10 +35,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean processOrder(Order order, Customer customer) {
+    public boolean processOrder(Order order, Customer customer, Long shopId) {
         if (processPayment(customer, order)) {
             order.setOrderStatus(OrderStatus.PAID);
             addOrder(order);
+            for (Item item : order.getItems()) {
+                storageService.removeQuantityFromShopStorages(item.getQuantity(), shopId, item.getProduct().getId());
+            }
             return true;
         }
         return false;
@@ -88,8 +95,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByCustomer(Customer customer) {
-        return orderPersistenceService.findAll().stream().filter(order -> order.getCustomer().getId().equals(customer.getId())).toList();
+    public List<Order> findByCustomer(Long customerId) {
+        return orderPersistenceService.findAll().stream().filter(order -> order.getCustomer().getId().equals(customerId)).toList();
     }
 
     private boolean processPayment(Customer customer, Order order) {
@@ -101,6 +108,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private boolean enoughMoney(BigDecimal wallet, BigDecimal summaryPrice) {
+        System.out.println(wallet);
+        System.out.println(summaryPrice);
         return summaryPrice.compareTo(wallet) == 0 || summaryPrice.compareTo(wallet) == -1;
     }
 }

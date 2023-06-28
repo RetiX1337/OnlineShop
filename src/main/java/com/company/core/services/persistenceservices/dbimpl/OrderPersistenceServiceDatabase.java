@@ -15,12 +15,12 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
     private final JDBCConnectionPool pool;
     private final PersistenceInterface<Item> itemPersistenceService;
     private final PersistenceInterface<Customer> customerPersistenceService;
-    private final String DELETE_SQL = "DELETE FROM order WHERE order.id = ?";
-    private final String UPDATE_SQL = "UPDATE product SET order.customer_id = ?, order.summary_price = ?, order_status_id = ? WHERE order.id = ?";
-    private final String ALL_SQL = "SELECT * FROM order";
-    private final String SAVE_SQL = "INSERT INTO order (id, customer_id, summary_price, order_status_id) VALUES (?, ?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT order.id, order.customer_id, order.summary_price, order_status.order_status FROM order INNER JOIN order_status ON order.order_status_id = order_status.id WHERE order.id = ?";
-    private final String FIND_ALL_SQL = "SELECT order.id, order.customer_id, order.summary_price, order_status.order_status FROM order INNER JOIN order_status ON order.order_status_id = order_status.id";
+    private final String DELETE_SQL = "DELETE FROM online_shop.order WHERE online_shop.order.id = ?";
+    private final String UPDATE_SQL = "UPDATE product SET online_shop.order.customer_id = ?, online_shop.order.summary_price = ?, order_status_id = ? WHERE online_shop.order.id = ?";
+    private final String ALL_SQL = "SELECT * FROM online_shop.order";
+    private final String SAVE_SQL = "INSERT INTO online_shop.order (id, customer_id, summary_price, order_status_id) VALUES (?, ?, ?, ?)";
+    private final String FIND_BY_ID_SQL = "SELECT online_shop.order.id, online_shop.order.customer_id, online_shop.order.summary_price, order_status.order_status FROM online_shop.order INNER JOIN order_status ON online_shop.order.order_status_id = order_status.id WHERE online_shop.order.id = ?";
+    private final String FIND_ALL_SQL = "SELECT online_shop.order.id, online_shop.order.customer_id, online_shop.order.summary_price, order_status.order_status FROM online_shop.order INNER JOIN order_status ON online_shop.order.order_status_id = order_status.id";
     private final String GET_ITEMS_BY_ORDER = "SELECT id FROM item WHERE order_id = ?";
     private static Long idCounter;
 
@@ -35,8 +35,13 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
         try {
             Connection con = pool.checkOut();
             ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            rs.last();
-            idCounter = rs.getLong("id") + 1;
+            if (rs.isBeforeFirst()) {
+                rs.last();
+                idCounter = Long.valueOf(rs.getInt("id")) + 1;
+                pool.checkIn(con);
+            } else {
+                idCounter = 1L;
+            }
             pool.checkIn(con);
             System.out.println(idCounter);
         } catch (SQLException e) {
@@ -72,7 +77,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             rs.next();
             Long customerId = rs.getLong("customer_id");
             Customer customer = customerPersistenceService.findById(customerId);
-            BigDecimal summaryPrice = rs.getBigDecimal("summaryPrice");
+            BigDecimal summaryPrice = rs.getBigDecimal("summary_price");
             OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
             Collection<Item> items = getItemsByOrder(id);
             pool.checkIn(con);
@@ -94,7 +99,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
 
                 Long customerId = rs.getLong("customer_id");
                 Customer customer = customerPersistenceService.findById(customerId);
-                BigDecimal summaryPrice = rs.getBigDecimal("summaryPrice");
+                BigDecimal summaryPrice = rs.getBigDecimal("summary_price");
                 OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
                 Collection<Item> items = getItemsByOrder(id);
                 orderList.add(new Order(id, items, customer, summaryPrice, orderStatus));

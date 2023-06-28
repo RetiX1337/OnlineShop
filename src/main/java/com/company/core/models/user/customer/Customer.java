@@ -27,6 +27,7 @@ public class Customer extends User implements Identifiable {
         this.password = password;
         this.email = email;
         this.cart = new Cart();
+        this.wallet = wallet;
     }
 
     public BigDecimal getWallet() {

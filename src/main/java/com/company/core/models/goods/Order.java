@@ -31,7 +31,6 @@ public class Order implements Identifiable {
         for (Item it : items) {
             this.items.put(it.getProduct(), it);
         }
-        countPrice();
     }
 
     private void countPrice() {

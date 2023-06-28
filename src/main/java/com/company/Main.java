@@ -13,8 +13,7 @@ public class Main {
     public static void main(String[] args) {
         DependencyManager dependencyManager = new DependencyManager();
 
-        customer = dependencyManager.testCustomerCreateMethod();
-
+        customer = dependencyManager.testCustomerGetMethod();
     //    PreFiller.fillProductList(dependencyManager.getProductController());
         Menu.menu(dependencyManager, customer);
     }

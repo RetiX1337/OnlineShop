@@ -19,7 +19,7 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
     private final String UPDATE_SQL = "UPDATE item SET item.product_id = ?, item.quantity = ?, item.price = ?, item.order_id = ? WHERE item.id = ?";
     private final String ALL_SQL = "SELECT * FROM item";
     private final String SAVE_SQL = "INSERT INTO item (id, product_id, quantity, price, order_id) VALUES (?, ?, ?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT item.id, item.product_id, item.quantity, item.price, item.order_id WHERE item.id = ?";
+    private final String FIND_BY_ID_SQL = "SELECT item.id, item.product_id, item.quantity, item.price, item.order_id FROM item WHERE item.id = ?";
     private final String FIND_ALL_SQL = "SELECT item.id, item.product_id, item.quantity, item.price, item.order_id FROM item";
 
     private Long idCounter;
@@ -34,8 +34,13 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
         try {
             Connection con = pool.checkOut();
             ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            rs.last();
-            idCounter = Long.valueOf(rs.getInt("id")) + 1;
+            if (rs.isBeforeFirst()) {
+                rs.last();
+                idCounter = Long.valueOf(rs.getInt("id")) + 1;
+                pool.checkIn(con);
+            } else {
+                idCounter = 1L;
+            }
             pool.checkIn(con);
             System.out.println(idCounter);
         } catch (SQLException e) {

@@ -14,18 +14,16 @@ import java.util.List;
 
 public class CustomerPersistenceServiceDatabase implements PersistenceInterface<Customer> {
     private final JDBCConnectionPool pool;
-    private final PersistenceInterface<Customer> customerPersistenceService;
     private final String DELETE_SQL = "DELETE FROM customer WHERE customer.id = ?";
     private final String UPDATE_SQL = "UPDATE customer SET username = ?, email = ?, password = ?, wallet = ? WHERE customer.id = ?";
     private final String ALL_SQL = "SELECT * FROM customer";
     private final String SAVE_SQL = "INSERT INTO customer (id, username, email, password, wallet) VALUES (?, ?, ?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet WHERE customer.id = ?";
+    private final String FIND_BY_ID_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet FROM customer WHERE customer.id = ?";
     private final String FIND_ALL_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet FROM customer";
 
     private Long idCounter;
 
-    public CustomerPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Customer> customerPersistenceService) {
-        this.customerPersistenceService = customerPersistenceService;
+    public CustomerPersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
         initCounter();
     }
@@ -34,9 +32,13 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
         try {
             Connection con = pool.checkOut();
             ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            rs.last();
-            idCounter = Long.valueOf(rs.getInt("id")) + 1;
-            pool.checkIn(con);
+            if (rs.isBeforeFirst()) {
+                rs.last();
+                idCounter = Long.valueOf(rs.getInt("id")) + 1;
+                pool.checkIn(con);
+            } else {
+                idCounter = 1L;
+            }
             System.out.println(idCounter);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,7 +47,9 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
     @Override
     public Customer save(Customer entity) {
         entity.setId(idCounter);
+        System.out.println("damn");
         try {
+            System.out.println("Hi!!!!!!");
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(SAVE_SQL);
             prep.setLong(1, entity.getId());
@@ -55,6 +59,7 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             prep.setBigDecimal(5, entity.getWallet());
             prep.executeUpdate();
             pool.checkIn(con);
+            System.out.println("saved prolly");
             idCounter++;
             return entity;
         } catch (SQLException e) {

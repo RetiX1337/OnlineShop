@@ -19,12 +19,12 @@ public class Menu {
                     7. Leave""");
             int input = Integer.parseInt(scan.nextLine());
             switch (input) {
-                case 1 -> dependencyManager.getCustomerController().addToCart(customer);
-                case 2 -> dependencyManager.getCustomerController().checkoutCart(customer);
-                case 3 -> dependencyManager.getCustomerController().deleteFromCart(customer);
-                case 4 -> dependencyManager.getCustomerController().displayOrders(customer);
-                case 5 -> dependencyManager.getCustomerController().displayProducts();
-                case 6 -> dependencyManager.getCustomerController().displayCart(customer);
+                case 1 -> dependencyManager.getTestController().addToCart(customer, 1L);
+                case 2 -> dependencyManager.getTestController().checkoutCart(customer, 1L);
+                case 3 -> dependencyManager.getTestController().deleteFromCart(customer);
+                case 4 -> dependencyManager.getTestController().displayOrders(customer);
+                case 5 -> dependencyManager.getTestController().displayProducts(1L);
+                case 6 -> dependencyManager.getTestController().displayCart(customer);
                 case 7 -> {
                     System.out.println("Bye!");
                     menu = false;

@@ -39,8 +39,13 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
         try {
             Connection con = pool.checkOut();
             ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            rs.last();
-            idCounter = rs.getLong("id") + 1;
+            if (rs.isBeforeFirst()) {
+                rs.last();
+                idCounter = Long.valueOf(rs.getInt("id")) + 1;
+                pool.checkIn(con);
+            } else {
+                idCounter = 1L;
+            }
             pool.checkIn(con);
             System.out.println(idCounter);
         } catch (SQLException e) {
