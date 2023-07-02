@@ -6,8 +6,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 public abstract class ObjectPool<T> {
-    private long expirationTime;
-    private Hashtable<T, Long> locked, unlocked;
+    private final long expirationTime;
+    private final Hashtable<T, Long> locked;
+    private final Hashtable<T, Long> unlocked;
 
     public ObjectPool() {
         expirationTime = 30000; // 30 seconds

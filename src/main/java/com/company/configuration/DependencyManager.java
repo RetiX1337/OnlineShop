@@ -18,11 +18,16 @@ import com.company.core.services.persistenceservices.mapimpl.ItemPersistenceServ
 import com.company.core.services.persistenceservices.mapimpl.OrderPersistenceService;
 
 public class DependencyManager {
+    private final CustomerController customerController;
+    private final ShopController shopController;
     private final ProductController productController;
     private final TestController testController;
+    private final CartController cartController;
+    private final OrderController orderController;
     private final PersistenceInterface<Customer> customerPersistenceService;
+    private static DependencyManager instance;
 
-    public DependencyManager() {
+    private DependencyManager() {
         JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "matretsk82004");
 
         PersistenceInterface<Product> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
@@ -37,8 +42,6 @@ public class DependencyManager {
 
         ProductService productService = new ProductServiceImpl(productPersistenceService);
 
-        this.productController = new ProductController(productService);
-
         ItemService itemService = new ItemServiceImpl(itemPersistenceService, productService);
 
         StorageService storageService = new StorageServiceImpl(storagePersistenceService, shopPersistenceService, productService);
@@ -51,7 +54,17 @@ public class DependencyManager {
 
         ShopService shopService = new ShopServiceImpl(shopPersistenceService, storagePersistenceService);
 
-        this.testController = new TestController(cartService, orderService, productService, customerService, storageService);
+        this.cartController = new CartController(cartService, productService);
+
+        this.productController = new ProductController(productService, storageService);
+
+        this.customerController = new CustomerController(customerService);
+
+        this.shopController = new ShopController(shopService);
+
+        this.orderController = new OrderController(orderService);
+
+        this.testController = new TestController(cartService, orderService, productService, customerService, storageService, shopService);
     }
 
     public Customer testCustomerGetMethod() {
@@ -64,6 +77,29 @@ public class DependencyManager {
 
     public TestController getTestController() {
         return testController;
+    }
+
+    public CartController getCartController() {
+        return cartController;
+    }
+
+    public CustomerController getCustomerController() {
+        return customerController;
+    }
+
+    public ShopController getShopController() {
+        return shopController;
+    }
+
+    public OrderController getOrderController() {
+        return orderController;
+    }
+
+    public static DependencyManager getInstance() {
+        if (instance == null) {
+            instance = new DependencyManager();
+        }
+        return instance;
     }
 
 }

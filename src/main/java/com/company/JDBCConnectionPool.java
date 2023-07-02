@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class JDBCConnectionPool extends ObjectPool<Connection> {
-    private String dbLink, username, password;
+    private final String dbLink;
+    private final String username;
+    private final String password;
 
     public JDBCConnectionPool(String driver, String dbLink, String username, String password) {
         super();

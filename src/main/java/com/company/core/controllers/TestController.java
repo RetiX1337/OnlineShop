@@ -2,6 +2,7 @@ package com.company.core.controllers;
 
 import com.company.Main;
 import com.company.core.models.EntityNotFoundException;
+import com.company.core.models.Shop;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.*;
@@ -16,6 +17,7 @@ public class TestController {
     private final ProductService productService;
     private final CustomerService customerService;
     private final StorageService storageService;
+    private final ShopService shopService;
 
     /*
                 case 1 -> dependencyManager.getCustomerController().addToCart(customer);
@@ -30,15 +32,17 @@ public class TestController {
                           OrderService orderService,
                           ProductService productService,
                           CustomerService customerService,
-                          StorageService storageService) {
+                          StorageService storageService,
+                          ShopService shopService) {
         this.cartService = cartService;
         this.orderService = orderService;
         this.productService = productService;
         this.storageService = storageService;
         this.customerService = customerService;
+        this.shopService = shopService;
     }
 
-    public void displayProducts(Long shopId) {
+    public String displayProducts(Long shopId) {
         List<Product> products = productService.getAllProducts();
 
         String result = "";
@@ -47,6 +51,7 @@ public class TestController {
             result = result.concat(p + ", Quantity: " + quantity + "\n");
         }
         System.out.println(result);
+        return result;
     }
 
     public void displayOrders(Customer customer) {
@@ -95,8 +100,24 @@ public class TestController {
         } catch (EntityNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public Customer findCustomer(Long customerId) {
+        try {
+            return customerService.findCustomer(customerId);
+        } catch (EntityNotFoundException e) {
+            System.out.println("This customer doesn't exist");
+        }
+        return null;
+    }
 
+    public Shop findShop(Long shopId) {
+        try {
+            return shopService.getShop(shopId);
+        } catch (EntityNotFoundException e) {
+            System.out.println("This shop doesn't exist");
+        }
+        return null;
     }
 
     public void checkoutCart(Customer customer, Long shopId) {

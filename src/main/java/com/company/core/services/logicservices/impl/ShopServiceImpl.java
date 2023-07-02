@@ -55,5 +55,10 @@ public class ShopServiceImpl implements ShopService {
 
     }
 
+    @Override
+    public boolean isPresent(Long shopId) {
+        return shopPersistenceService.isPresent(shopId);
+    }
+
 
 }

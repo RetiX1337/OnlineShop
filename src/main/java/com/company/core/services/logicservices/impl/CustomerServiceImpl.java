@@ -49,4 +49,9 @@ public class CustomerServiceImpl implements CustomerService {
             throw new EntityNotFoundException();
         }
     }
+
+    @Override
+    public boolean isPresent(Long customerId) {
+        return customerPersistenceService.isPresent(customerId);
+    }
 }

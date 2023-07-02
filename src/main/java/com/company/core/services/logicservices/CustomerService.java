@@ -9,4 +9,5 @@ public interface CustomerService {
     Customer updateCustomer(Customer customer, Long id) throws EntityNotFoundException;
     void deleteById(Long id) throws EntityNotFoundException;
     Customer findCustomer(Long id) throws EntityNotFoundException;
+    boolean isPresent(Long customerId);
 }

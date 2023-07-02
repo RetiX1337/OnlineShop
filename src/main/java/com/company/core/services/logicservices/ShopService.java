@@ -14,4 +14,5 @@ public interface ShopService {
     List<Shop> getAllShops();
     void addStorage(Long shopId, Long storageId);
     void deleteStorage(Long shopId, Long storageId);
+    public boolean isPresent(Long shopId);
 }
