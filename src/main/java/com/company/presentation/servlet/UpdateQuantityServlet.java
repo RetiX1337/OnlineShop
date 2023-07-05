@@ -21,8 +21,6 @@ public class UpdateQuantityServlet extends HttpServlet {
         Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
         Customer customer = (Customer) request.getSession().getAttribute("customer");
 
-        System.out.println(customer.getUsername());
-        System.out.println(customer.getShoppingCart().getProductsFromCart());
         if (action.equals("add")) {
             DependencyManager.getInstance().getCartController().addToCart(customer, shopId, productId);
         } else if (action.equals("delete")) {
