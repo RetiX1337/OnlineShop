@@ -46,7 +46,7 @@
         <tbody>
         <% for (Order order : orders) { %>
         <tr>
-            <td><%=order.getId()%></td>
+            <td><a href="/orders/<%=order.getId()%>"><%=order.getId()%></a></td>
             <td><%=order.getSummaryPrice()%></td>
             <td><%=order.getOrderStatus().toString()%></td>
         </tr>

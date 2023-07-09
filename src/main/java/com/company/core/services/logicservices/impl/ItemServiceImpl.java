@@ -16,7 +16,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item createItem(Long productId, Integer quantity) throws EntityNotFoundException {
+    public Item createItem(Long productId, Integer quantity) {
         return new Item(productService.getProduct(productId), quantity);
     }
 
@@ -35,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item findItem(Long id) throws EntityNotFoundException {
+    public Item findItem(Long id) {
         if (itemPersistenceService.isPresent(id)) {
             return itemPersistenceService.findById(id);
         } else {

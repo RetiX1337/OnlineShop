@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Customer customer, Long id) throws EntityNotFoundException {
+    public Customer updateCustomer(Customer customer, Long id) {
         if (customerPersistenceService.isPresent(id)) {
             return customerPersistenceService.update(customer, id);
         } else {
@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteById(Long id) throws EntityNotFoundException {
+    public void deleteById(Long id) {
         if (customerPersistenceService.isPresent(id)) {
             customerPersistenceService.deleteById(id);
         } else {
@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findCustomer(Long id) throws EntityNotFoundException {
+    public Customer findCustomer(Long id) {
         if (customerPersistenceService.isPresent(id)) {
             return customerPersistenceService.findById(id);
         } else {

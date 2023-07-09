@@ -16,7 +16,6 @@
 
 <%
     Customer customer = (Customer) session.getAttribute("customer");
-    Long shopId = Long.valueOf(session.getAttribute("shopId").toString());
 %>
 <header>
     <div class="header-left">
@@ -33,7 +32,7 @@
     </div>
 </header>
 <%
-    boolean isProcessed = DependencyManager.getInstance().getCartController().checkoutCart(customer, shopId);
+    boolean isProcessed = Boolean.parseBoolean(request.getParameter("is-processed"));
 %>
 <div class="container">
     <% if (isProcessed) { %>

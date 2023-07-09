@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order updateOrder(Order order, Long id) throws EntityNotFoundException {
+    public Order updateOrder(Order order, Long id) {
         if (orderPersistenceService.isPresent(id)) {
             Order updatedOrder = orderPersistenceService.update(order, id);
             updatedOrder.getItems().forEach(item -> {
@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(Long id) throws EntityNotFoundException {
+    public void deleteOrder(Long id) {
         if (orderPersistenceService.isPresent(id)) {
             Order orderToDelete = orderPersistenceService.findById(id);
             for (Item item : orderToDelete.getItems()) {
@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findOrder(Long id) throws EntityNotFoundException {
+    public Order findOrder(Long id) {
         if (orderPersistenceService.isPresent(id)) {
             return orderPersistenceService.findById(id);
         } else {

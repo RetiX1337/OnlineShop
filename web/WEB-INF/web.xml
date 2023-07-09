@@ -31,7 +31,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>login-processing</servlet-name>
-        <url-pattern>/login-processing</url-pattern>
+        <url-pattern>/login-pro</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -53,12 +53,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>order-processing</servlet-name>
-        <jsp-file>/orderprocessing.jsp</jsp-file>
+        <servlet-name>order-confirmation</servlet-name>
+        <jsp-file>/orderconfirmation.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>order-processing</servlet-name>
-        <url-pattern>/order-processing</url-pattern>
+        <servlet-name>order-confirmation</servlet-name>
+        <url-pattern>/order-confirmation</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -68,5 +68,14 @@
     <servlet-mapping>
         <servlet-name>orders</servlet-name>
         <url-pattern>/orders</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>order-page</servlet-name>
+        <jsp-file>/orderpage.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>order-page</servlet-name>
+        <url-pattern>/order-page</url-pattern>
     </servlet-mapping>
 </web-app>

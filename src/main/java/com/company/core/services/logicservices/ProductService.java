@@ -10,8 +10,8 @@ import java.util.List;
 public interface ProductService {
     Product createProduct(String brand, String name, ProductType productType, BigDecimal price);
     void addProduct(Product product);
-    void deleteProduct(Long id) throws EntityNotFoundException;
-    Product updateProduct(Product product, Long id) throws EntityNotFoundException;
-    Product getProduct(Long id) throws EntityNotFoundException;
+    void deleteProduct(Long id);
+    Product updateProduct(Product product, Long id);
+    Product getProduct(Long id);
     List<Product> getAllProducts();
 }

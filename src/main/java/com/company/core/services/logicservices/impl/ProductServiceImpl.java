@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) throws EntityNotFoundException {
+    public void deleteProduct(Long id) {
         if (productPersistenceService.isPresent(id)) {
             productPersistenceService.deleteById(id);
         } else {
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product, Long id) throws EntityNotFoundException {
+    public Product updateProduct(Product product, Long id) {
         if (productPersistenceService.isPresent(id)) {
             return productPersistenceService.update(product, id);
         } else {
@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(Long id) throws EntityNotFoundException {
+    public Product getProduct(Long id) {
         if (productPersistenceService.isPresent(id)) {
             return productPersistenceService.findById(id);
         } else {

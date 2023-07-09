@@ -12,12 +12,7 @@ public class CustomerController {
     }
 
     public Customer findCustomer(Long customerId) {
-        try {
-            return customerService.findCustomer(customerId);
-        } catch (EntityNotFoundException e) {
-            System.out.println("This customer doesn't exist");
-        }
-        return null;
+        return customerService.findCustomer(customerId);
     }
 
     public boolean isPresent(Long customerId) {

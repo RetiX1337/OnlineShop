@@ -1,6 +1,5 @@
 package com.company.core.services.logicservices.impl;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
@@ -24,22 +23,28 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addToCart(Cart cart, Long productId, Integer quantity, Long shopId) throws EntityNotFoundException {
-        if (containsProduct(cart, productService.getProduct(productId))) {
-            if (!moreThanAvailable(cart, itemService.createItem(productId, quantity), shopId)) {
-                addOrUpdate(cart, productId, quantity);
-                return true;
+    public boolean addToCart(Cart cart, Long productId, Integer quantity, Long shopId) {
+        if (storageService.getQuantityPerShop(shopId, productId)>0) {
+            if (containsProduct(cart, productService.getProduct(productId))) {
+                if (notMoreThanAvailable(cart, itemService.createItem(productId, quantity), shopId)) {
+                    addToExistingItem(cart, productId, quantity);
+                    countPrice(cart);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return false;
+                addNewItem(cart, productId, quantity);
+                countPrice(cart);
+                return true;
             }
         } else {
-            addOrUpdate(cart, productId, quantity);
-            return true;
+            return false;
         }
     }
 
     @Override
-    public boolean deleteFromCart(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
+    public boolean deleteFromCart(Cart cart, Long productId, Integer quantity) {
         if (containsProduct(cart, productService.getProduct(productId))) {
             Item item = cart.getItem(productService.getProduct(productId));
             if (item.getQuantity().equals(quantity)) {
@@ -56,6 +61,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public boolean checkoutCart(Customer customer, Long shopId) {
         Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
+        if (customer.getShoppingCart().isEmpty()) return false;
         if (orderService.processOrder(order, customer, shopId)) {
             customer.getShoppingCart().clear();
             return true;
@@ -63,8 +69,13 @@ public class CartServiceImpl implements CartService {
         return false;
     }
 
-    private void addToCartItem(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
+    private void addToExistingItem(Cart cart, Long productId, Integer quantity) {
         cart.getItem(productService.getProduct(productId)).increaseQuantity(quantity);
+    }
+
+    private void addNewItem(Cart cart, Long productId, Integer quantity) {
+        Item item = itemService.createItem(productId, quantity);
+        cart.addItem(item);
     }
 
     private void countPrice(Cart cart) {
@@ -74,23 +85,14 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    private boolean moreThanAvailable(Cart cart, Item item, Long shopId) {
+    private boolean notMoreThanAvailable(Cart cart, Item item, Long shopId) {
         if (item == null) return false;
         Product product = item.getProduct();
-        return item.getQuantity() - (cart.getItem(product).getQuantity() + storageService.getQuantityPerShop(shopId, product.getId())) >= 0;
+        return (storageService.getQuantityPerShop(shopId, product.getId()) - (item.getQuantity() + cart.getItem(product).getQuantity())) >= 0;
     }
 
     private boolean containsProduct(Cart cart, Product product) {
         return cart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().getId().equals(product.getId()));
     }
 
-    private void addOrUpdate(Cart cart, Long productId, Integer quantity) throws EntityNotFoundException {
-        if (containsProduct(cart, productService.getProduct(productId))) {
-            addToCartItem(cart, productId, quantity);
-        } else {
-            Item item = itemService.createItem(productId, quantity);
-            cart.addItem(item);
-        }
-        countPrice(cart);
-    }
 }

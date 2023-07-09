@@ -32,10 +32,12 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop getShop(Long id) throws EntityNotFoundException {
+    public Shop getShop(Long id) {
         if (shopPersistenceService.isPresent(id)) {
+            System.out.println("1");
             return shopPersistenceService.findById(id);
         } else {
+            System.out.println("2");
             throw new EntityNotFoundException();
         }
     }

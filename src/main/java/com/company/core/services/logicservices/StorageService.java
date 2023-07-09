@@ -9,11 +9,11 @@ import java.util.List;
 public interface StorageService {
     Storage createStorage(String name, String address);
     void addStorage(Storage storage);
-    Storage getStorage(Long id) throws EntityNotFoundException;
+    Storage getStorage(Long id);
     List<Storage> getAllStorages();
     Integer getQuantityPerShop(Long shopId, Long productId);
     boolean removeQuantityFromShopStorages(Integer quantity, Long shopId, Long productId);
-    void addProductQuantity(Integer quantity, Long storageId, Long productId) throws EntityNotFoundException;
+    void addProductQuantity(Integer quantity, Long storageId, Long productId);
     void deleteProductQuantity(Integer quantity, Long storageId, Long productId);
     void addShop(Long storageId, Long shopId);
     void deleteShop(Long storageId, Long shopId);

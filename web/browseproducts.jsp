@@ -9,6 +9,11 @@
 <head>
     <link rel="stylesheet" href="styles/styles.css"/>
     <title>Product Browse</title>
+    <script>
+        function closeErrorMessage() {
+            document.getElementById("error-message").style.display = "none";
+        }
+    </script>
 </head>
 <body>
 <%
@@ -31,6 +36,14 @@
         </div>
     </div>
 </header>
+
+<% if (session.getAttribute("browseProductsQuantityModifyError") != null) { %>
+<div class="error-message" id="error-message">
+    <span class="close-button" onclick="closeErrorMessage()">&times;</span>
+    <%= session.getAttribute("browseProductsQuantityModifyError").toString() %>
+    <%session.removeAttribute("browseProductsQuantityModifyError");%>
+</div>
+<% } %>
 <div class="container">
     <h1>Products</h1>
 <div class="grid-container">

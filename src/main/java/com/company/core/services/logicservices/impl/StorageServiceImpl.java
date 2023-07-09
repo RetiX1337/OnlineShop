@@ -36,7 +36,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Storage getStorage(Long id) throws EntityNotFoundException {
+    public Storage getStorage(Long id) {
         if (storagePersistenceService.isPresent(id)) {
             return storagePersistenceService.findById(id);
         } else {

@@ -9,6 +9,89 @@ body {
     padding: 0;
 }
 
+
+.error-message {
+    max-height: 100px;
+    max-width: 200px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #f44336;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: fade-in 0.3s ease-in-out;
+}
+
+.error-message .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.error-message .close-button:hover {
+    color: #ccc;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.order-details {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.order-details h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.order-details .field {
+    margin-bottom: 10px;
+}
+
+.order-details .field-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.order-details .items {
+    margin-top: 20px;
+}
+
+.order-details .item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.order-details .item .field-label {
+    display: inline-block;
+    width: 120px;
+    font-weight: bold;
+    color: #555;
+}
+
+.order-details .item .field-value {
+    display: inline-block;
+    color: #333;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -250,3 +333,4 @@ header {
 .cart-table tr:last-child td {
     border-bottom: none;
 }
+

@@ -17,4 +17,8 @@ public class OrderController {
     public Collection<Order> getOrders(Customer customer) {
         return orderService.findByCustomer(customer.getId());
     }
+
+    public Order findOrderById(Long orderId) {
+        return orderService.findOrder(orderId);
+    }
 }

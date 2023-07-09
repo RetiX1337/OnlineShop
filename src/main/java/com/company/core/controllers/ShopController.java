@@ -12,12 +12,7 @@ public class ShopController {
     }
 
     public Shop findShop(Long shopId) {
-        try {
-            return shopService.getShop(shopId);
-        } catch (EntityNotFoundException e) {
-            System.out.println("This shop doesn't exist");
-        }
-        return null;
+        return shopService.getShop(shopId);
     }
 
     public boolean isPresent(Long shopId) {

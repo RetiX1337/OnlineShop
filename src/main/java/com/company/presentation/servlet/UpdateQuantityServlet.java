@@ -17,14 +17,22 @@ public class UpdateQuantityServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter("action");
-        Long productId = Long.valueOf(request.getParameter("productId"));
-        Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
+
         Customer customer = (Customer) request.getSession().getAttribute("customer");
 
+        Long productId = Long.valueOf(request.getParameter("productId"));
+        Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
+
+        String error = "";
+
         if (action.equals("add")) {
-            DependencyManager.getInstance().getCartController().addToCart(customer, shopId, productId);
+            if (!DependencyManager.getInstance().getCartController().addToCart(customer, shopId, productId)) {
+                request.getSession().setAttribute("browseProductsQuantityModifyError", "You can't add!");
+            }
         } else if (action.equals("delete")) {
-            DependencyManager.getInstance().getCartController().deleteFromCart(customer, productId);
+            if (!DependencyManager.getInstance().getCartController().deleteFromCart(customer, productId)) {
+                request.getSession().setAttribute("browseProductsQuantityModifyError", "You can't delete!");
+            }
         }
 
         response.sendRedirect("/browse-products");

@@ -18,8 +18,7 @@ import java.util.Properties;
 
 public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop> {
     private final JDBCConnectionPool pool;
-    private Long idCounter;
-    private final String SAVE_SQL = "INSERT INTO shop (id, name, address) VALUES (?, ?, ?)";
+    private final String SAVE_SQL = "INSERT INTO shop (name, address) VALUES (?, ?)";
     private final String FIND_ALL_SQL = "SELECT id, name, address FROM shop";
     private final String UPDATE_SQL = "UPDATE shop SET id = ?, name = ?, address = ? WHERE id = ?";
     private final String DELETE_SQL = "DELETE FROM shop WHERE id = ?";
@@ -32,42 +31,24 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
 
     public ShopPersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
-        initCounter();
-    }
-
-    private void initCounter() {
-        try {
-            Connection con = pool.checkOut();
-            ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            if (rs.isBeforeFirst()) {
-                rs.last();
-                idCounter = Long.valueOf(rs.getInt("id")) + 1;
-                pool.checkIn(con);
-            } else {
-                idCounter = 1L;
-            }
-            pool.checkIn(con);
-            System.out.println(idCounter);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public Shop save(Shop entity) {
-        entity.setId(idCounter);
         try {
             Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(SAVE_SQL);
-            prep.setLong(1, entity.getId());
-            prep.setString(2, entity.getName());
-            prep.setString(3, entity.getAddress());
+            PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            prep.setString(1, entity.getName());
+            prep.setString(2, entity.getAddress());
             for (Long storageId : entity.getStorages()) {
                 addBond(entity.getId(), storageId);
             }
             prep.executeUpdate();
+
+            ResultSet rs = prep.getGeneratedKeys();
+            rs.next();
+            entity.setId(rs.getLong(1));
             pool.checkIn(con);
-            idCounter++;
             return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -82,11 +63,9 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             p.setLong(1, id);
             ResultSet rs = p.executeQuery();
             rs.next();
-            String name = rs.getString("name");
-            String address = rs.getString("address");
-            List<Long> storages = getStoragesByShop(id);
+            Shop shop = mapShop(rs);
             pool.checkIn(con);
-            return new Shop(id, name, address, storages);
+            return shop;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -100,11 +79,8 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
             while (rs.next()) {
-                Long shopId = rs.getLong("id");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                List<Long> storages = getStoragesByShop(shopId);
-                shops.add(new Shop(shopId, name, address, storages));
+                Shop shop = mapShop(rs);
+                shops.add(shop);
             }
             pool.checkIn(con);
             return shops;
@@ -166,6 +142,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             prep.setLong(1, id);
             ResultSet rs = prep.executeQuery();
             pool.checkIn(con);
+            System.out.println(rs);
             return rs.isBeforeFirst();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -210,6 +187,18 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             prep.setLong(2, storageId);
             prep.executeUpdate();
             pool.checkIn(con);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Shop mapShop(ResultSet rs) {
+        try {
+            Long shopId = rs.getLong("id");
+            String name = rs.getString("name");
+            String address = rs.getString("address");
+            List<Long> storages = getStoragesByShop(shopId);
+            return new Shop(shopId, name, address, storages);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

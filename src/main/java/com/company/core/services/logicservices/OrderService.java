@@ -12,8 +12,8 @@ public interface OrderService {
     Order createOrder(Collection<Item> items, Customer customer);
     Order addOrder(Order order);
     boolean processOrder(Order order, Customer customer, Long shopId);
-    Order updateOrder(Order order, Long id) throws EntityNotFoundException;
-    void deleteOrder(Long id) throws EntityNotFoundException;
-    Order findOrder(Long id) throws EntityNotFoundException;
+    Order updateOrder(Order order, Long id);
+    void deleteOrder(Long id);
+    Order findOrder(Long id);
     List<Order> findByCustomer(Long customerId);
 }

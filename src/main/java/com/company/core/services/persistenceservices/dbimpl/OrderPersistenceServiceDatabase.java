@@ -18,49 +18,31 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
     private final String DELETE_SQL = "DELETE FROM online_shop.order WHERE online_shop.order.id = ?";
     private final String UPDATE_SQL = "UPDATE product SET online_shop.order.customer_id = ?, online_shop.order.summary_price = ?, order_status_id = ? WHERE online_shop.order.id = ?";
     private final String ALL_SQL = "SELECT * FROM online_shop.order";
-    private final String SAVE_SQL = "INSERT INTO online_shop.order (id, customer_id, summary_price, order_status_id) VALUES (?, ?, ?, ?)";
+    private final String SAVE_SQL = "INSERT INTO online_shop.order (customer_id, summary_price, order_status_id) VALUES (?, ?, ?)";
     private final String FIND_BY_ID_SQL = "SELECT online_shop.order.id, online_shop.order.customer_id, online_shop.order.summary_price, order_status.order_status FROM online_shop.order INNER JOIN order_status ON online_shop.order.order_status_id = order_status.id WHERE online_shop.order.id = ?";
     private final String FIND_ALL_SQL = "SELECT online_shop.order.id, online_shop.order.customer_id, online_shop.order.summary_price, order_status.order_status FROM online_shop.order INNER JOIN order_status ON online_shop.order.order_status_id = order_status.id";
     private final String GET_ITEMS_BY_ORDER = "SELECT id FROM item WHERE order_id = ?";
-    private static Long idCounter;
 
     public OrderPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Item> itemPersistenceService, PersistenceInterface<Customer> customerPersistenceService) {
         this.pool = pool;
         this.itemPersistenceService = itemPersistenceService;
         this.customerPersistenceService = customerPersistenceService;
-        initCounter();
     }
 
-    private void initCounter() {
-        try {
-            Connection con = pool.checkOut();
-            ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            if (rs.isBeforeFirst()) {
-                rs.last();
-                idCounter = Long.valueOf(rs.getInt("id")) + 1;
-                pool.checkIn(con);
-            } else {
-                idCounter = 1L;
-            }
-            pool.checkIn(con);
-            System.out.println(idCounter);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
     @Override
     public Order save(Order entity) {
-        entity.setId(idCounter);
         try {
             Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(SAVE_SQL);
-            prep.setLong(1, entity.getId());
-            prep.setLong(2, entity.getCustomer().getId());
-            prep.setBigDecimal(3, entity.getSummaryPrice());
-            prep.setLong(4, entity.getOrderStatus().ordinal()+1);
+            PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            prep.setLong(1, entity.getCustomer().getId());
+            prep.setBigDecimal(2, entity.getSummaryPrice());
+            prep.setLong(3, entity.getOrderStatus().ordinal()+1);
             prep.executeUpdate();
+
+            ResultSet rs = prep.getGeneratedKeys();
+            rs.next();
+            entity.setId(rs.getLong(1));
             pool.checkIn(con);
-            idCounter++;
             return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -75,13 +57,9 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             p.setLong(1, id);
             ResultSet rs = p.executeQuery();
             rs.next();
-            Long customerId = rs.getLong("customer_id");
-            Customer customer = customerPersistenceService.findById(customerId);
-            BigDecimal summaryPrice = rs.getBigDecimal("summary_price");
-            OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
-            Collection<Item> items = getItemsByOrder(id);
+            Order order = mapOrder(rs);
             pool.checkIn(con);
-            return new Order(id, items, customer, summaryPrice, orderStatus);
+            return order;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -95,14 +73,8 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
             while (rs.next()) {
-                Long id = rs.getLong("id");
-
-                Long customerId = rs.getLong("customer_id");
-                Customer customer = customerPersistenceService.findById(customerId);
-                BigDecimal summaryPrice = rs.getBigDecimal("summary_price");
-                OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
-                Collection<Item> items = getItemsByOrder(id);
-                orderList.add(new Order(id, items, customer, summaryPrice, orderStatus));
+                Order order = mapOrder(rs);
+                orderList.add(order);
             }
             pool.checkIn(con);
             return orderList;
@@ -169,6 +141,20 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             }
             pool.checkIn(con);
             return items;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Order mapOrder(ResultSet rs) {
+        try {
+            Long id = rs.getLong("id");
+            Long customerId = rs.getLong("customer_id");
+            Customer customer = customerPersistenceService.findById(customerId);
+            BigDecimal summaryPrice = rs.getBigDecimal("summary_price");
+            OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
+            Collection<Item> items = getItemsByOrder(id);
+            return new Order(id, items, customer, summaryPrice, orderStatus);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

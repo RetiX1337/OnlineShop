@@ -1,9 +1,7 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
-import com.company.core.models.goods.Product;
-import com.company.core.models.goods.ProductBase;
-import com.company.core.models.goods.ProductType;
+import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
@@ -17,50 +15,28 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
     private final String DELETE_SQL = "DELETE FROM customer WHERE customer.id = ?";
     private final String UPDATE_SQL = "UPDATE customer SET username = ?, email = ?, password = ?, wallet = ? WHERE customer.id = ?";
     private final String ALL_SQL = "SELECT * FROM customer";
-    private final String SAVE_SQL = "INSERT INTO customer (id, username, email, password, wallet) VALUES (?, ?, ?, ?, ?)";
+    private final String SAVE_SQL = "INSERT INTO customer (username, email, password, wallet) VALUES (?, ?, ?, ?)";
     private final String FIND_BY_ID_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet FROM customer WHERE customer.id = ?";
     private final String FIND_ALL_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet FROM customer";
 
-    private Long idCounter;
-
     public CustomerPersistenceServiceDatabase(JDBCConnectionPool pool) {
         this.pool = pool;
-        initCounter();
     }
 
-    private void initCounter() {
-        try {
-            Connection con = pool.checkOut();
-            ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            if (rs.isBeforeFirst()) {
-                rs.last();
-                idCounter = Long.valueOf(rs.getInt("id")) + 1;
-                pool.checkIn(con);
-            } else {
-                idCounter = 1L;
-            }
-            System.out.println(idCounter);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
     @Override
     public Customer save(Customer entity) {
-        entity.setId(idCounter);
-        System.out.println("damn");
         try {
-            System.out.println("Hi!!!!!!");
             Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(SAVE_SQL);
-            prep.setLong(1, entity.getId());
-            prep.setString(2, entity.getUsername());
-            prep.setString(3, entity.getEmail());
-            prep.setString(4, entity.getPassword());
-            prep.setBigDecimal(5, entity.getWallet());
+            PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            prep.setString(1, entity.getUsername());
+            prep.setString(2, entity.getEmail());
+            prep.setString(3, entity.getPassword());
+            prep.setBigDecimal(4, entity.getWallet());
             prep.executeUpdate();
+            ResultSet rs = prep.getGeneratedKeys();
+            rs.next();
+            entity.setId(rs.getLong(1));
             pool.checkIn(con);
-            System.out.println("saved prolly");
-            idCounter++;
             return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -75,12 +51,9 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             p.setLong(1, id);
             ResultSet rs = p.executeQuery();
             rs.next();
-            String username = rs.getString("username");
-            String email = rs.getString("email");
-            String password = rs.getString("password");
-            BigDecimal wallet = rs.getBigDecimal("wallet");
+            Customer customer = mapCustomer(rs);
             pool.checkIn(con);
-            return new Customer(id, username, email, password, wallet);
+            return customer;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -94,12 +67,8 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
             while (rs.next()) {
-                Long id = rs.getLong("id");
-                String username = rs.getString("username");
-                String email = rs.getString("email");
-                String password = rs.getString("password");
-                BigDecimal wallet = rs.getBigDecimal("wallet");
-                customerList.add(new Customer(id, username, email, password, wallet));
+                Customer customer = mapCustomer(rs);
+                customerList.add(customer);
             }
             pool.checkIn(con);
             return customerList;
@@ -149,6 +118,19 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             ResultSet rs = prep.executeQuery();
             pool.checkIn(con);
             return rs.isBeforeFirst();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Customer mapCustomer(ResultSet rs) {
+        try {
+            Long id = rs.getLong("id");
+            String username = rs.getString("username");
+            String email = rs.getString("email");
+            String password = rs.getString("password");
+            BigDecimal wallet = rs.getBigDecimal("wallet");
+            return new Customer(id, username, email, password, wallet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

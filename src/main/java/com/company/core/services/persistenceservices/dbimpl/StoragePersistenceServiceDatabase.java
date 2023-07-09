@@ -1,6 +1,7 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
+import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductWithQuantity;
@@ -14,12 +15,10 @@ import java.util.List;
 public class StoragePersistenceServiceDatabase implements PersistenceInterface<Storage> {
     private final JDBCConnectionPool pool;
     private final PersistenceInterface<Product> productPersistenceService;
-    private Long idCounter;
-
     private final String FIND_QUANTITY_SQL = "SELECT * FROM product_storage WHERE product_id = ? AND storage_id = ?";
     private final String UPDATE_QUANTITY_SQL = "UPDATE product_storage SET quantity = ? WHERE storage_id = ? AND product_id = ?";
     private final String ADD_QUANTITY_SQL = "INSERT INTO product_storage (storage_id, product_id, quantity) VALUES (?, ?, ?)";
-    private final String SAVE_SQL = "INSERT INTO storage (id, name, address) VALUES (?, ?, ?)";
+    private final String SAVE_SQL = "INSERT INTO storage (name, address) VALUES (?, ?)";
     private final String FIND_ALL_SQL = "SELECT id, name, address FROM storage";
     private final String UPDATE_SQL = "UPDATE storage SET id = ?, name = ?, address = ? WHERE id = ?";
     private final String DELETE_SQL = "DELETE FROM storage WHERE id = ?";
@@ -34,48 +33,31 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     public StoragePersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Product> productPersistenceService) {
         this.pool = pool;
         this.productPersistenceService = productPersistenceService;
-        initCounter();
-    }
-
-    private void initCounter() {
-        try {
-            Connection con = pool.checkOut();
-            ResultSet rs = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(ALL_SQL);
-            if (rs.isBeforeFirst()) {
-                rs.last();
-                idCounter = Long.valueOf(rs.getInt("id")) + 1;
-                pool.checkIn(con);
-            } else {
-                idCounter = 1L;
-            }
-            pool.checkIn(con);
-            System.out.println(idCounter);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public Storage save(Storage entity) {
-        entity.setId(idCounter);
         try {
             Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(SAVE_SQL);
-            prep.setLong(1, entity.getId());
-            prep.setString(2, entity.getName());
-            prep.setString(3, entity.getAddress());
+            PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            prep.setString(1, entity.getName());
+            prep.setString(2, entity.getAddress());
+            prep.executeUpdate();
+
+            ResultSet rs = prep.getGeneratedKeys();
+            rs.next();
+            Long id = rs.getLong(1);
+            entity.setId(id);
 
             for (Long shopId : entity.getShops()) {
-                addBond(shopId, idCounter);
+                addBond(shopId, id);
             }
 
             for (ProductWithQuantity p : entity.getProductQuantities().values()) {
                 addQuantity(p, entity.getId());
             }
 
-            prep.executeUpdate();
             pool.checkIn(con);
-            idCounter++;
             return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -90,12 +72,9 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             p.setLong(1, id);
             ResultSet rs = p.executeQuery();
             rs.next();
-            String name = rs.getString("name");
-            String address = rs.getString("address");
-            List<Long> shops = getShopsByStorage(id);
-            HashMap<Long, ProductWithQuantity> productQuantities = getQuantities(id);
+            Storage storage = mapStorage(rs);
             pool.checkIn(con);
-            return new Storage(id, name, address, shops, productQuantities);
+            return storage;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -109,12 +88,8 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
             while (rs.next()) {
-                Long storageId = rs.getLong("id");
-                String name = rs.getString("name");
-                String address = rs.getString("address");
-                List<Long> shops = getShopsByStorage(storageId);
-                HashMap<Long, ProductWithQuantity> productQuantities = getQuantities(storageId);
-                storages.add(new Storage(storageId, name, address, shops, productQuantities));
+                Storage storage = mapStorage(rs);
+                storages.add(storage);
             }
             pool.checkIn(con);
             return storages;
@@ -292,6 +267,19 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             ResultSet rs = prep.executeQuery();
             pool.checkIn(con);
             return rs.isBeforeFirst();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Storage mapStorage(ResultSet rs) {
+        try {
+            Long storageId = rs.getLong("id");
+            String name = rs.getString("name");
+            String address = rs.getString("address");
+            List<Long> shops = getShopsByStorage(storageId);
+            HashMap<Long, ProductWithQuantity> productQuantities = getQuantities(storageId);
+            return new Storage(storageId, name, address, shops, productQuantities);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
