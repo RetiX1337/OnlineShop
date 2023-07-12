@@ -24,44 +24,47 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean addToCart(Cart cart, Long productId, Integer quantity, Long shopId) {
-        if (storageService.getQuantityPerShop(shopId, productId)>0) {
-            if (containsProduct(cart, productService.getProduct(productId))) {
-                if (notMoreThanAvailable(cart, itemService.createItem(productId, quantity), shopId)) {
-                    addToExistingItem(cart, productId, quantity);
-                    countPrice(cart);
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                addNewItem(cart, productId, quantity);
-                countPrice(cart);
-                return true;
-            }
-        } else {
+        if (storageService.getQuantityPerShop(shopId, productId) <= 0) {
             return false;
         }
+
+        if (containsProduct(cart, productService.getProduct(productId))) {
+            if (notMoreThanAvailable(cart, productId, quantity, shopId)) {
+                addToExistingItem(cart, productId, quantity);
+            } else {
+                return false;
+            }
+        } else {
+            addNewItem(cart, productId, quantity);
+        }
+
+        countPrice(cart);
+        return true;
     }
 
     @Override
     public boolean deleteFromCart(Cart cart, Long productId, Integer quantity) {
-        if (containsProduct(cart, productService.getProduct(productId))) {
-            Item item = cart.getItem(productService.getProduct(productId));
-            if (item.getQuantity().equals(quantity)) {
-                cart.deleteItem(item);
-            } else {
-                item.decreaseQuantity(quantity);
-            }
-            countPrice(cart);
-            return true;
+        if (!containsProduct(cart, productService.getProduct(productId))) {
+            return false;
         }
-        return false;
+
+        Item item = cart.getItem(productService.getProduct(productId));
+        if (item.getQuantity().equals(quantity)) {
+            cart.deleteItem(item);
+        } else {
+            item.decreaseQuantity(quantity);
+        }
+
+        countPrice(cart);
+        return true;
     }
 
     @Override
     public boolean checkoutCart(Customer customer, Long shopId) {
         Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
-        if (customer.getShoppingCart().isEmpty()) return false;
+        if (customer.getShoppingCart().isEmpty()) {
+            return false;
+        }
         if (orderService.processOrder(order, customer, shopId)) {
             customer.getShoppingCart().clear();
             return true;
@@ -79,16 +82,15 @@ public class CartServiceImpl implements CartService {
     }
 
     private void countPrice(Cart cart) {
-        cart.setSummaryPrice(new BigDecimal(0));
+        cart.setSummaryPrice(BigDecimal.valueOf(0));
         for (Item it : cart.getProductsFromCart()) {
             cart.setSummaryPrice(cart.getSummaryPrice().add(it.getPrice()));
         }
     }
 
-    private boolean notMoreThanAvailable(Cart cart, Item item, Long shopId) {
-        if (item == null) return false;
-        Product product = item.getProduct();
-        return (storageService.getQuantityPerShop(shopId, product.getId()) - (item.getQuantity() + cart.getItem(product).getQuantity())) >= 0;
+    private boolean notMoreThanAvailable(Cart cart, Long productId, Integer quantity, Long shopId) {
+        Product product = productService.getProduct(productId);
+        return (storageService.getQuantityPerShop(shopId, product.getId()) - (quantity + cart.getItem(product).getQuantity())) >= 0;
     }
 
     private boolean containsProduct(Cart cart, Product product) {

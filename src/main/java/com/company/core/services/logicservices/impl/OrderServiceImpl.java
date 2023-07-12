@@ -49,49 +49,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order addOrder(Order order) {
-        Order savedOrder = orderPersistenceService.save(order);
-        savedOrder.setOrderStatus(OrderStatus.PAID);
-        savedOrder.getItems().forEach(item -> {
-            item.setOrderId(savedOrder.getId());
-            itemService.addItem(item);
-        });
-        return savedOrder;
+        return orderPersistenceService.save(order);
     }
 
     @Override
     public Order updateOrder(Order order, Long id) {
-        if (orderPersistenceService.isPresent(id)) {
-            Order updatedOrder = orderPersistenceService.update(order, id);
-            updatedOrder.getItems().forEach(item -> {
-                item.setOrderId(updatedOrder.getId());
-                itemService.addItem(item);
-            });
-            return orderPersistenceService.update(order, id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        order.setId(id);
+        return orderPersistenceService.update(order);
     }
 
     @Override
     public void deleteOrder(Long id) {
-        if (orderPersistenceService.isPresent(id)) {
-            Order orderToDelete = orderPersistenceService.findById(id);
-            for (Item item : orderToDelete.getItems()) {
-                itemService.deleteItem(item.getId());
-            }
-            orderPersistenceService.deleteById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        orderPersistenceService.deleteById(id);
     }
 
     @Override
     public Order findOrder(Long id) {
-        if (orderPersistenceService.isPresent(id)) {
-            return orderPersistenceService.findById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return orderPersistenceService.findById(id);
     }
 
     @Override
@@ -108,8 +82,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private boolean enoughMoney(BigDecimal wallet, BigDecimal summaryPrice) {
-        System.out.println(wallet);
-        System.out.println(summaryPrice);
         return summaryPrice.compareTo(wallet) == 0 || summaryPrice.compareTo(wallet) == -1;
     }
 }

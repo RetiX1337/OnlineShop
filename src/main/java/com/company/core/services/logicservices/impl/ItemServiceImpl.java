@@ -27,19 +27,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(Long id) throws EntityNotFoundException {
-        if (itemPersistenceService.isPresent(id)) {
-            itemPersistenceService.deleteById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        itemPersistenceService.deleteById(id);
     }
 
     @Override
     public Item findItem(Long id) {
-        if (itemPersistenceService.isPresent(id)) {
-            return itemPersistenceService.findById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return itemPersistenceService.findById(id);
     }
 }

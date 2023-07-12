@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.configuration.DependencyManager;
+import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.user.customer.Customer;
 import com.company.presentation.Menu;
@@ -14,10 +15,11 @@ public class Main {
     public static DependencyManager dependencyManager;
 
     public static void main(String[] args) {
-        dependencyManager = DependencyManager.getInstance();
-        customer = dependencyManager.testCustomerGetMethod();
-    //    PreFiller.fillProductList(dependencyManager.getProductController());
-        Menu.menu(dependencyManager, customer);
+        try {
+            DependencyManager.getInstance().getCustomerController().findCustomer(3L);
+        } catch (EntityNotFoundException e) {
+            System.out.println("Not found");
+        }
     }
 
     public static void initDependencyManager() {

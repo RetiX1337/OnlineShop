@@ -1,6 +1,7 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
+import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
@@ -67,7 +68,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             pool.checkIn(con);
             return shop;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -85,41 +86,36 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             pool.checkIn(con);
             return shops;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public Shop update(Shop entity, Long id) {
+    public Shop update(Shop entity) {
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
-            prep.setLong(1, id);
+            prep.setLong(1, entity.getId());
             prep.setString(2, entity.getName());
             prep.setString(3, entity.getAddress());
-            prep.setLong(4, id);
+            prep.setLong(4, entity.getId());
 
             List<Long> newStorages = entity.getStorages();
-            List<Long> oldStorages = getStoragesByShop(id);
+            List<Long> oldStorages = getStoragesByShop(entity.getId());
 
-            for (Long newStorageId : newStorages) {
-                if (!oldStorages.contains(newStorageId)) {
-                    addBond(id, newStorageId);
-                }
-            }
+            addNewStorages(entity, newStorages, oldStorages);
 
-            for (Long oldStorageId : oldStorages) {
-                if (!newStorages.contains(oldStorageId)) {
-                    deleteBond(id, oldStorageId);
-                }
-            }
+            deleteOldStorages(entity, newStorages, oldStorages);
+
             prep.executeUpdate();
             pool.checkIn(con);
             return entity;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
+
+
 
     @Override
     public void deleteById(Long id) {
@@ -130,22 +126,17 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             prep.executeUpdate();
             pool.checkIn(con);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
     public boolean isPresent(Long id) {
         try {
-            Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(FIND_BY_ID_SQL);
-            prep.setLong(1, id);
-            ResultSet rs = prep.executeQuery();
-            pool.checkIn(con);
-            System.out.println(rs);
-            return rs.isBeforeFirst();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            findById(id);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
         }
     }
 
@@ -162,7 +153,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             pool.checkIn(con);
             return storages;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -175,7 +166,23 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             prep.executeUpdate();
             pool.checkIn(con);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
+        }
+    }
+
+    private void deleteOldStorages(Shop entity, List<Long> newStorages, List<Long> oldStorages) {
+        for (Long oldStorageId : oldStorages) {
+            if (!newStorages.contains(oldStorageId)) {
+                deleteBond(entity.getId(), oldStorageId);
+            }
+        }
+    }
+
+    private void addNewStorages(Shop entity, List<Long> newStorages, List<Long> oldStorages) {
+        for (Long newStorageId : newStorages) {
+            if (!oldStorages.contains(newStorageId)) {
+                addBond(entity.getId(), newStorageId);
+            }
         }
     }
 
@@ -188,7 +195,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             prep.executeUpdate();
             pool.checkIn(con);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -200,7 +207,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             List<Long> storages = getStoragesByShop(shopId);
             return new Shop(shopId, name, address, storages);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 }

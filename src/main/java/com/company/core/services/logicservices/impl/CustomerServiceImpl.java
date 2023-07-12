@@ -25,29 +25,18 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateCustomer(Customer customer, Long id) {
-        if (customerPersistenceService.isPresent(id)) {
-            return customerPersistenceService.update(customer, id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        customer.setId(id);
+        return customerPersistenceService.update(customer);
     }
 
     @Override
     public void deleteById(Long id) {
-        if (customerPersistenceService.isPresent(id)) {
-            customerPersistenceService.deleteById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        customerPersistenceService.deleteById(id);
     }
 
     @Override
     public Customer findCustomer(Long id) {
-        if (customerPersistenceService.isPresent(id)) {
-            return customerPersistenceService.findById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return customerPersistenceService.findById(id);
     }
 
     @Override

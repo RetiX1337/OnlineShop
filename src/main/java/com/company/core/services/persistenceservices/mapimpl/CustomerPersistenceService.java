@@ -34,8 +34,9 @@ public class CustomerPersistenceService implements PersistenceInterface<Customer
     }
 
     @Override
-    public Customer update(Customer entity, Long id){
-        customers.put(id, entity);
+    public Customer update(Customer entity){
+
+        customers.put(entity.getId(), entity);
         return entity;
     }
 

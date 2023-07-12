@@ -1,6 +1,7 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
+import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.*;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.PersistenceInterface;
@@ -61,7 +62,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             pool.checkIn(con);
             return product;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -79,12 +80,12 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             pool.checkIn(con);
             return productList;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public Product update(Product entity, Long id) {
+    public Product update(Product entity) {
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
@@ -92,13 +93,13 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             prep.setString(2, entity.getName());
             prep.setBigDecimal(3, entity.getPrice());
             prep.setLong(4, entity.getType().ordinal() + 1);
-            prep.setLong(5, id);
+            prep.setLong(5, entity.getId());
             prep.executeUpdate();
-            entity.setId(id);
+            entity.setId(entity.getId());
             pool.checkIn(con);
             return entity;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -111,21 +112,17 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             prep.executeUpdate();
             pool.checkIn(con);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
     public boolean isPresent(Long id) {
         try {
-            Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(FIND_BY_ID_SQL);
-            prep.setLong(1, id);
-            ResultSet rs = prep.executeQuery();
-            pool.checkIn(con);
-            return rs.isBeforeFirst();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            findById(id);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
         }
     }
 
@@ -138,7 +135,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             ProductType productType = ProductType.valueOf(rs.getString("product_type"));
             return new ProductBase(id, brand, name, productType, price);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 }

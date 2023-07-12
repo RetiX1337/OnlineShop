@@ -48,7 +48,7 @@ public class Storage implements Identifiable {
     }
 
     public List<Long> getShops() {
-        return shops.stream().toList();
+        return new ArrayList<>(shops);
     }
 
     public void addShop(Long shopId) {

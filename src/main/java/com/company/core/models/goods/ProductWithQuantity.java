@@ -14,12 +14,12 @@ public class ProductWithQuantity extends ProductDecorator {
 
     @Override
     public String getName() {
-        return decoratedProduct.getName();
+        return super.getName();
     }
 
     @Override
     public BigDecimal getPrice() {
-        return decoratedProduct.getPrice();
+        return super.getPrice();
     }
 
     @Override

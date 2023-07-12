@@ -33,8 +33,8 @@ public class ItemPersistenceService implements PersistenceInterface<Item> {
     }
 
     @Override
-    public Item update(Item entity, Long id) {
-        items.put(id, entity);
+    public Item update(Item entity) {
+        items.put(entity.getId(), entity);
         return entity;
     }
 

@@ -30,20 +30,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        if (productPersistenceService.isPresent(id)) {
-            productPersistenceService.deleteById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        productPersistenceService.deleteById(id);
     }
 
     @Override
     public Product updateProduct(Product product, Long id) {
-        if (productPersistenceService.isPresent(id)) {
-            return productPersistenceService.update(product, id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        product.setId(id);
+        return productPersistenceService.update(product);
     }
 
     @Override
@@ -53,10 +46,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(Long id) {
-        if (productPersistenceService.isPresent(id)) {
-            return productPersistenceService.findById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return productPersistenceService.findById(id);
     }
 }

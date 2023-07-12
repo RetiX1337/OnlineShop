@@ -33,8 +33,8 @@ public class OrderPersistenceService implements PersistenceInterface<Order> {
     }
 
     @Override
-    public Order update(Order entity, Long id){
-        orders.put(id, entity);
+    public Order update(Order entity){
+        orders.put(entity.getId(), entity);
         return entity;
     }
 

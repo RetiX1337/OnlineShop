@@ -33,8 +33,8 @@ public class ProductPersistenceService implements PersistenceInterface<Product> 
     }
 
     @Override
-    public Product update(Product entity, Long id) {
-        products.put(id, entity);
+    public Product update(Product entity) {
+        products.put(entity.getId(), entity);
         return entity;
     }
 

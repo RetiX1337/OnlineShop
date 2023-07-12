@@ -42,7 +42,7 @@ public class Shop implements Identifiable {
     }
 
     public List<Long> getStorages() {
-        return storages.stream().toList();
+        return new ArrayList<>(storages);
     }
 
     public void addStorage(Long storageId) {

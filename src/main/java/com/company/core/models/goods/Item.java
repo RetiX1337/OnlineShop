@@ -65,7 +65,7 @@ public class Item implements Identifiable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return product.equals(item.product);
+        return (item.product.equals(product) && item.quantity.equals(quantity) && item.price.equals(price));
     }
 
     @Override

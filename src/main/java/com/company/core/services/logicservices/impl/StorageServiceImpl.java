@@ -37,11 +37,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public Storage getStorage(Long id) {
-        if (storagePersistenceService.isPresent(id)) {
-            return storagePersistenceService.findById(id);
-        } else {
-            throw new EntityNotFoundException();
-        }
+        return storagePersistenceService.findById(id);
     }
 
     @Override
@@ -53,12 +49,15 @@ public class StorageServiceImpl implements StorageService {
     public Integer getQuantityPerShop(Long shopId, Long productId) {
         List<Long> storages = shopPersistenceService.findById(shopId).getStorages();
         Integer finalQuantity = 0;
+
         for (Long storage : storages) {
             HashMap<Long, ProductWithQuantity> productQuantities = storagePersistenceService.findById(storage).getProductQuantities();
+
             if (productQuantities.get(productId) != null) {
                 finalQuantity += productQuantities.get(productId).getQuantity();
             }
         }
+
         return finalQuantity;
     }
 
@@ -66,23 +65,29 @@ public class StorageServiceImpl implements StorageService {
     public boolean removeQuantityFromShopStorages(Integer quantity, Long shopId, Long productId) {
         List<Long> storages = shopPersistenceService.findById(shopId).getStorages();
         Integer tempQuantity = quantity;
-        if (getQuantityPerShop(shopId, productId) >= quantity) {
-            for (Long storageId : storages) {
-                Storage storage = storagePersistenceService.findById(storageId);
-                Integer storageQuantity = storage.getProductQuantities().get(productId).getQuantity();
-                if (tempQuantity > storageQuantity) {
-                    tempQuantity -= storageQuantity;
-                    storage.updateQuantity(productId, 0);
-                } else {
-                    storage.updateQuantity(productId, storageQuantity - tempQuantity);
-                    tempQuantity = 0;
-                }
-                if (tempQuantity == 0) {
-                    storagePersistenceService.update(storage, storageId);
-                    return true;
-                }
+
+        if ((getQuantityPerShop(shopId, productId)) < quantity) {
+            return false;
+        }
+
+        for (Long storageId : storages) {
+            Storage storage = storagePersistenceService.findById(storageId);
+            Integer storageQuantity = storage.getProductQuantities().get(productId).getQuantity();
+
+            if (tempQuantity > storageQuantity) {
+                tempQuantity -= storageQuantity;
+                storage.updateQuantity(productId, 0);
+            } else {
+                storage.updateQuantity(productId, storageQuantity - tempQuantity);
+                tempQuantity = 0;
+            }
+
+            if (tempQuantity == 0) {
+                storagePersistenceService.update(storage);
+                return true;
             }
         }
+
         return false;
     }
 
@@ -90,44 +95,44 @@ public class StorageServiceImpl implements StorageService {
     public void addProductQuantity(Integer quantity, Long storageId, Long productId) throws EntityNotFoundException {
         ProductWithQuantity productWithQuantity = new ProductWithQuantity(productService.getProduct(productId), quantity);
         Storage storage = storagePersistenceService.findById(storageId);
+
         if (storage.getProductQuantities().containsKey(productId)) {
             ProductWithQuantity oldProductWithQuantity = storage.getProductQuantities().get(productId);
             oldProductWithQuantity.setQuantity(oldProductWithQuantity.getQuantity() + quantity);
         } else {
             storage.getProductQuantities().put(productId, productWithQuantity);
         }
-        storagePersistenceService.update(storage, storageId);
+
+        storagePersistenceService.update(storage);
     }
 
     @Override
     public void deleteProductQuantity(Integer quantity, Long storageId, Long productId) {
         Storage storage = storagePersistenceService.findById(storageId);
+
         if (storage.getProductQuantities().containsKey(productId)) {
             ProductWithQuantity productWithQuantity = storage.getProductQuantities().get(productId);
-            if (productWithQuantity.getQuantity() - quantity >= 0) {
-                productWithQuantity.setQuantity(productWithQuantity.getQuantity() - quantity);
-            } else {
-                productWithQuantity.setQuantity(0);
-            }
-            storagePersistenceService.update(storage, storageId);
+            productWithQuantity.setQuantity(Math.max(productWithQuantity.getQuantity() - quantity, 0));
+            storagePersistenceService.update(storage);
         }
     }
 
     @Override
     public void addShop(Long storageId, Long shopId) {
         Storage storage = storagePersistenceService.findById(storageId);
+
         if (shopPersistenceService.isPresent(shopId)) {
             storage.addShop(shopId);
-            storagePersistenceService.update(storage, storageId);
+            storagePersistenceService.update(storage);
         }
     }
 
     @Override
     public void deleteShop(Long storageId, Long shopId) {
         Storage storage = storagePersistenceService.findById(storageId);
+
         if (storage.getShops().contains(shopId)) {
             storage.deleteShop(shopId);
         }
     }
-
 }

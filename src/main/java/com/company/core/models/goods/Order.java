@@ -51,8 +51,8 @@ public class Order implements Identifiable {
         return summaryPrice;
     }
 
-    public Collection<Item> getItems() {
-        return items.values();
+    public List<Item> getItems() {
+        return items.values().stream().toList();
     }
 
     @Override

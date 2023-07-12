@@ -24,6 +24,7 @@ public class DependencyManager {
     private final TestController testController;
     private final CartController cartController;
     private final OrderController orderController;
+    private final StorageController storageController;
     private final PersistenceInterface<Customer> customerPersistenceService;
     private static DependencyManager instance;
 
@@ -64,6 +65,8 @@ public class DependencyManager {
 
         this.orderController = new OrderController(orderService);
 
+        this.storageController = new StorageController(storageService);
+
         this.testController = new TestController(cartService, orderService, productService, customerService, storageService, shopService);
     }
 
@@ -89,6 +92,10 @@ public class DependencyManager {
 
     public ShopController getShopController() {
         return shopController;
+    }
+
+    public StorageController getStorageController() {
+        return storageController;
     }
 
     public OrderController getOrderController() {

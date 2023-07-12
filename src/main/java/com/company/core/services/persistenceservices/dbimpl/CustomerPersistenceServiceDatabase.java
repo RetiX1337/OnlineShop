@@ -55,7 +55,7 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             pool.checkIn(con);
             return customer;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -73,12 +73,12 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             pool.checkIn(con);
             return customerList;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
-    public Customer update(Customer entity, Long id) {
+    public Customer update(Customer entity) {
         try {
             Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
@@ -86,13 +86,13 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             prep.setString(2, entity.getEmail());
             prep.setString(3, entity.getPassword());
             prep.setBigDecimal(4, entity.getWallet());
-            prep.setLong(5, id);
+            prep.setLong(5, entity.getId());
             prep.executeUpdate();
-            entity.setId(id);
+            entity.setId(entity.getId());
             pool.checkIn(con);
             return entity;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
@@ -105,21 +105,17 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             prep.executeUpdate();
             pool.checkIn(con);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 
     @Override
     public boolean isPresent(Long id) {
         try {
-            Connection con = pool.checkOut();
-            PreparedStatement prep = con.prepareStatement(FIND_BY_ID_SQL);
-            prep.setLong(1, id);
-            ResultSet rs = prep.executeQuery();
-            pool.checkIn(con);
-            return rs.isBeforeFirst();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            findById(id);
+            return true;
+        } catch (EntityNotFoundException e) {
+            return false;
         }
     }
 
@@ -132,7 +128,7 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             BigDecimal wallet = rs.getBigDecimal("wallet");
             return new Customer(id, username, email, password, wallet);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotFoundException();
         }
     }
 }
