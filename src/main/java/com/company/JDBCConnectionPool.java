@@ -50,4 +50,68 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
             return (false);
         }
     }
+
+    public void startTransaction(Connection con) {
+        try {
+            con.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void commitTransaction(Connection con) {
+        try {
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException("failed to rollback", ex);
+            }
+            throw new RuntimeException("failed to commit", e);
+        }
+        try {
+            con.setAutoCommit(true);
+        } catch (SQLException exc) {
+            throw new RuntimeException("failed to set auto-commit true",exc);
+        }
+    }
+/*
+    public synchronized Connection checkOut() {
+        Connection conn = checkOut();
+        try {
+            conn.setAutoCommit(false);
+            return conn;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+*/
+
+    /*
+    public synchronized void checkIn(Connection conn) {
+        boolean flag = false;
+        try {
+            conn.commit();
+        } catch (SQLException commitEx) {
+            try {
+                conn.rollback();
+            } catch (SQLException rollbackEx) {
+                throw new RuntimeException("Failed to rollback transaction.", rollbackEx);
+            }
+            throw new RuntimeException("Failed to commit transaction.", commitEx);
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                flag = true;
+            } finally {
+                this.checkIn(conn);
+            }
+        }
+        if (flag) {
+            throw new RuntimeException("Failed to set connections' Auto Commit to 'true'.");
+        }
+    }
+     */
 }

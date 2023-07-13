@@ -37,12 +37,14 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
 
     @Override
     public Storage save(Storage entity) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
             prep.setString(1, entity.getName());
             prep.setString(2, entity.getAddress());
             prep.executeUpdate();
+            pool.commitTransaction(con);
 
             ResultSet rs = prep.getGeneratedKeys();
             rs.next();
@@ -57,51 +59,59 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
                 addQuantity(p, entity.getId());
             }
 
-            pool.checkIn(con);
             return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public Storage findById(Long id) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement p = con.prepareStatement(FIND_BY_ID_SQL);
             p.setLong(1, id);
             ResultSet rs = p.executeQuery();
+            pool.commitTransaction(con);
             rs.next();
             Storage storage = mapStorage(rs);
-            pool.checkIn(con);
             return storage;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public List<Storage> findAll() {
+        Connection con = pool.checkOut();
         try {
+            pool.startTransaction(con);
             List<Storage> storages = new ArrayList<>();
-            Connection con = pool.checkOut();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
+            pool.commitTransaction(con);
             while (rs.next()) {
                 Storage storage = mapStorage(rs);
                 storages.add(storage);
             }
-            pool.checkIn(con);
             return storages;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public Storage update(Storage entity) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
             prep.setLong(1, entity.getId());
             prep.setString(2, entity.getName());
@@ -120,10 +130,12 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             saveQuantities(entity, productQuantities);
 
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
             return entity;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
@@ -131,14 +143,17 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
 
     @Override
     public void deleteById(Long id) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(DELETE_SQL);
             prep.setLong(1, id);
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
@@ -153,28 +168,34 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     }
 
     private void addBond(Long shopId, Long storageId) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(ADD_BOND_SQL);
             prep.setLong(1, shopId);
             prep.setLong(2, storageId);
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     private void deleteBond(Long shopId, Long storageId) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(DELETE_BOND_SQL);
             prep.setLong(1, shopId);
             prep.setLong(2, storageId);
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
@@ -205,31 +226,34 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     }
 
     private List<Long> getShopsByStorage(Long storageId) {
+        Connection con = pool.checkOut();
         try {
+            pool.startTransaction(con);
             List<Long> shops = new ArrayList<>();
-            Connection con = pool.checkOut();
             PreparedStatement p = con.prepareStatement(GET_SHOPS_BY_STORAGES_SQL);
             p.setLong(1, storageId);
             ResultSet rs = p.executeQuery();
+            pool.commitTransaction(con);
             while (rs.next()) {
                 shops.add(rs.getLong(1));
             }
-            pool.checkIn(con);
             return shops;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     private HashMap<Long, ProductWithQuantity> getQuantities(Long storageId) {
+        Connection con = pool.checkOut();
         try {
+            pool.startTransaction(con);
             HashMap<Long, ProductWithQuantity> productQuantities = new HashMap<>();
-
-            Connection con = pool.checkOut();
             PreparedStatement prep = con.prepareStatement(GET_QUANTITIES_SQL);
             prep.setLong(1, storageId);
             ResultSet rs = prep.executeQuery();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
             while (rs.next()) {
                 Product product = productPersistenceService.findById(rs.getLong("product_id"));
                 Integer quantity = rs.getInt("quantity");
@@ -238,48 +262,59 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             return productQuantities;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     private void updateQuantity(ProductWithQuantity productWithQuantity, Long storageId) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(UPDATE_QUANTITY_SQL);
             prep.setInt(1, productWithQuantity.getQuantity());
             prep.setLong(2, storageId);
             prep.setLong(3, productWithQuantity.getProduct().getId());
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     private void addQuantity(ProductWithQuantity productWithQuantity, Long storageId) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(ADD_QUANTITY_SQL);
             prep.setLong(1, storageId);
             prep.setLong(2, productWithQuantity.getProduct().getId());
             prep.setInt(3, productWithQuantity.getQuantity());
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     private boolean quantityIsPresent(Long productId, Long storageId) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(FIND_QUANTITY_SQL);
             prep.setLong(1, productId);
             prep.setLong(2, storageId);
             ResultSet rs = prep.executeQuery();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
             return rs.isBeforeFirst();
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 

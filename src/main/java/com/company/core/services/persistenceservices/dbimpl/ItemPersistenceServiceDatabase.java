@@ -5,13 +5,10 @@ import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.*;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item> {
     private final JDBCConnectionPool pool;
@@ -31,63 +28,73 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
 
     @Override
     public Item save(Item entity) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
             prep.setLong(1, entity.getProduct().getId());
             prep.setInt(2, entity.getQuantity());
             prep.setBigDecimal(3, entity.getPrice());
             prep.setLong(4, entity.getOrderId());
             prep.executeUpdate();
+            pool.commitTransaction(con);
 
             ResultSet rs = prep.getGeneratedKeys();
             rs.next();
             entity.setId(rs.getLong(1));
-            pool.checkIn(con);
             return entity;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public Item findById(Long id) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement p = con.prepareStatement(FIND_BY_ID_SQL);
             p.setLong(1, id);
             ResultSet rs = p.executeQuery();
+            pool.commitTransaction(con);
             rs.next();
             Item item = mapItem(rs);
-            pool.checkIn(con);
             return item;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public List<Item> findAll() {
+        Connection con = pool.checkOut();
         try {
+            pool.startTransaction(con);
             List<Item> itemList = new ArrayList<>();
-            Connection con = pool.checkOut();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
+            pool.commitTransaction(con);
             while (rs.next()) {
                 Item item = mapItem(rs);
                 itemList.add(item);
             }
-            pool.checkIn(con);
             return itemList;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public Item update(Item entity) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
             prep.setLong(1, entity.getProduct().getId());
             prep.setInt(2, entity.getQuantity());
@@ -95,24 +102,28 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
             prep.setLong(4, entity.getOrderId());
             prep.setLong(5, entity.getId());
             prep.executeUpdate();
-            entity.setId(entity.getId());
-            pool.checkIn(con);
+            pool.commitTransaction(con);
             return entity;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
     @Override
     public void deleteById(Long id) {
+        Connection con = pool.checkOut();
         try {
-            Connection con = pool.checkOut();
+            pool.startTransaction(con);
             PreparedStatement prep = con.prepareStatement(DELETE_SQL);
             prep.setLong(1, id);
             prep.executeUpdate();
-            pool.checkIn(con);
+            pool.commitTransaction(con);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
+        } finally {
+            pool.checkIn(con);
         }
     }
 
