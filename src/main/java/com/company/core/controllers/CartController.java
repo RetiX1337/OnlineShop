@@ -1,6 +1,5 @@
 package com.company.core.controllers;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;

@@ -1,14 +1,10 @@
 package com.company.core.services.logicservices.impl;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
-import com.company.core.models.goods.Order;
-import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.ShopService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ShopServiceImpl implements ShopService {

@@ -3,6 +3,8 @@ package com.company.core.models.user.customer;
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.user.User;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
 public class Customer extends User implements Identifiable {
@@ -17,7 +19,7 @@ public class Customer extends User implements Identifiable {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.wallet = new BigDecimal(500);
+        this.wallet = BigDecimal.valueOf(500);
         this.cart = new Cart();
     }
 

@@ -1,6 +1,5 @@
 package com.company.core.services.logicservices.impl;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.OrderStatus;

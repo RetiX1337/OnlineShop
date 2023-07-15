@@ -5,7 +5,6 @@ import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.OrderService;
 
 import java.util.Collection;
-import java.util.List;
 
 public class OrderController {
     private final OrderService orderService;

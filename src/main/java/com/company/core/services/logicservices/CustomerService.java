@@ -1,6 +1,5 @@
 package com.company.core.services.logicservices;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 
 public interface CustomerService {

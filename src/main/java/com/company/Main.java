@@ -4,7 +4,6 @@ import com.company.configuration.DependencyManager;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.user.customer.Customer;
-import com.company.presentation.Menu;
 
 import java.util.Scanner;
 

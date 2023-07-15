@@ -4,7 +4,6 @@ import com.company.configuration.DependencyManager;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

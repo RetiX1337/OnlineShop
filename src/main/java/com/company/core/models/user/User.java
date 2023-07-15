@@ -1,19 +1,20 @@
 package com.company.core.models.user;
 
-public abstract class User {
-    final String username;
-    final String password;
-    final String email;
+import com.company.core.models.user.customer.Cart;
 
-    protected User(String username, String password, String email) {
+import java.math.BigDecimal;
+
+public abstract class User {
+    private String username;
+    private String password;
+    private String email;
+
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    protected User() {
-        this.username = "default";
-        this.password = null;
-        this.email = null;
+    public User() {
     }
 }
