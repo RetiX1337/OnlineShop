@@ -42,9 +42,14 @@ public class CartController {
 
     public Integer getProductQuantity(Customer customer, Long productId) {
         Product product = productService.getProduct(productId);
+
+        if (product == null) {
+            return 0;
+        }
+
         Item item = customer.getShoppingCart().getItem(product);
         if (item != null) {
-            return customer.getShoppingCart().getItem(productService.getProduct(productId)).getQuantity();
+            return item.getQuantity();
         } else {
             return 0;
         }

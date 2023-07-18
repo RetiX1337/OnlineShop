@@ -1,8 +1,7 @@
 package com.company.core.services.logicservices;
 
-import com.company.core.models.EntityNotFoundException;
-import com.company.core.models.Shop;
 import com.company.core.models.Storage;
+import com.company.core.models.goods.ProductWithQuantity;
 
 import java.util.List;
 
@@ -12,6 +11,9 @@ public interface StorageService {
     Storage getStorage(Long id);
     List<Storage> getAllStorages();
     Integer getQuantityPerShop(Long shopId, Long productId);
+
+    List<ProductWithQuantity> getProductsWithQuantity(Long shopId);
+
     boolean removeQuantityFromShopStorages(Integer quantity, Long shopId, Long productId);
     void addProductQuantity(Integer quantity, Long storageId, Long productId);
     void deleteProductQuantity(Integer quantity, Long storageId, Long productId);

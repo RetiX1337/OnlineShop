@@ -23,16 +23,6 @@ public class Shop implements Identifiable {
         this.storages = new ArrayList<>();
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -51,5 +41,15 @@ public class Shop implements Identifiable {
 
     public void deleteStorage(Long storageId) {
         storages.remove(storageId);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,19 +1,23 @@
 package com.company;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JDBCConnectionPool extends ObjectPool<Connection> {
     private final String dbLink;
     private final String username;
     private final String password;
+    private final static Logger logger = LogManager.getLogger(JDBCConnectionPool.class);
 
     public JDBCConnectionPool(String driver, String dbLink, String username, String password) {
         super();
         try {
             Class.forName(driver);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,91 +31,53 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
         try {
             return (DriverManager.getConnection(dbLink, username, password));
         } catch (SQLException e) {
-            e.printStackTrace();
-            return (null);
+            logger.error("Connection creation error", e);
+            return null;
         }
     }
 
     @Override
-    public void expire(Connection o) {
+    public void expire(Connection connection) {
         try {
-            o.close();
+            connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Connection closing error", e);
         }
     }
 
     @Override
-    public boolean validate(Connection o) {
+    public boolean validate(Connection connection) {
         try {
-            return (!o.isClosed());
+            return (!connection.isClosed());
         } catch (SQLException e) {
-            e.printStackTrace();
-            return (false);
+            logger.error("Connection validation error", e);
+            return false;
         }
     }
 
-    public void startTransaction(Connection con) {
+    public void startTransaction(Connection connection) {
         try {
-            con.setAutoCommit(false);
+            connection.setAutoCommit(false);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            logger.error("Set auto commit false error", e);
         }
     }
 
-    public void commitTransaction(Connection con) {
+    public void commitTransaction(Connection connection) {
         try {
-            con.commit();
+            connection.commit();
         } catch (SQLException e) {
             try {
-                con.rollback();
+                connection.rollback();
             } catch (SQLException ex) {
-                throw new RuntimeException("failed to rollback", ex);
+                logger.error("Commit rollback error", ex);
             }
-            throw new RuntimeException("failed to commit", e);
+            logger.error("Commit error", e);
         }
         try {
-            con.setAutoCommit(true);
+            connection.setAutoCommit(true);
         } catch (SQLException exc) {
-            throw new RuntimeException("failed to set auto-commit true",exc);
+            logger.error("Set auto commit true error", exc);
         }
     }
-/*
-    public synchronized Connection checkOut() {
-        Connection conn = checkOut();
-        try {
-            conn.setAutoCommit(false);
-            return conn;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-*/
-
-    /*
-    public synchronized void checkIn(Connection conn) {
-        boolean flag = false;
-        try {
-            conn.commit();
-        } catch (SQLException commitEx) {
-            try {
-                conn.rollback();
-            } catch (SQLException rollbackEx) {
-                throw new RuntimeException("Failed to rollback transaction.", rollbackEx);
-            }
-            throw new RuntimeException("Failed to commit transaction.", commitEx);
-        } finally {
-            try {
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                flag = true;
-            } finally {
-                this.checkIn(conn);
-            }
-        }
-        if (flag) {
-            throw new RuntimeException("Failed to set connections' Auto Commit to 'true'.");
-        }
-    }
-     */
 }

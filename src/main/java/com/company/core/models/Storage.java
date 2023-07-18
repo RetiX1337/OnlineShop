@@ -1,7 +1,6 @@
 package com.company.core.models;
 
 import com.company.core.models.goods.Identifiable;
-import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductWithQuantity;
 
 import java.util.ArrayList;
@@ -27,16 +26,6 @@ public class Storage implements Identifiable {
         this.address = address;
         this.shops = new ArrayList<>();
         this.productQuantities = new HashMap<>();
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -65,5 +54,15 @@ public class Storage implements Identifiable {
 
     public void updateQuantity(Long productId, Integer quantity) {
         productQuantities.get(productId).setQuantity(quantity);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }

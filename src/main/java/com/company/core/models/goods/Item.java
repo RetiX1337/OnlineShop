@@ -2,7 +2,6 @@ package com.company.core.models.goods;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.Properties;
 
 public class Item implements Identifiable {
     private Long id;
@@ -35,8 +34,8 @@ public class Item implements Identifiable {
         countPrice();
     }
 
-    private void countPrice() {
-        price = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+    public Product getProduct() {
+        return product;
     }
 
     public BigDecimal getPrice() {
@@ -56,6 +55,16 @@ public class Item implements Identifiable {
     }
 
     @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
     public String toString() {
         return product.getBrand() + " " + product.getName() + ", Quantity: " + quantity + ", Price for one: " + product.getPrice() + ", Summary price: " + price;
     }
@@ -70,20 +79,10 @@ public class Item implements Identifiable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(product);
+        return Objects.hash(product, quantity, price);
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    private void countPrice() {
+        price = product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }

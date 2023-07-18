@@ -17,8 +17,8 @@ public class Order implements Identifiable {
 
     public Order(Collection<Item> items, Customer customer) {
         this.customer = customer;
-        for (Item it : items) {
-            this.items.put(it.getProduct(), it);
+        for (Item item : items) {
+            this.items.put(item.getProduct(), item);
         }
         countPrice();
     }
@@ -28,14 +28,8 @@ public class Order implements Identifiable {
         this.customer = customer;
         this.summaryPrice = summaryPrice;
         this.orderStatus = orderStatus;
-        for (Item it : items) {
-            this.items.put(it.getProduct(), it);
-        }
-    }
-
-    private void countPrice() {
-        for (Item it : items.values()) {
-            summaryPrice = summaryPrice.add(it.getPrice());
+        for (Item item : items) {
+            this.items.put(item.getProduct(), item);
         }
     }
 
@@ -53,6 +47,10 @@ public class Order implements Identifiable {
 
     public List<Item> getItems() {
         return items.values().stream().toList();
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 
     @Override
@@ -79,8 +77,9 @@ public class Order implements Identifiable {
         return result.concat("Summary price: " + summaryPrice + "\n");
     }
 
-
-    public Customer getCustomer() {
-        return customer;
+    private void countPrice() {
+        for (Item item : items.values()) {
+            summaryPrice = summaryPrice.add(item.getPrice());
+        }
     }
 }

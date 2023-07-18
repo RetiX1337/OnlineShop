@@ -1,0 +1,4 @@
+2023-07-18 17:32:19 ERROR java.lang.RuntimeException
+w2023-07-18 17:34:40 ERROR error
+w java.lang.RuntimeException: null
+	at com.company.Main.main(Main.java:22) [classes/:?]

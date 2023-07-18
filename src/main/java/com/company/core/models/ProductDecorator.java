@@ -19,7 +19,7 @@ public class ProductDecorator implements Product {
 
     @Override
     public void setId(Long id) {
-        decoratedProduct.setId(id);
+        this.decoratedProduct.setId(id);
     }
 
     @Override

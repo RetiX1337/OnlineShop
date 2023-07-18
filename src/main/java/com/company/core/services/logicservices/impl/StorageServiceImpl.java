@@ -9,6 +9,7 @@ import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +48,14 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public Integer getQuantityPerShop(Long shopId, Long productId) {
-        List<Long> storages = shopPersistenceService.findById(shopId).getStorages();
+        Shop shop = shopPersistenceService.findById(shopId);
+
+        if (shop == null) {
+            return 0;
+        }
+
+        List<Long> storages = shop.getStorages();
+
         Integer finalQuantity = 0;
 
         for (Long storage : storages) {
@@ -59,6 +67,18 @@ public class StorageServiceImpl implements StorageService {
         }
 
         return finalQuantity;
+    }
+
+    @Override
+    public List<ProductWithQuantity> getProductsWithQuantity(Long shopId) {
+        List<Product> products = productService.getAllProducts();
+        List<ProductWithQuantity> productsWithQuantity = new ArrayList<>();
+
+        for (Product product : products) {
+            productsWithQuantity.add(new ProductWithQuantity(product, getQuantityPerShop(shopId, product.getId())));
+        }
+
+        return productsWithQuantity;
     }
 
     @Override
@@ -109,6 +129,9 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void deleteProductQuantity(Integer quantity, Long storageId, Long productId) {
         Storage storage = storagePersistenceService.findById(storageId);
+        if (storage == null) {
+            return;
+        }
 
         if (storage.getProductQuantities().containsKey(productId)) {
             ProductWithQuantity productWithQuantity = storage.getProductQuantities().get(productId);

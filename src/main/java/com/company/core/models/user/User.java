@@ -1,9 +1,5 @@
 package com.company.core.models.user;
 
-import com.company.core.models.user.customer.Cart;
-
-import java.math.BigDecimal;
-
 public abstract class User {
     private String username;
     private String password;

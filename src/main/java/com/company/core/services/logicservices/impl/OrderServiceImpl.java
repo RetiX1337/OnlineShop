@@ -69,7 +69,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findByCustomer(Long customerId) {
-        return orderPersistenceService.findAll().stream().filter(order -> order.getCustomer().getId().equals(customerId)).toList();
+        return orderPersistenceService.findAll().stream()
+                .filter(order -> order.getCustomer()!=null)
+                .filter(order -> order.getCustomer().getId().equals(customerId))
+                .toList();
     }
 
     private boolean processPayment(Customer customer, Order order) {

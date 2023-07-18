@@ -3,7 +3,7 @@ package com.company.core.models.goods;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class ProductBase implements Product, Identifiable {
+public class ProductBase implements Product {
     private Long id;
     private final String brand;
     private final String name;
@@ -75,4 +75,6 @@ public class ProductBase implements Product, Identifiable {
                 " Type: " + productType +
                 " Price: " + price;
     }
+
+
 }

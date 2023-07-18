@@ -2,39 +2,12 @@ package com.company.core.models.goods;
 
 import com.company.core.models.ProductDecorator;
 
-import java.math.BigDecimal;
-
 public class ProductWithQuantity extends ProductDecorator {
     private Integer quantity;
 
     public ProductWithQuantity(Product decoratedProduct, Integer quantity) {
         super(decoratedProduct);
         this.quantity = quantity;
-    }
-
-    @Override
-    public String getName() {
-        return super.getName();
-    }
-
-    @Override
-    public BigDecimal getPrice() {
-        return super.getPrice();
-    }
-
-    @Override
-    public String getBrand() {
-        return super.getBrand();
-    }
-
-    @Override
-    public Long getId() {
-        return super.getId();
-    }
-
-    @Override
-    public void setId(Long id) {
-        super.setId(id);
     }
 
     public void setQuantity(Integer quantity) {

@@ -1,6 +1,5 @@
 package com.company.core.controllers;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.services.logicservices.ShopService;
 

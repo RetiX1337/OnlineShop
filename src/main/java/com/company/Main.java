@@ -24,4 +24,5 @@ public class Main {
     public static void initDependencyManager() {
         dependencyManager = DependencyManager.getInstance();
     }
+
 }

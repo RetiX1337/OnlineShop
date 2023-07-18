@@ -19,7 +19,7 @@
 <%
     Long shopId = Long.valueOf(session.getAttribute("shopId").toString());
     Customer customer = (Customer) session.getAttribute("customer");
-    Collection<ProductWithQuantity> products = DependencyManager.getInstance().getProductController().getProducts(shopId);
+    Collection<ProductWithQuantity> products = DependencyManager.getInstance().getProductController().getProductsWithQuantity(shopId);
     request.setAttribute("products", products);
 %>
 <header>

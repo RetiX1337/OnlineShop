@@ -2,12 +2,17 @@ package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
 import com.company.core.models.EntityNotFoundException;
+import com.company.core.models.EntityNotSavedException;
 import com.company.core.models.goods.*;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 public class OrderPersistenceServiceDatabase implements PersistenceInterface<Order> {
@@ -30,19 +35,19 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
 
     @Override
     public Order save(Order entity) {
-        Connection con = pool.checkOut();
+        Connection connection = pool.checkOut();
         try {
-            pool.startTransaction(con);
-            PreparedStatement prep = con.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
-            prep.setLong(1, entity.getCustomer().getId());
-            prep.setBigDecimal(2, entity.getSummaryPrice());
-            prep.setLong(3, entity.getOrderStatus().ordinal()+1);
-            prep.executeUpdate();
-            pool.commitTransaction(con);
+            pool.startTransaction(connection);
+            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, entity.getCustomer().getId());
+            preparedStatement.setBigDecimal(2, entity.getSummaryPrice());
+            preparedStatement.setLong(3, entity.getOrderStatus().ordinal()+1);
+            preparedStatement.executeUpdate();
+            pool.commitTransaction(connection);
 
-            ResultSet rs = prep.getGeneratedKeys();
-            rs.next();
-            entity.setId(rs.getLong(1));
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet.next();
+            entity.setId(resultSet.getLong(1));
 
             entity.getItems().forEach(item -> {
                 item.setOrderId(entity.getId());
@@ -51,62 +56,62 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
 
             return entity;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new EntityNotSavedException();
         } finally {
-            pool.checkIn(con);
+            pool.checkIn(connection);
         }
     }
 
     @Override
     public Order findById(Long id) {
-        Connection con = pool.checkOut();
+        Connection connection = pool.checkOut();
         try {
-            pool.startTransaction(con);
-            PreparedStatement p = con.prepareStatement(FIND_BY_ID_SQL);
-            p.setLong(1, id);
-            ResultSet rs = p.executeQuery();
-            pool.commitTransaction(con);
-            rs.next();
-            Order order = mapOrder(rs);
+            pool.startTransaction(connection);
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID_SQL);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            pool.commitTransaction(connection);
+            resultSet.next();
+            Order order = mapOrder(resultSet);
             return order;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
-            pool.checkIn(con);
+            pool.checkIn(connection);
         }
     }
 
     @Override
     public List<Order> findAll() {
-        Connection con = pool.checkOut();
+        Connection connection = pool.checkOut();
         try {
-            pool.startTransaction(con);
+            pool.startTransaction(connection);
             List<Order> orderList = new ArrayList<>();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(FIND_ALL_SQL);
-            pool.commitTransaction(con);
-            while (rs.next()) {
-                Order order = mapOrder(rs);
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
+            pool.commitTransaction(connection);
+            while (resultSet.next()) {
+                Order order = mapOrder(resultSet);
                 orderList.add(order);
             }
             return orderList;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
-            pool.checkIn(con);
+            pool.checkIn(connection);
         }
     }
 
     @Override
     public Order update(Order entity) {
-        Connection con = pool.checkOut();
+        Connection connection = pool.checkOut();
         try {
-            pool.startTransaction(con);
-            PreparedStatement prep = con.prepareStatement(UPDATE_SQL);
-            prep.setLong(1, entity.getCustomer().getId());
-            prep.setBigDecimal(2, entity.getSummaryPrice());
-            prep.setLong(3, entity.getOrderStatus().ordinal()+1);
-            prep.setLong(4, entity.getId());
+            pool.startTransaction(connection);
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);
+            preparedStatement.setLong(1, entity.getCustomer().getId());
+            preparedStatement.setBigDecimal(2, entity.getSummaryPrice());
+            preparedStatement.setLong(3, entity.getOrderStatus().ordinal()+1);
+            preparedStatement.setLong(4, entity.getId());
 
             List<Item> oldItems = getItemsByOrder(entity.getId());
             List<Item> newItems = entity.getItems();
@@ -114,29 +119,29 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             addNewItems(newItems, oldItems);
             deleteOldItems(newItems, oldItems);
 
-            prep.executeUpdate();
-            pool.commitTransaction(con);
+            preparedStatement.executeUpdate();
+            pool.commitTransaction(connection);
             return entity;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
-            pool.checkIn(con);
+            pool.checkIn(connection);
         }
     }
 
     @Override
     public void deleteById(Long id) {
-        Connection con = pool.checkOut();
+        Connection connection = pool.checkOut();
         try {
-            pool.startTransaction(con);
-            PreparedStatement prep = con.prepareStatement(DELETE_SQL);
-            prep.setLong(1, id);
-            prep.executeUpdate();
-            pool.commitTransaction(con);
+            pool.startTransaction(connection);
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL);
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+            pool.commitTransaction(connection);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
-            pool.checkIn(con);
+            pool.checkIn(connection);
         }
     }
 
@@ -167,33 +172,33 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
     }
 
     private List<Item> getItemsByOrder(Long orderId) {
-        Connection con = pool.checkOut();
+        Connection connection = pool.checkOut();
         try {
-            pool.startTransaction(con);
+            pool.startTransaction(connection);
             List<Item> items = new LinkedList<>();
-            PreparedStatement p = con.prepareStatement(GET_ITEMS_BY_ORDER);
-            p.setLong(1, orderId);
-            ResultSet rs = p.executeQuery();
-            pool.commitTransaction(con);
-            while (rs.next()) {
-                Item item = itemPersistenceService.findById(rs.getLong(1));
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ITEMS_BY_ORDER);
+            preparedStatement.setLong(1, orderId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            pool.commitTransaction(connection);
+            while (resultSet.next()) {
+                Item item = itemPersistenceService.findById(resultSet.getLong(1));
                 items.add(item);
             }
             return items;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
-            pool.checkIn(con);
+            pool.checkIn(connection);
         }
     }
 
-    public Order mapOrder(ResultSet rs) {
+    public Order mapOrder(ResultSet resultSet) {
         try {
-            Long id = rs.getLong("id");
-            Long customerId = rs.getLong("customer_id");
+            Long id = resultSet.getLong("id");
+            Long customerId = resultSet.getLong("customer_id");
             Customer customer = customerPersistenceService.findById(customerId);
-            BigDecimal summaryPrice = rs.getBigDecimal("summary_price");
-            OrderStatus orderStatus = OrderStatus.valueOf(rs.getString("order_status"));
+            BigDecimal summaryPrice = resultSet.getBigDecimal("summary_price");
+            OrderStatus orderStatus = OrderStatus.valueOf(resultSet.getString("order_status"));
             Collection<Item> items = getItemsByOrder(id);
             return new Order(id, items, customer, summaryPrice, orderStatus);
         } catch (SQLException e) {

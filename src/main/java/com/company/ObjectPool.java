@@ -1,6 +1,5 @@
 package com.company;
 
-// ObjectPool
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -12,8 +11,8 @@ public abstract class ObjectPool<T> {
 
     public ObjectPool() {
         expirationTime = 30000; // 30 seconds
-        locked = new Hashtable<T, Long>();
-        unlocked = new Hashtable<T, Long>();
+        locked = new Hashtable<>();
+        unlocked = new Hashtable<>();
     }
 
     protected abstract T create();

@@ -5,7 +5,11 @@ import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.models.user.customer.Customer;
-import com.company.core.services.logicservices.*;
+import com.company.core.services.logicservices.ItemService;
+import com.company.core.services.logicservices.ProductService;
+import com.company.core.services.logicservices.OrderService;
+import com.company.core.services.logicservices.StorageService;
+import com.company.core.services.logicservices.CartService;
 
 import java.math.BigDecimal;
 
@@ -24,13 +28,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean addToCart(Cart cart, Long productId, Integer quantity, Long shopId) {
-        if (storageService.getQuantityPerShop(shopId, productId) <= 0) {
+        if (storageService.getQuantityPerShop(shopId, productId) < quantity) {
             return false;
         }
 
-        if (containsProduct(cart, productService.getProduct(productId))) {
-            if (notMoreThanAvailable(cart, productId, quantity, shopId)) {
-                addToExistingItem(cart, productId, quantity);
+        Product product = productService.getProduct(productId);
+
+        if (product == null) {
+            return false;
+        }
+
+        if (containsProduct(cart, product)) {
+            if (notMoreThanAvailable(cart, product, quantity, shopId)) {
+                addToExistingItem(cart, product, quantity);
             } else {
                 return false;
             }
@@ -44,11 +54,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean deleteFromCart(Cart cart, Long productId, Integer quantity) {
-        if (!containsProduct(cart, productService.getProduct(productId))) {
+        Product product = productService.getProduct(productId);
+
+        if (product == null) {
             return false;
         }
 
-        Item item = cart.getItem(productService.getProduct(productId));
+        if (!containsProduct(cart, product)) {
+            return false;
+        }
+
+        Item item = cart.getItem(product);
+
         if (item.getQuantity().equals(quantity)) {
             cart.deleteItem(item);
         } else {
@@ -61,10 +78,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public boolean checkoutCart(Customer customer, Long shopId) {
-        Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
         if (customer.getShoppingCart().isEmpty()) {
             return false;
         }
+
+        Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
+
         if (orderService.processOrder(order, customer, shopId)) {
             customer.getShoppingCart().clear();
             return true;
@@ -72,8 +91,8 @@ public class CartServiceImpl implements CartService {
         return false;
     }
 
-    private void addToExistingItem(Cart cart, Long productId, Integer quantity) {
-        cart.getItem(productService.getProduct(productId)).increaseQuantity(quantity);
+    private void addToExistingItem(Cart cart, Product product, Integer quantity) {
+        cart.getItem(product).increaseQuantity(quantity);
     }
 
     private void addNewItem(Cart cart, Long productId, Integer quantity) {
@@ -88,13 +107,12 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    private boolean notMoreThanAvailable(Cart cart, Long productId, Integer quantity, Long shopId) {
-        Product product = productService.getProduct(productId);
+    private boolean notMoreThanAvailable(Cart cart, Product product, Integer quantity, Long shopId) {
         return (storageService.getQuantityPerShop(shopId, product.getId()) - (quantity + cart.getItem(product).getQuantity())) >= 0;
     }
 
     private boolean containsProduct(Cart cart, Product product) {
-        return cart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().getId().equals(product.getId()));
+        return cart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().equals(product));
     }
 
 }
