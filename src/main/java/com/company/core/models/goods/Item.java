@@ -5,23 +5,31 @@ import java.util.Objects;
 
 public class Item implements Identifiable {
     private Long id;
-    private Long orderId;
-    private final Product product;
+    private Order order;
+    private Product product;
     private Integer quantity;
-    private BigDecimal price = BigDecimal.valueOf(0);
+    private BigDecimal price;
 
     public Item(Product product, Integer quantity) {
+        this.price = BigDecimal.valueOf(0);
         this.product = product;
         this.quantity = quantity;
         countPrice();
     }
 
-    public Item(Long id, Product product, Integer quantity, BigDecimal price, Long orderId) {
+    public Item(Long id, Product product, Integer quantity, BigDecimal price, Order order) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
         this.price = price;
-        this.orderId = orderId;
+        this.order = order;
+    }
+
+    public Item() {
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public void increaseQuantity(Integer quantity) {
@@ -38,20 +46,28 @@ public class Item implements Identifiable {
         return product;
     }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     public BigDecimal getPrice() {
         return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Integer getQuantity() {
         return quantity;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override

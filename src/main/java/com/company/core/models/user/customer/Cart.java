@@ -4,28 +4,29 @@ import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class Cart {
-    private final HashMap<Product, Item> cart = new HashMap<>();
+    private final Set<Item> cart = new HashSet<>();
     private BigDecimal summaryPrice = BigDecimal.valueOf(0);
 
-    public Collection<Item> getProductsFromCart() {
-        return cart.values();
+    public Set<Item> getProductsFromCart() {
+        return cart;
     }
 
     public void addItem(Item item) {
-        cart.put(item.getProduct(), item);
+        cart.add(item);
     }
 
     public void deleteItem(Item item) {
-        cart.remove(item.getProduct(), item);
+        cart.remove(item);
     }
 
     public Item getItem(Product product) {
-        return cart.get(product);
+        return cart.stream()
+                .filter(item -> product.getId().equals(item.getProduct().getId()))
+                .findFirst()
+                .orElse(null);
     }
 
     public void setSummaryPrice(BigDecimal summaryPrice) {
@@ -48,7 +49,7 @@ public class Cart {
     @Override
     public String toString() {
         String result = "";
-        ArrayList<Item> items = new ArrayList<>(cart.values());
+        ArrayList<Item> items = new ArrayList<>(cart);
         for (Item item : items) {
             result = result.concat("> " + item + ", Product ID: " + item.getProduct().getId() + "\n");
         }

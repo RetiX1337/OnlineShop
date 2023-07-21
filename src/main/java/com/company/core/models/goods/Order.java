@@ -3,35 +3,30 @@ package com.company.core.models.goods;
 import com.company.core.models.user.customer.Customer;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Order implements Identifiable {
-    private final HashMap<Product, Item> items = new HashMap<>();
-    private final Customer customer;
+    private Set<Item> items;
+    private Customer customer;
     private Long id;
     private OrderStatus orderStatus;
     private BigDecimal summaryPrice = BigDecimal.valueOf(0);
 
-    public Order(Collection<Item> items, Customer customer) {
+    public Order(Set<Item> items, Customer customer) {
         this.customer = customer;
-        for (Item item : items) {
-            this.items.put(item.getProduct(), item);
-        }
+        this.items = items;
         countPrice();
     }
 
-    public Order(Long id, Collection<Item> items, Customer customer, BigDecimal summaryPrice, OrderStatus orderStatus) {
+    public Order(Long id, Set<Item> items, Customer customer, BigDecimal summaryPrice, OrderStatus orderStatus) {
         this.id = id;
         this.customer = customer;
         this.summaryPrice = summaryPrice;
         this.orderStatus = orderStatus;
-        for (Item item : items) {
-            this.items.put(item.getProduct(), item);
-        }
+        this.items = items;
     }
+
+    public Order() {}
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
@@ -45,12 +40,24 @@ public class Order implements Identifiable {
         return summaryPrice;
     }
 
-    public List<Item> getItems() {
-        return items.values().stream().toList();
+    public void setSummaryPrice(BigDecimal summaryPrice) {
+        this.summaryPrice = summaryPrice;
+    }
+
+    public Set<Item> getItems() {
+        return new HashSet<>(items);
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
@@ -66,7 +73,7 @@ public class Order implements Identifiable {
     @Override
     public String toString() {
         String result = "";
-        ArrayList<Item> list = new ArrayList<>(items.values());
+        List<Item> list = new ArrayList<>(items);
         result = result.concat("ID: " + id +
                 "\nCustomer: " + customer.getUsername() +
                 "\nOrder Status: " + orderStatus +
@@ -78,7 +85,7 @@ public class Order implements Identifiable {
     }
 
     private void countPrice() {
-        for (Item item : items.values()) {
+        for (Item item : items) {
             summaryPrice = summaryPrice.add(item.getPrice());
         }
     }

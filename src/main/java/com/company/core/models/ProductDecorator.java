@@ -19,7 +19,7 @@ public class ProductDecorator implements Product {
 
     @Override
     public void setId(Long id) {
-        this.decoratedProduct.setId(id);
+        decoratedProduct.setId(id);
     }
 
     @Override
@@ -28,8 +28,18 @@ public class ProductDecorator implements Product {
     }
 
     @Override
+    public void setPrice(BigDecimal price) {
+        decoratedProduct.setPrice(price);
+    }
+
+    @Override
     public String getBrand() {
         return decoratedProduct.getBrand();
+    }
+
+    @Override
+    public void setBrand(String brand) {
+        decoratedProduct.setBrand(brand);
     }
 
     @Override
@@ -38,7 +48,17 @@ public class ProductDecorator implements Product {
     }
 
     @Override
+    public void setName(String name) {
+        decoratedProduct.setName(name);
+    }
+
+    @Override
     public ProductType getType() {
         return decoratedProduct.getType();
+    }
+
+    @Override
+    public void setProductType(ProductType productType) {
+        decoratedProduct.setProductType(productType);
     }
 }

@@ -5,10 +5,10 @@ import java.util.Objects;
 
 public class ProductBase implements Product {
     private Long id;
-    private final String brand;
-    private final String name;
-    private final ProductType productType;
-    private final BigDecimal price;
+    private String brand;
+    private String name;
+    private ProductType productType;
+    private BigDecimal price;
 
     public ProductBase(String brand, String name, ProductType productType, BigDecimal price) {
         this.brand = brand;
@@ -23,6 +23,8 @@ public class ProductBase implements Product {
         this.productType = productType;
         this.price = price;
     }
+
+    public ProductBase() {}
 
     @Override
     public Long getId() {
@@ -40,8 +42,18 @@ public class ProductBase implements Product {
     }
 
     @Override
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    @Override
     public String getBrand() {
         return brand;
+    }
+
+    @Override
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     @Override
@@ -50,8 +62,18 @@ public class ProductBase implements Product {
     }
 
     @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
     public ProductType getType() {
         return productType;
+    }
+
+    @Override
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     @Override

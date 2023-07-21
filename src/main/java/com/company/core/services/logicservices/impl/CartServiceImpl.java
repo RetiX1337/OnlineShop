@@ -101,10 +101,11 @@ public class CartServiceImpl implements CartService {
     }
 
     private void countPrice(Cart cart) {
-        cart.setSummaryPrice(BigDecimal.valueOf(0));
+        BigDecimal summaryPrice = BigDecimal.valueOf(0);
         for (Item it : cart.getProductsFromCart()) {
-            cart.setSummaryPrice(cart.getSummaryPrice().add(it.getPrice()));
+            summaryPrice = summaryPrice.add(it.getPrice());
         }
+        cart.setSummaryPrice(summaryPrice);
     }
 
     private boolean notMoreThanAvailable(Cart cart, Product product, Integer quantity, Long shopId) {

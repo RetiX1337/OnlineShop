@@ -40,7 +40,7 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
             preparedStatement.setLong(1, entity.getProduct().getId());
             preparedStatement.setInt(2, entity.getQuantity());
             preparedStatement.setBigDecimal(3, entity.getPrice());
-            preparedStatement.setLong(4, entity.getOrderId());
+            preparedStatement.setLong(4, entity.getOrder().getId());
             preparedStatement.executeUpdate();
             pool.commitTransaction(connection);
 
@@ -104,7 +104,7 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
             preparedStatement.setLong(1, entity.getProduct().getId());
             preparedStatement.setInt(2, entity.getQuantity());
             preparedStatement.setBigDecimal(3, entity.getPrice());
-            preparedStatement.setLong(4, entity.getOrderId());
+            preparedStatement.setLong(4, entity.getOrder().getId());
             preparedStatement.setLong(5, entity.getId());
             preparedStatement.executeUpdate();
             pool.commitTransaction(connection);
@@ -144,15 +144,14 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
 
     public Item mapItem(ResultSet resultSet) {
         try {
-            Long id = resultSet.getLong("id");
-            Long productId = resultSet.getLong("product_id");
-            Integer quantity = resultSet.getInt("quantity");
-            BigDecimal price = resultSet.getBigDecimal("price");
-            Long orderId = resultSet.getLong("order_id");
+            Item item = new Item();
 
-            Product product = productPersistenceService.findById(productId);
+            item.setId(resultSet.getLong("id"));
+            item.setProduct(productPersistenceService.findById(resultSet.getLong("product_id")));
+            item.setQuantity(resultSet.getInt("quantity"));
+            item.setPrice(resultSet.getBigDecimal("price"));
 
-            return new Item(id, product, quantity, price, orderId);
+            return item;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

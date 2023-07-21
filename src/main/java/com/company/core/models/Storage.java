@@ -3,57 +3,68 @@ package com.company.core.models;
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.goods.ProductWithQuantity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Storage implements Identifiable {
     private Long id;
     private String name;
     private String address;
-    private final List<Long> shops;
-    private final HashMap<Long, ProductWithQuantity> productQuantities;
-    public Storage(Long id, String name, String address, List<Long> shops, HashMap<Long, ProductWithQuantity> productQuantities) {
+    private Set<ProductWithQuantity> productQuantities;
+    public Storage(Long id, String name, String address, Set<ProductWithQuantity> productQuantities) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.shops = shops;
         this.productQuantities = productQuantities;
     }
 
     public Storage(String name, String address) {
         this.name = name;
         this.address = address;
-        this.shops = new ArrayList<>();
-        this.productQuantities = new HashMap<>();
+        this.productQuantities = new HashSet<>();
     }
+
+    public Storage() {}
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public List<Long> getShops() {
-        return new ArrayList<>(shops);
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void addShop(Long shopId) {
-        shops.add(shopId);
-    }
-
-    public void deleteShop(Long shopId) {
-        shops.remove(shopId);
-    }
-
-    public HashMap<Long, ProductWithQuantity> getProductQuantities() {
+    public Set<ProductWithQuantity> getProductQuantities() {
         return productQuantities;
     }
 
+    public void setProductQuantities(Set<ProductWithQuantity> productQuantities) {
+        this.productQuantities = productQuantities;
+    }
+
     public void updateQuantity(Long productId, Integer quantity) {
-        productQuantities.get(productId).setQuantity(quantity);
+        productQuantities.stream()
+                .filter(product -> product.getId().equals(productId))
+                .findFirst()
+                .ifPresent(productWithQuantity -> productWithQuantity.setQuantity(quantity));
+    }
+
+    public void addQuantity(ProductWithQuantity productWithQuantity) {
+        productQuantities.add(productWithQuantity);
+    }
+
+    public ProductWithQuantity getProductWithQuantity(Long productId) {
+        return productQuantities.stream()
+                .filter(product -> product.getId().equals(productId))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

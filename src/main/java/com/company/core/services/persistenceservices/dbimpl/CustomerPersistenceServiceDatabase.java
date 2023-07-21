@@ -140,12 +140,15 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
 
     private Customer mapCustomer(ResultSet resultSet) {
         try {
-            Long id = resultSet.getLong("id");
-            String username = resultSet.getString("username");
-            String email = resultSet.getString("email");
-            String password = resultSet.getString("password");
-            BigDecimal wallet = resultSet.getBigDecimal("wallet");
-            return new Customer(id, username, email, password, wallet);
+            Customer customer = new Customer();
+
+            customer.setId(resultSet.getLong("id"));
+            customer.setUsername(resultSet.getString("username"));
+            customer.setEmail(resultSet.getString("email"));
+            customer.setPassword(resultSet.getString("password"));
+            customer.setWallet(BigDecimal.valueOf(500));
+
+            return customer;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

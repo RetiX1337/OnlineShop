@@ -142,12 +142,15 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
 
     public Product mapProduct(ResultSet resultSet) {
         try {
-            Long id = resultSet.getLong("id");
-            String brand = resultSet.getString("brand");
-            String name = resultSet.getString("name");
-            BigDecimal price = resultSet.getBigDecimal("price");
-            ProductType productType = ProductType.valueOf(resultSet.getString("product_type"));
-            return new ProductBase(id, brand, name, productType, price);
+            ProductBase productBase = new ProductBase();
+
+            productBase.setId(resultSet.getLong("id"));
+            productBase.setBrand(resultSet.getString("brand"));
+            productBase.setName(resultSet.getString("name"));
+            productBase.setPrice(resultSet.getBigDecimal("price"));
+            productBase.setProductType(ProductType.valueOf(resultSet.getString("product_type")));
+
+            return productBase;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

@@ -12,6 +12,7 @@ import com.company.core.services.persistenceservices.PersistenceInterface;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
     private PersistenceInterface<Order> orderPersistenceService;
@@ -27,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createOrder(Collection<Item> items, Customer customer) {
+    public Order createOrder(Set<Item> items, Customer customer) {
         Order order = new Order(items, customer);
         order.setOrderStatus(OrderStatus.NEW);
         return order;

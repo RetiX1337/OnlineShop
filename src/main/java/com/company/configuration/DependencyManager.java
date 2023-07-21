@@ -29,8 +29,8 @@ public class DependencyManager {
 
         PersistenceInterface<Product> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
         PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceServiceDatabase(pool, productPersistenceService);
-        PersistenceInterface<Shop> shopPersistenceService = new ShopPersistenceServiceDatabase(pool);
         PersistenceInterface<Storage> storagePersistenceService = new StoragePersistenceServiceDatabase(pool, productPersistenceService);
+        PersistenceInterface<Shop> shopPersistenceService = new ShopPersistenceServiceDatabase(pool, storagePersistenceService);
         PersistenceInterface<Customer> customerPersistenceService = new CustomerPersistenceServiceDatabase(pool);
         PersistenceInterface<Order> orderPersistenceService = new OrderPersistenceServiceDatabase(pool, itemPersistenceService, customerPersistenceService);
 

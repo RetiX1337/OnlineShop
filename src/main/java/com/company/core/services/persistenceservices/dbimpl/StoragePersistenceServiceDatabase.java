@@ -13,9 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class StoragePersistenceServiceDatabase implements PersistenceInterface<Storage> {
     private final JDBCConnectionPool pool;
@@ -27,10 +25,6 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     private final String FIND_ALL_SQL = "SELECT id, name, address FROM storage";
     private final String UPDATE_SQL = "UPDATE storage SET id = ?, name = ?, address = ? WHERE id = ?";
     private final String DELETE_SQL = "DELETE FROM storage WHERE id = ?";
-    private final String GET_SHOPS_BY_STORAGES_SQL = "SELECT s.id FROM storage s INNER JOIN shop_storage ss ON s.id = ss.storage_id INNER JOIN shop sh ON ss.shop_id = sh.id WHERE sh.id = ?";
-    private final String ADD_BOND_SQL = "INSERT INTO shop_storage (shop_id, storage_id) VALUES (?, ?)";
-    private final String DELETE_BOND_SQL = "DELETE FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
-    private final String FIND_BOND_SQL = "SELECT * FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
     private final String ALL_SQL = "SELECT * FROM storage";
     private final String FIND_BY_ID_SQL = "SELECT * FROM storage WHERE id = ?";
     private final String GET_QUANTITIES_SQL = "SELECT product_id, quantity FROM product_storage WHERE storage_id = ?";
@@ -56,11 +50,7 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             Long id = resultSet.getLong(1);
             entity.setId(id);
 
-            for (Long shopId : entity.getShops()) {
-                addBond(shopId, id);
-            }
-
-            for (ProductWithQuantity productWithQuantity : entity.getProductQuantities().values()) {
+            for (ProductWithQuantity productWithQuantity : entity.getProductQuantities()) {
                 addQuantity(productWithQuantity, entity.getId());
             }
 
@@ -82,8 +72,7 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             ResultSet resultSet = preparedStatement.executeQuery();
             pool.commitTransaction(connection);
             resultSet.next();
-            Storage storage = mapStorage(resultSet);
-            return storage;
+            return mapStorage(resultSet);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
@@ -123,14 +112,7 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             preparedStatement.setString(3, entity.getAddress());
             preparedStatement.setLong(4, entity.getId());
 
-            List<Long> newShops = entity.getShops();
-            List<Long> oldShops = getShopsByStorage(entity.getId());
-
-            addNewShops(entity, newShops, oldShops);
-
-            deleteOldShops(entity, newShops, oldShops);
-
-            HashMap<Long, ProductWithQuantity> productQuantities = entity.getProductQuantities();
+            Set<ProductWithQuantity> productQuantities = entity.getProductQuantities();
 
             saveQuantities(entity, productQuantities);
 
@@ -172,40 +154,8 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
         }
     }
 
-    private void addBond(Long shopId, Long storageId) {
-        Connection connection = pool.checkOut();
-        try {
-            pool.startTransaction(connection);
-            PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOND_SQL);
-            preparedStatement.setLong(1, shopId);
-            preparedStatement.setLong(2, storageId);
-            preparedStatement.executeUpdate();
-            pool.commitTransaction(connection);
-        } catch (SQLException e) {
-            throw new EntityNotFoundException();
-        } finally {
-            pool.checkIn(connection);
-        }
-    }
-
-    private void deleteBond(Long shopId, Long storageId) {
-        Connection connection = pool.checkOut();
-        try {
-            pool.startTransaction(connection);
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BOND_SQL);
-            preparedStatement.setLong(1, shopId);
-            preparedStatement.setLong(2, storageId);
-            preparedStatement.executeUpdate();
-            pool.commitTransaction(connection);
-        } catch (SQLException e) {
-            throw new EntityNotFoundException();
-        } finally {
-            pool.checkIn(connection);
-        }
-    }
-
-    private void saveQuantities(Storage entity, HashMap<Long, ProductWithQuantity> productQuantities) {
-        for (ProductWithQuantity productWithQuantity : productQuantities.values()) {
+    private void saveQuantities(Storage entity, Set<ProductWithQuantity> productQuantities) {
+        for (ProductWithQuantity productWithQuantity : productQuantities) {
             if (!quantityIsPresent(productWithQuantity.getProduct().getId(), entity.getId())) {
                 addQuantity(productWithQuantity, entity.getId());
             } else {
@@ -214,47 +164,11 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
         }
     }
 
-    private void deleteOldShops(Storage entity, List<Long> newShops, List<Long> oldShops) {
-        for (Long oldShopId : oldShops) {
-            if (!newShops.contains(oldShopId)) {
-                deleteBond(entity.getId(), oldShopId);
-            }
-        }
-    }
-
-    private void addNewShops(Storage entity, List<Long> newShops, List<Long> oldShops) {
-        for (Long newShopId : newShops) {
-            if (!oldShops.contains(newShopId)) {
-                addBond(entity.getId(), newShopId);
-            }
-        }
-    }
-
-    private List<Long> getShopsByStorage(Long storageId) {
+    private Set<ProductWithQuantity> getQuantities(Long storageId) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
-            List<Long> shops = new ArrayList<>();
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_SHOPS_BY_STORAGES_SQL);
-            preparedStatement.setLong(1, storageId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            pool.commitTransaction(connection);
-            while (resultSet.next()) {
-                shops.add(resultSet.getLong(1));
-            }
-            return shops;
-        } catch (SQLException e) {
-            throw new EntityNotFoundException();
-        } finally {
-            pool.checkIn(connection);
-        }
-    }
-
-    private HashMap<Long, ProductWithQuantity> getQuantities(Long storageId) {
-        Connection connection = pool.checkOut();
-        try {
-            pool.startTransaction(connection);
-            HashMap<Long, ProductWithQuantity> productQuantities = new HashMap<>();
+            Set<ProductWithQuantity> productQuantities = new HashSet<>();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_QUANTITIES_SQL);
             preparedStatement.setLong(1, storageId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -262,7 +176,7 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             while (resultSet.next()) {
                 Product product = productPersistenceService.findById(resultSet.getLong("product_id"));
                 Integer quantity = resultSet.getInt("quantity");
-                productQuantities.put(product.getId(), new ProductWithQuantity(product, quantity));
+                productQuantities.add(new ProductWithQuantity(product, quantity));
             }
             return productQuantities;
         } catch (SQLException e) {
@@ -325,12 +239,14 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
 
     private Storage mapStorage(ResultSet resultSet) {
         try {
-            Long storageId = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            String address = resultSet.getString("address");
-            List<Long> shops = getShopsByStorage(storageId);
-            HashMap<Long, ProductWithQuantity> productQuantities = getQuantities(storageId);
-            return new Storage(storageId, name, address, shops, productQuantities);
+            Storage storage = new Storage();
+
+            storage.setId(resultSet.getLong("id"));
+            storage.setName(resultSet.getString("name"));
+            storage.setAddress(resultSet.getString("address"));
+            storage.setProductQuantities(getQuantities(storage.getId()));
+
+            return storage;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

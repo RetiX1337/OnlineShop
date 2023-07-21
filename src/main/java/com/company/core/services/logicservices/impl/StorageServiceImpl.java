@@ -12,6 +12,7 @@ import com.company.core.services.persistenceservices.PersistenceInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class StorageServiceImpl implements StorageService {
     private final PersistenceInterface<Storage> storagePersistenceService;
@@ -54,15 +55,13 @@ public class StorageServiceImpl implements StorageService {
             return 0;
         }
 
-        List<Long> storages = shop.getStorages();
+        List<Storage> storages = shop.getStorages();
 
         Integer finalQuantity = 0;
 
-        for (Long storage : storages) {
-            HashMap<Long, ProductWithQuantity> productQuantities = storagePersistenceService.findById(storage).getProductQuantities();
-
-            if (productQuantities.get(productId) != null) {
-                finalQuantity += productQuantities.get(productId).getQuantity();
+        for (Storage storage : storages) {
+            if (storage.getProductWithQuantity(productId) != null) {
+                finalQuantity += storage.getProductWithQuantity(productId).getQuantity();
             }
         }
 
@@ -83,16 +82,15 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public boolean removeQuantityFromShopStorages(Integer quantity, Long shopId, Long productId) {
-        List<Long> storages = shopPersistenceService.findById(shopId).getStorages();
+        List<Storage> storages = shopPersistenceService.findById(shopId).getStorages();
         Integer tempQuantity = quantity;
 
         if ((getQuantityPerShop(shopId, productId)) < quantity) {
             return false;
         }
 
-        for (Long storageId : storages) {
-            Storage storage = storagePersistenceService.findById(storageId);
-            Integer storageQuantity = storage.getProductQuantities().get(productId).getQuantity();
+        for (Storage storage : storages) {
+            Integer storageQuantity = storage.getProductWithQuantity(productId).getQuantity();
 
             if (tempQuantity > storageQuantity) {
                 tempQuantity -= storageQuantity;
@@ -112,15 +110,16 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void addProductQuantity(Integer quantity, Long storageId, Long productId) throws EntityNotFoundException {
+    public void addProductQuantity(Integer quantity, Long storageId, Long productId) {
         ProductWithQuantity productWithQuantity = new ProductWithQuantity(productService.getProduct(productId), quantity);
         Storage storage = storagePersistenceService.findById(storageId);
 
-        if (storage.getProductQuantities().containsKey(productId)) {
-            ProductWithQuantity oldProductWithQuantity = storage.getProductQuantities().get(productId);
+        ProductWithQuantity oldProductWithQuantity = storage.getProductWithQuantity(productId);
+
+        if (oldProductWithQuantity!=null) {
             oldProductWithQuantity.setQuantity(oldProductWithQuantity.getQuantity() + quantity);
         } else {
-            storage.getProductQuantities().put(productId, productWithQuantity);
+            storage.addQuantity(productWithQuantity);
         }
 
         storagePersistenceService.update(storage);
@@ -133,29 +132,11 @@ public class StorageServiceImpl implements StorageService {
             return;
         }
 
-        if (storage.getProductQuantities().containsKey(productId)) {
-            ProductWithQuantity productWithQuantity = storage.getProductQuantities().get(productId);
+        ProductWithQuantity productWithQuantity = storage.getProductWithQuantity(productId);
+
+        if (productWithQuantity!=null) {
             productWithQuantity.setQuantity(Math.max(productWithQuantity.getQuantity() - quantity, 0));
             storagePersistenceService.update(storage);
-        }
-    }
-
-    @Override
-    public void addShop(Long storageId, Long shopId) {
-        Storage storage = storagePersistenceService.findById(storageId);
-
-        if (shopPersistenceService.isPresent(shopId)) {
-            storage.addShop(shopId);
-            storagePersistenceService.update(storage);
-        }
-    }
-
-    @Override
-    public void deleteShop(Long storageId, Long shopId) {
-        Storage storage = storagePersistenceService.findById(storageId);
-
-        if (storage.getShops().contains(shopId)) {
-            storage.deleteShop(shopId);
         }
     }
 }

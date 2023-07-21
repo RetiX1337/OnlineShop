@@ -50,7 +50,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             entity.setId(resultSet.getLong(1));
 
             entity.getItems().forEach(item -> {
-                item.setOrderId(entity.getId());
+                item.setOrder(entity);
                 itemPersistenceService.save(item);
             });
 
@@ -113,8 +113,8 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             preparedStatement.setLong(3, entity.getOrderStatus().ordinal()+1);
             preparedStatement.setLong(4, entity.getId());
 
-            List<Item> oldItems = getItemsByOrder(entity.getId());
-            List<Item> newItems = entity.getItems();
+            Set<Item> oldItems = getItemsByOrder(entity.getId());
+            Set<Item> newItems = entity.getItems();
 
             addNewItems(newItems, oldItems);
             deleteOldItems(newItems, oldItems);
@@ -155,7 +155,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
         }
     }
 
-    private void deleteOldItems(List<Item> newItems, List<Item> oldItems) {
+    private void deleteOldItems(Set<Item> newItems, Set<Item> oldItems) {
         for (Item item : oldItems) {
             if (!newItems.contains(item)) {
                 itemPersistenceService.deleteById(item.getId());
@@ -163,7 +163,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
         }
     }
 
-    private void addNewItems(List<Item> newItems, List<Item> oldItems) {
+    private void addNewItems(Set<Item> newItems, Set<Item> oldItems) {
         for (Item item : newItems) {
             if (!oldItems.contains(item)) {
                 itemPersistenceService.save(item);
@@ -171,11 +171,11 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
         }
     }
 
-    private List<Item> getItemsByOrder(Long orderId) {
+    private Set<Item> getItemsByOrder(Long orderId) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
-            List<Item> items = new LinkedList<>();
+            Set<Item> items = new HashSet<>();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ITEMS_BY_ORDER);
             preparedStatement.setLong(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -194,13 +194,17 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
 
     public Order mapOrder(ResultSet resultSet) {
         try {
-            Long id = resultSet.getLong("id");
-            Long customerId = resultSet.getLong("customer_id");
-            Customer customer = customerPersistenceService.findById(customerId);
-            BigDecimal summaryPrice = resultSet.getBigDecimal("summary_price");
-            OrderStatus orderStatus = OrderStatus.valueOf(resultSet.getString("order_status"));
-            Collection<Item> items = getItemsByOrder(id);
-            return new Order(id, items, customer, summaryPrice, orderStatus);
+            Order order = new Order();
+
+            order.setId(resultSet.getLong("id"));
+            order.setCustomer(customerPersistenceService.findById(resultSet.getLong("customer_id")));
+            order.setSummaryPrice(resultSet.getBigDecimal("summary_price"));
+            order.setOrderStatus(OrderStatus.valueOf(resultSet.getString("order_status")));
+            Set<Item> items = getItemsByOrder(order.getId());
+            items.forEach(item -> item.setOrder(order));
+            order.setItems(items);
+
+            return order;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

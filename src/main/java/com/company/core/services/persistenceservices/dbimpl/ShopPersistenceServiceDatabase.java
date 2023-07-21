@@ -4,6 +4,7 @@ import com.company.JDBCConnectionPool;
 import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.EntityNotSavedException;
 import com.company.core.models.Shop;
+import com.company.core.models.Storage;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.sql.Connection;
@@ -12,10 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop> {
     private final JDBCConnectionPool pool;
+    private final PersistenceInterface<Storage> storagePersistenceService;
     private final String SAVE_SQL = "INSERT INTO shop (name, address) VALUES (?, ?)";
     private final String FIND_ALL_SQL = "SELECT id, name, address FROM shop";
     private final String UPDATE_SQL = "UPDATE shop SET id = ?, name = ?, address = ? WHERE id = ?";
@@ -23,12 +27,13 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
     private final String ALL_SQL = "SELECT * FROM shop";
     private final String FIND_BY_ID_SQL = "SELECT * FROM shop WHERE id = ?";
     private final String GET_STORAGES_BY_SHOP_SQL = "SELECT s.id FROM storage s INNER JOIN shop_storage ss ON s.id = ss.storage_id INNER JOIN shop sh ON ss.shop_id = sh.id WHERE sh.id = ?";
-    private final String ADD_BOND_SQL = "INSERT INTO shop_storage (shop_id, storage_id) VALUES (?, ?)";
-    private final String DELETE_BOND_SQL = "DELETE FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
+    private final String ADD_SHOP_STORAGE_RELATION = "INSERT INTO shop_storage (shop_id, storage_id) VALUES (?, ?)";
+    private final String DELETE_SHOP_STORAGE_RELATION = "DELETE FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
     private final String FIND_BOND_SQL = "SELECT * FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
 
-    public ShopPersistenceServiceDatabase(JDBCConnectionPool pool) {
+    public ShopPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Storage> storagePersistenceService) {
         this.pool = pool;
+        this.storagePersistenceService = storagePersistenceService;
     }
 
     @Override
@@ -39,8 +44,8 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getAddress());
-            for (Long storageId : entity.getStorages()) {
-                addBond(entity.getId(), storageId);
+            for (Storage storage : entity.getStorages()) {
+                addOrDeleteShopStorageRelation(entity.getId(), storage.getId(), ADD_SHOP_STORAGE_RELATION);
             }
             preparedStatement.executeUpdate();
             pool.commitTransaction(connection);
@@ -66,8 +71,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             ResultSet resultSet = preparedStatement.executeQuery();
             pool.commitTransaction(connection);
             resultSet.next();
-            Shop shop = mapShop(resultSet);
-            return shop;
+            return mapShop(resultSet);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {
@@ -107,12 +111,12 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
             preparedStatement.setString(3, entity.getAddress());
             preparedStatement.setLong(4, entity.getId());
 
-            List<Long> newStorages = entity.getStorages();
-            List<Long> oldStorages = getStoragesByShop(entity.getId());
+            Set<Storage> newStorages = entity.getStorages();
+            Set<Storage> oldStorages = getStoragesByShop(entity.getId());
 
-            addNewStorages(entity, newStorages, oldStorages);
+            addNewShopStorageRelations(entity, newStorages, oldStorages);
 
-            deleteOldStorages(entity, newStorages, oldStorages);
+            deleteOldShopStorageRelations(entity, newStorages, oldStorages);
 
             preparedStatement.executeUpdate();
             pool.commitTransaction(connection);
@@ -152,17 +156,17 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
         }
     }
 
-    private List<Long> getStoragesByShop(Long shopId) {
+    private Set<Storage> getStoragesByShop(Long shopId) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
-            List<Long> storages = new ArrayList<>();
+            Set<Storage> storages = new HashSet<>();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_STORAGES_BY_SHOP_SQL);
             preparedStatement.setLong(1, shopId);
             ResultSet resultSet = preparedStatement.executeQuery();
             pool.commitTransaction(connection);
             while (resultSet.next()) {
-                storages.add(resultSet.getLong(1));
+                storages.add(storagePersistenceService.findById(resultSet.getLong("id")));
             }
             return storages;
         } catch (SQLException e) {
@@ -172,11 +176,11 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
         }
     }
 
-    private void addBond(Long shopId, Long storageId) {
+    private void addOrDeleteShopStorageRelation(Long shopId, Long storageId, String SQL) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
-            PreparedStatement preparedStatement = connection.prepareStatement(ADD_BOND_SQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setLong(1, shopId);
             preparedStatement.setLong(2, storageId);
             preparedStatement.executeUpdate();
@@ -188,45 +192,33 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
         }
     }
 
-    private void deleteOldStorages(Shop entity, List<Long> newStorages, List<Long> oldStorages) {
-        for (Long oldStorageId : oldStorages) {
-            if (!newStorages.contains(oldStorageId)) {
-                deleteBond(entity.getId(), oldStorageId);
+    private void deleteOldShopStorageRelations(Shop shop, Set<Storage> newStorages, Set<Storage> oldStorages) {
+        for (Storage oldStorage : oldStorages) {
+            if (!newStorages.contains(oldStorage)) {
+                addOrDeleteShopStorageRelation(shop.getId(), oldStorage.getId(), DELETE_SHOP_STORAGE_RELATION);
             }
         }
     }
 
-    private void addNewStorages(Shop entity, List<Long> newStorages, List<Long> oldStorages) {
-        for (Long newStorageId : newStorages) {
-            if (!oldStorages.contains(newStorageId)) {
-                addBond(entity.getId(), newStorageId);
+    private void addNewShopStorageRelations(Shop shop, Set<Storage> newStorages, Set<Storage> oldStorages) {
+        for (Storage newStorage : newStorages) {
+            if (!oldStorages.contains(newStorage)) {
+                addOrDeleteShopStorageRelation(shop.getId(), newStorage.getId(), ADD_SHOP_STORAGE_RELATION);
             }
         }
     }
 
-    private void deleteBond(Long shopId, Long storageId) {
-        Connection connection = pool.checkOut();
-        try {
-            pool.startTransaction(connection);
-            PreparedStatement prep = connection.prepareStatement(DELETE_BOND_SQL);
-            prep.setLong(1, shopId);
-            prep.setLong(2, storageId);
-            prep.executeUpdate();
-            pool.commitTransaction(connection);
-        } catch (SQLException e) {
-            throw new EntityNotFoundException();
-        } finally {
-            pool.checkIn(connection);
-        }
-    }
 
     public Shop mapShop(ResultSet resultSet) {
         try {
-            Long shopId = resultSet.getLong("id");
-            String name = resultSet.getString("name");
-            String address = resultSet.getString("address");
-            List<Long> storages = getStoragesByShop(shopId);
-            return new Shop(shopId, name, address, storages);
+            Shop shop = new Shop();
+
+            shop.setId(resultSet.getLong("id"));
+            shop.setName(resultSet.getString("name"));
+            shop.setAddress(resultSet.getString("address"));
+            shop.setStorages(getStoragesByShop(shop.getId()));
+
+            return shop;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

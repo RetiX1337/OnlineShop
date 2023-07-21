@@ -6,9 +6,10 @@ import com.company.core.models.user.customer.Customer;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface OrderService {
-    Order createOrder(Collection<Item> items, Customer customer);
+    Order createOrder(Set<Item> items, Customer customer);
     Order addOrder(Order order);
     boolean processOrder(Order order, Customer customer, Long shopId);
     Order updateOrder(Order order, Long id);

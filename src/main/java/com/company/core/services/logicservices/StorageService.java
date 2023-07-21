@@ -17,6 +17,4 @@ public interface StorageService {
     boolean removeQuantityFromShopStorages(Integer quantity, Long shopId, Long productId);
     void addProductQuantity(Integer quantity, Long storageId, Long productId);
     void deleteProductQuantity(Integer quantity, Long storageId, Long productId);
-    void addShop(Long storageId, Long shopId);
-    void deleteShop(Long storageId, Long shopId);
 }
