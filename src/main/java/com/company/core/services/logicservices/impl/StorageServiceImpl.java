@@ -55,7 +55,7 @@ public class StorageServiceImpl implements StorageService {
             return 0;
         }
 
-        List<Storage> storages = shop.getStorages();
+        Set<Storage> storages = shop.getStorages();
 
         Integer finalQuantity = 0;
 
@@ -82,7 +82,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public boolean removeQuantityFromShopStorages(Integer quantity, Long shopId, Long productId) {
-        List<Storage> storages = shopPersistenceService.findById(shopId).getStorages();
+        Set<Storage> storages = shopPersistenceService.findById(shopId).getStorages();
         Integer tempQuantity = quantity;
 
         if ((getQuantityPerShop(shopId, productId)) < quantity) {
