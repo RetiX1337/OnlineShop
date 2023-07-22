@@ -3,6 +3,7 @@ package com.company.presentation.servlet;
 import com.company.configuration.DependencyManager;
 import com.company.core.models.goods.Order;
 import com.company.core.models.user.customer.Customer;
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,7 +19,6 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
-
         if (pathInfo != null) {
             Long orderId = Long.valueOf(pathInfo.substring(1));
             Customer customer = (Customer) request.getSession().getAttribute("customer");

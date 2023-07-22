@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.configuration.DependencyManager;
-import com.company.core.models.EntityNotFoundException;
+import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.user.customer.Customer;
 

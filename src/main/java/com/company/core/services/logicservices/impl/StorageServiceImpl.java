@@ -1,6 +1,5 @@
 package com.company.core.services.logicservices.impl;
 
-import com.company.core.models.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
@@ -10,7 +9,6 @@ import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 

@@ -1,8 +1,8 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
-import com.company.core.models.EntityNotFoundException;
-import com.company.core.models.EntityNotSavedException;
+import com.company.core.exceptions.EntityNotFoundException;
+import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductWithQuantity;

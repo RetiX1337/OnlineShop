@@ -1,4 +1,4 @@
-package com.company.core.models;
+package com.company.core.exceptions;
 
 public class EntityNotFoundException extends RuntimeException {
 }

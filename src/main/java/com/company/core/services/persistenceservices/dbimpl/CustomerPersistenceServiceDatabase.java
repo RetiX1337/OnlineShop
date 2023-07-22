@@ -1,8 +1,9 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
-import com.company.core.models.EntityNotFoundException;
-import com.company.core.models.EntityNotSavedException;
+import com.company.core.exceptions.EntityNotFoundException;
+import com.company.core.exceptions.EntityNotSavedException;
+import com.company.core.models.user.customer.Cart;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
@@ -147,6 +148,7 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             customer.setEmail(resultSet.getString("email"));
             customer.setPassword(resultSet.getString("password"));
             customer.setWallet(BigDecimal.valueOf(500));
+            customer.setCart(new Cart());
 
             return customer;
         } catch (SQLException e) {

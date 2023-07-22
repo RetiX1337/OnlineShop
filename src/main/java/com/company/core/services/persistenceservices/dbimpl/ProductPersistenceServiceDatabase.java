@@ -1,12 +1,11 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
 import com.company.JDBCConnectionPool;
-import com.company.core.models.EntityNotFoundException;
-import com.company.core.models.EntityNotSavedException;
+import com.company.core.exceptions.EntityNotFoundException;
+import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.goods.*;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

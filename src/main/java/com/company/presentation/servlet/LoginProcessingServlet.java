@@ -1,7 +1,7 @@
 package com.company.presentation.servlet;
 
 import com.company.configuration.DependencyManager;
-import com.company.core.models.EntityNotFoundException;
+import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 
 import javax.servlet.ServletException;

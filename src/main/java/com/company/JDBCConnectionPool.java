@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.company.core.exceptions.JDBCInitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,11 +20,14 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
         try {
             Class.forName(driver);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("DB Driver not found", e);
+            throw new JDBCInitializationException();
         }
         this.dbLink = dbLink;
         this.username = username;
         this.password = password;
+        Connection connection = create();
+        expire(connection);
     }
 
     @Override
@@ -31,8 +35,9 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
         try {
             return (DriverManager.getConnection(dbLink, username, password));
         } catch (SQLException e) {
+            System.out.println("why is it not writing down in a log bro");
             logger.error("Connection creation error", e);
-            return null;
+            throw new JDBCInitializationException();
         }
     }
 
@@ -42,6 +47,7 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
             connection.close();
         } catch (SQLException e) {
             logger.error("Connection closing error", e);
+            throw new JDBCInitializationException();
         }
     }
 
@@ -51,7 +57,7 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
             return (!connection.isClosed());
         } catch (SQLException e) {
             logger.error("Connection validation error", e);
-            return false;
+            throw new JDBCInitializationException();
         }
     }
 
@@ -59,7 +65,8 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            logger.error("Set auto commit false error", e);
+            logger.error("Connection validation error", e);
+            throw new JDBCInitializationException();
         }
     }
 
@@ -70,14 +77,17 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                logger.error("Commit rollback error", ex);
+                logger.error("Connection validation error", ex);
+                throw new JDBCInitializationException();
             }
             logger.error("Commit error", e);
+            throw new JDBCInitializationException();
         }
         try {
             connection.setAutoCommit(true);
         } catch (SQLException exc) {
             logger.error("Set auto commit true error", exc);
+            throw new JDBCInitializationException();
         }
     }
 }
