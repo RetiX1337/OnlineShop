@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductPersistenceServiceDatabase implements PersistenceInterface<Product> {
+public class ProductPersistenceServiceDatabase implements PersistenceInterface<ProductBase> {
     private final JDBCConnectionPool pool;
     private final String DELETE_SQL = "DELETE FROM product WHERE product.id = ?";
     private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type_id = ? WHERE product.id = ?";
@@ -29,7 +29,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
     }
 
     @Override
-    public Product save(Product entity) {
+    public ProductBase save(ProductBase entity) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
@@ -53,7 +53,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
     }
 
     @Override
-    public Product findById(Long id) {
+    public ProductBase findById(Long id) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
@@ -62,7 +62,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             ResultSet resultSet = preparedStatement.executeQuery();
             pool.commitTransaction(connection);
             resultSet.next();
-            Product product = mapProduct(resultSet);
+            ProductBase product = mapProduct(resultSet);
             return product;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
@@ -72,16 +72,16 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<ProductBase> findAll() {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
-            List<Product> productList = new ArrayList<>();
+            List<ProductBase> productList = new ArrayList<>();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(FIND_ALL_SQL);
             pool.commitTransaction(connection);
             while (resultSet.next()) {
-                Product product = mapProduct(resultSet);
+                ProductBase product = mapProduct(resultSet);
                 productList.add(product);
             }
             return productList;
@@ -93,7 +93,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
     }
 
     @Override
-    public Product update(Product entity) {
+    public ProductBase update(ProductBase entity) {
         Connection connection = pool.checkOut();
         try {
             pool.startTransaction(connection);
@@ -139,7 +139,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
         }
     }
 
-    public Product mapProduct(ResultSet resultSet) {
+    public ProductBase mapProduct(ResultSet resultSet) {
         try {
             ProductBase productBase = new ProductBase();
 

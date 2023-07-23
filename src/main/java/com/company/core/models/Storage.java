@@ -2,14 +2,28 @@ package com.company.core.models;
 
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.goods.ProductWithQuantity;
+import jakarta.persistence.*;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.*;
 
+@Entity
+@Table(name = "storage")
 public class Storage implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "address")
     private String address;
+    @ElementCollection
+    @CollectionTable(name = "product_storage", joinColumns = @JoinColumn(name = "storage_id"))
     private Set<ProductWithQuantity> productQuantities;
+
     public Storage(Long id, String name, String address, Set<ProductWithQuantity> productQuantities) {
         this.id = id;
         this.name = name;
@@ -23,7 +37,8 @@ public class Storage implements Identifiable {
         this.productQuantities = new HashSet<>();
     }
 
-    public Storage() {}
+    public Storage() {
+    }
 
     public String getName() {
         return name;

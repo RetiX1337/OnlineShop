@@ -3,6 +3,7 @@ package com.company.core.services.logicservices.impl;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.StorageService;
@@ -68,10 +69,10 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public List<ProductWithQuantity> getProductsWithQuantity(Long shopId) {
-        List<Product> products = productService.getAllProducts();
+        List<ProductBase> products = productService.getAllProducts();
         List<ProductWithQuantity> productsWithQuantity = new ArrayList<>();
 
-        for (Product product : products) {
+        for (ProductBase product : products) {
             productsWithQuantity.add(new ProductWithQuantity(product, getQuantityPerShop(shopId, product.getId())));
         }
 

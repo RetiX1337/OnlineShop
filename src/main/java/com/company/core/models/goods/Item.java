@@ -1,23 +1,37 @@
 package com.company.core.models.goods;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.Any;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@Table(name = "item")
 public class Item implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     private Order order;
-    private Product product;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private ProductBase product;
+    @Column(name = "quantity")
     private Integer quantity;
+    @Column(name = "price")
     private BigDecimal price;
 
-    public Item(Product product, Integer quantity) {
+    public Item(ProductBase product, Integer quantity) {
         this.price = BigDecimal.valueOf(0);
         this.product = product;
         this.quantity = quantity;
         countPrice();
     }
 
-    public Item(Long id, Product product, Integer quantity, BigDecimal price, Order order) {
+    public Item(Long id, ProductBase product, Integer quantity, BigDecimal price, Order order) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
@@ -42,11 +56,11 @@ public class Item implements Identifiable {
         countPrice();
     }
 
-    public Product getProduct() {
+    public ProductBase getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductBase product) {
         this.product = product;
     }
 

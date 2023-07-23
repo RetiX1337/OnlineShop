@@ -1,16 +1,24 @@
 package com.company.core.models;
 
 import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 import java.math.BigDecimal;
-
+@MappedSuperclass
 public class ProductDecorator implements Product {
-    protected Product decoratedProduct;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    protected ProductBase decoratedProduct;
 
-    public ProductDecorator(Product decoratedProduct) {
+    public ProductDecorator(ProductBase decoratedProduct) {
         this.decoratedProduct = decoratedProduct;
     }
+
+    public ProductDecorator() {}
 
     @Override
     public Long getId() {
@@ -60,5 +68,13 @@ public class ProductDecorator implements Product {
     @Override
     public void setProductType(ProductType productType) {
         decoratedProduct.setProductType(productType);
+    }
+
+    public Product getProduct() {
+        return decoratedProduct;
+    }
+
+    public void setProduct(ProductBase decoratedProduct) {
+        this.decoratedProduct = decoratedProduct;
     }
 }

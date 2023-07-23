@@ -3,6 +3,7 @@ package com.company.core.controllers;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductBase;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.*;
 
@@ -42,7 +43,7 @@ public class TestController {
     }
 
     public String displayProducts(Long shopId) {
-        List<Product> products = productService.getAllProducts();
+        List<ProductBase> products = productService.getAllProducts();
 
         String result = "";
         for (Product p : products) {

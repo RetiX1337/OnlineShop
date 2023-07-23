@@ -2,15 +2,26 @@ package com.company.core.models.user.customer;
 
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.user.User;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "customer")
 public class Customer extends User implements Identifiable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "password")
     private String password;
+    @Column(name = "email")
     private String email;
+    @Column(name = "wallet")
     private BigDecimal wallet;
+    @Transient
     private Cart cart;
 
     public Customer(String username, String password, String email) {

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item> {
     private final JDBCConnectionPool pool;
-    private final PersistenceInterface<Product> productPersistenceService;
+    private final PersistenceInterface<ProductBase> productPersistenceService;
     private final String DELETE_SQL = "DELETE FROM item WHERE item.id = ?";
     private final String UPDATE_SQL = "UPDATE item SET item.product_id = ?, item.quantity = ?, item.price = ?, item.order_id = ? WHERE item.id = ?";
     private final String ALL_SQL = "SELECT * FROM item";
@@ -25,7 +25,7 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
     private final String FIND_ALL_SQL = "SELECT item.id, item.product_id, item.quantity, item.price, item.order_id FROM item";
 
 
-    public ItemPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Product> productPersistenceService) {
+    public ItemPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<ProductBase> productPersistenceService) {
         this.productPersistenceService = productPersistenceService;
         this.pool = pool;
     }

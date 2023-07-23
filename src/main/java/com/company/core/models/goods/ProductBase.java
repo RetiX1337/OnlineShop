@@ -1,13 +1,24 @@
 package com.company.core.models.goods;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@Table(name = "product")
 public class ProductBase implements Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "brand")
     private String brand;
+    @Column(name = "name")
     private String name;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "product_type_id")
     private ProductType productType;
+    @Column(name = "price")
     private BigDecimal price;
 
     public ProductBase(String brand, String name, ProductType productType, BigDecimal price) {

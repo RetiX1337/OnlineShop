@@ -7,6 +7,7 @@ import com.company.core.models.Storage;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductBase;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.impl.*;
 import com.company.core.services.logicservices.*;
@@ -27,7 +28,7 @@ public class DependencyManager {
         JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "matretsk82004");
 
 
-        PersistenceInterface<Product> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
+        PersistenceInterface<ProductBase> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
         PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceServiceDatabase(pool, productPersistenceService);
         PersistenceInterface<Storage> storagePersistenceService = new StoragePersistenceServiceDatabase(pool, productPersistenceService);
         PersistenceInterface<Shop> shopPersistenceService = new ShopPersistenceServiceDatabase(pool, storagePersistenceService);

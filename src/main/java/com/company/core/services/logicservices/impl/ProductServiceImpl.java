@@ -10,20 +10,20 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private final PersistenceInterface<Product> productPersistenceService;
+    private final PersistenceInterface<ProductBase> productPersistenceService;
 
 
-    public ProductServiceImpl(PersistenceInterface<Product> productPersistenceService) {
+    public ProductServiceImpl(PersistenceInterface<ProductBase> productPersistenceService) {
         this.productPersistenceService = productPersistenceService;
     }
 
     @Override
-    public Product createProduct(String brand, String name, ProductType productType, BigDecimal price) {
+    public ProductBase createProduct(String brand, String name, ProductType productType, BigDecimal price) {
         return new ProductBase(brand, name, productType, price);
     }
 
     @Override
-    public void addProduct(Product product) {
+    public void addProduct(ProductBase product) {
         productPersistenceService.save(product);
     }
 
@@ -33,18 +33,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product, Long id) {
+    public ProductBase updateProduct(ProductBase product, Long id) {
         product.setId(id);
         return productPersistenceService.update(product);
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<ProductBase> getAllProducts() {
         return productPersistenceService.findAll();
     }
 
     @Override
-    public Product getProduct(Long id) {
+    public ProductBase getProduct(Long id) {
         return productPersistenceService.findById(id);
     }
 

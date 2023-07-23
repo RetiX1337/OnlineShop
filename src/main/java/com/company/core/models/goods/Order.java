@@ -2,14 +2,26 @@ package com.company.core.models.goods;
 
 import com.company.core.models.user.customer.Customer;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Entity
+@Table(name = "order")
 public class Order implements Identifiable {
-    private Set<Item> items;
-    private Customer customer;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.ALL, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<Item> items;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "order_status_id")
     private OrderStatus orderStatus;
+    @Column(name = "summary_price")
     private BigDecimal summaryPrice = BigDecimal.valueOf(0);
 
     public Order(Set<Item> items, Customer customer) {

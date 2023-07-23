@@ -5,6 +5,7 @@ import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
+import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
@@ -17,7 +18,7 @@ import java.util.*;
 
 public class StoragePersistenceServiceDatabase implements PersistenceInterface<Storage> {
     private final JDBCConnectionPool pool;
-    private final PersistenceInterface<Product> productPersistenceService;
+    private final PersistenceInterface<ProductBase> productPersistenceService;
     private final String FIND_QUANTITY_SQL = "SELECT * FROM product_storage WHERE product_id = ? AND storage_id = ?";
     private final String UPDATE_QUANTITY_SQL = "UPDATE product_storage SET quantity = ? WHERE storage_id = ? AND product_id = ?";
     private final String ADD_QUANTITY_SQL = "INSERT INTO product_storage (storage_id, product_id, quantity) VALUES (?, ?, ?)";
@@ -29,7 +30,7 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     private final String FIND_BY_ID_SQL = "SELECT * FROM storage WHERE id = ?";
     private final String GET_QUANTITIES_SQL = "SELECT product_id, quantity FROM product_storage WHERE storage_id = ?";
 
-    public StoragePersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Product> productPersistenceService) {
+    public StoragePersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<ProductBase> productPersistenceService) {
         this.pool = pool;
         this.productPersistenceService = productPersistenceService;
     }
@@ -174,7 +175,7 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
             ResultSet resultSet = preparedStatement.executeQuery();
             pool.commitTransaction(connection);
             while (resultSet.next()) {
-                Product product = productPersistenceService.findById(resultSet.getLong("product_id"));
+                ProductBase product = productPersistenceService.findById(resultSet.getLong("product_id"));
                 Integer quantity = resultSet.getInt("quantity");
                 productQuantities.add(new ProductWithQuantity(product, quantity));
             }
