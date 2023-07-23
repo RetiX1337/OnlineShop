@@ -1,6 +1,6 @@
 package com.company.core.models.goods;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import org.hibernate.annotations.Any;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ public class Item implements Identifiable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
     @ManyToOne

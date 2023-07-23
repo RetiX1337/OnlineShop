@@ -2,7 +2,7 @@ package com.company.core.models;
 
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.goods.ProductWithQuantity;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import java.util.*;
 
 @Entity
-@Table(name = "storage")
+@Table(name = "storages")
 public class Storage implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

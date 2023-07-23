@@ -39,7 +39,10 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void addStorage(Long shopId, Long storageId) {
-
+        Storage storage = storagePersistenceService.findById(storageId);
+        Shop shop = shopPersistenceService.findById(shopId);
+        shop.addStorage(storage);
+        shopPersistenceService.update(shop);
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.company.core.models.goods;
 
 import com.company.core.models.ProductDecorator;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 @Embeddable
 public class ProductWithQuantity extends ProductDecorator {

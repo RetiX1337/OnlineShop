@@ -102,4 +102,9 @@
         <exception-type>com.company.core.exceptions.EntityNotSavedException</exception-type>
         <location>/error-page</location>
     </error-page>
+
+    <error-page>
+        <exception-type>com.company.core.exceptions.HibernateInitializationException</exception-type>
+        <location>/error-page</location>
+    </error-page>
 </web-app>

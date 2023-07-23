@@ -1,7 +1,7 @@
 package com.company.core.models;
 
 import com.company.core.models.goods.Identifiable;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;

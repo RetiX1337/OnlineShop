@@ -1,5 +1,6 @@
 package com.company.core.controllers;
 
+import com.company.core.models.Storage;
 import com.company.core.services.logicservices.StorageService;
 
 public class StorageController {
@@ -11,5 +12,13 @@ public class StorageController {
 
     public void addProductQuantity(Integer quantity, Long storageId, Long productId) {
         storageService.addProductQuantity(quantity, storageId, productId);
+    }
+
+    public Storage addStorage(Storage storage) {
+        return storageService.addStorage(storage);
+    }
+
+    public Storage getStorage(Long storageId) {
+        return storageService.getStorage(storageId);
     }
 }

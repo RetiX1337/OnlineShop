@@ -17,11 +17,11 @@ import java.util.List;
 public class ProductPersistenceServiceDatabase implements PersistenceInterface<ProductBase> {
     private final JDBCConnectionPool pool;
     private final String DELETE_SQL = "DELETE FROM product WHERE product.id = ?";
-    private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type_id = ? WHERE product.id = ?";
+    private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type = ? WHERE product.id = ?";
     private final String ALL_SQL = "SELECT * FROM product";
-    private final String SAVE_SQL = "INSERT INTO product (brand, name, price, product_type_id) VALUES (?, ?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id WHERE product.id = ?";
-    private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id";
+    private final String SAVE_SQL = "INSERT INTO product (brand, name, price, product_type) VALUES (?, ?, ?, ?)";
+    private final String FIND_BY_ID_SQL = "SELECT product.id, product.brand, product.name, product.price, product.product_type FROM product WHERE product.id = ?";
+    private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product.product_type FROM product";
 
 
     public ProductPersistenceServiceDatabase(JDBCConnectionPool pool) {

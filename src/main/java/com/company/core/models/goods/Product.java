@@ -1,6 +1,6 @@
 package com.company.core.models.goods;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.math.BigDecimal;
 

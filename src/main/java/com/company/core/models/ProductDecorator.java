@@ -4,9 +4,9 @@ import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import java.math.BigDecimal;
 @MappedSuperclass
 public class ProductDecorator implements Product {

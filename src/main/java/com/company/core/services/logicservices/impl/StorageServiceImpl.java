@@ -32,8 +32,8 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void addStorage(Storage storage) {
-        storagePersistenceService.save(storage);
+    public Storage addStorage(Storage storage) {
+        return storagePersistenceService.save(storage);
     }
 
     @Override

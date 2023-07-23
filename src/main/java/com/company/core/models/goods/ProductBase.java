@@ -1,6 +1,6 @@
 package com.company.core.models.goods;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -15,8 +15,8 @@ public class ProductBase implements Product {
     private String brand;
     @Column(name = "name")
     private String name;
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "product_type_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_type")
     private ProductType productType;
     @Column(name = "price")
     private BigDecimal price;

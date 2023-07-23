@@ -1,5 +1,6 @@
 package com.company.configuration;
 
+import com.company.HibernateSessionPool;
 import com.company.JDBCConnectionPool;
 import com.company.core.controllers.*;
 import com.company.core.models.Shop;
@@ -13,6 +14,8 @@ import com.company.core.services.logicservices.impl.*;
 import com.company.core.services.logicservices.*;
 import com.company.core.services.persistenceservices.*;
 import com.company.core.services.persistenceservices.dbimpl.*;
+import com.company.core.services.persistenceservices.hibernateimpl.*;
+import org.stringtemplate.v4.ST;
 
 public class DependencyManager {
     private final CustomerController customerController;
@@ -23,18 +26,34 @@ public class DependencyManager {
     private final OrderController orderController;
     private final StorageController storageController;
     private static DependencyManager instance;
+    private static int strategy = -1;
 
     private DependencyManager() {
         JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "matretsk82004");
+        HibernateSessionPool hibernateSessionPool = new HibernateSessionPool();
 
+        PersistenceInterface<ProductBase> productPersistenceService;
+        PersistenceInterface<Item> itemPersistenceService;
+        PersistenceInterface<Storage> storagePersistenceService;
+        PersistenceInterface<Shop> shopPersistenceService;
+        PersistenceInterface<Customer> customerPersistenceService;
+        PersistenceInterface<Order> orderPersistenceService;
 
-        PersistenceInterface<ProductBase> productPersistenceService = new ProductPersistenceServiceDatabase(pool);
-        PersistenceInterface<Item> itemPersistenceService = new ItemPersistenceServiceDatabase(pool, productPersistenceService);
-        PersistenceInterface<Storage> storagePersistenceService = new StoragePersistenceServiceDatabase(pool, productPersistenceService);
-        PersistenceInterface<Shop> shopPersistenceService = new ShopPersistenceServiceDatabase(pool, storagePersistenceService);
-        PersistenceInterface<Customer> customerPersistenceService = new CustomerPersistenceServiceDatabase(pool);
-        PersistenceInterface<Order> orderPersistenceService = new OrderPersistenceServiceDatabase(pool, itemPersistenceService, customerPersistenceService);
-
+        if (strategy == 1) {
+            productPersistenceService = new ProductPersistenceServiceHibernate(hibernateSessionPool);
+            itemPersistenceService = new ItemPersistenceServiceHibernate(hibernateSessionPool);
+            storagePersistenceService = new StoragePersistenceServiceHibernate(hibernateSessionPool);
+            shopPersistenceService = new ShopPersistenceServiceHibernate(hibernateSessionPool);
+            customerPersistenceService = new CustomerPersistenceServiceHibernate(hibernateSessionPool);
+            orderPersistenceService = new OrderPersistenceServiceHibernate(hibernateSessionPool);
+        } else {
+            productPersistenceService = new ProductPersistenceServiceDatabase(pool);
+            itemPersistenceService = new ItemPersistenceServiceDatabase(pool, productPersistenceService);
+            storagePersistenceService = new StoragePersistenceServiceDatabase(pool, productPersistenceService);
+            shopPersistenceService = new ShopPersistenceServiceDatabase(pool, storagePersistenceService);
+            customerPersistenceService = new CustomerPersistenceServiceDatabase(pool);
+            orderPersistenceService = new OrderPersistenceServiceDatabase(pool, itemPersistenceService, customerPersistenceService);
+        }
 
         ProductService productService = new ProductServiceImpl(productPersistenceService);
 
@@ -101,4 +120,7 @@ public class DependencyManager {
         return instance;
     }
 
+    public static void setStrategy(int strategy) {
+        DependencyManager.strategy = strategy;
+    }
 }

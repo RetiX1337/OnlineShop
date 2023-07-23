@@ -2,7 +2,7 @@ package com.company.core.models.user.customer;
 
 import com.company.core.models.goods.Identifiable;
 import com.company.core.models.user.User;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.math.BigDecimal;
 
@@ -22,14 +22,13 @@ public class Customer extends User implements Identifiable {
     @Column(name = "wallet")
     private BigDecimal wallet;
     @Transient
-    private Cart cart;
+    private Cart cart = new Cart();
 
     public Customer(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.wallet = BigDecimal.valueOf(500);
-        this.cart = new Cart();
     }
 
     public Customer(Long id, String username, String password, String email, BigDecimal wallet) {
@@ -37,7 +36,6 @@ public class Customer extends User implements Identifiable {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.cart = new Cart();
         this.wallet = wallet;
     }
 

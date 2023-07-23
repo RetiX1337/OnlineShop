@@ -2,12 +2,12 @@ package com.company.core.models.goods;
 
 import com.company.core.models.user.customer.Customer;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +18,8 @@ public class Order implements Identifiable {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "order_status_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
     private OrderStatus orderStatus;
     @Column(name = "summary_price")
     private BigDecimal summaryPrice = BigDecimal.valueOf(0);

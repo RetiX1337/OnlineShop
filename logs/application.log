@@ -59,3 +59,353 @@ w java.sql.SQLException: Access denied for user 'root'@'localhost' (using passwo
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) [?:?]
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) [?:?]
 	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-07-23 19:26:52 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 19:26:53 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 19:26:53 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 19:26:53 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 19:26:53 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 19:26:53 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 19:26:53 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 19:26:53 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 19:26:53 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 19:27:22 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 19:27:23 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 19:27:23 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 19:27:23 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 19:27:23 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 19:27:23 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 19:27:23 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 19:27:23 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 19:27:23 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:02:43 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:02:48 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:02:48 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:02:48 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:02:48 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:02:48 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:02:48 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:02:48 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:02:50 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:04:07 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:04:11 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:04:11 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:04:11 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:04:11 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:04:11 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:04:11 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:04:11 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:04:14 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:07:19 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:07:23 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:07:23 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:07:23 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:07:23 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:07:23 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:07:23 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:07:24 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:07:29 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:09:08 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:09:12 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:09:12 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:09:12 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:09:12 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:09:12 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:09:12 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:09:12 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:09:14 INFO  HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:11:04 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:11:06 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:11:06 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:11:06 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:11:06 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:11:06 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:11:06 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:11:07 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:11:07 INFO  HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:11:39 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:11:41 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:11:41 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:11:41 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:11:41 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:11:41 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:11:41 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:11:41 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:11:45 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:12:24 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:12:28 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:12:28 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:12:28 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:12:28 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:12:28 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:12:29 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:12:29 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:12:35 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:25:33 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:25:37 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:25:37 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:25:37 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:25:37 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:25:37 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:25:37 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:25:38 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:25:44 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:26:01 WARN  SQL Error: 1054, SQLState: 42S22
+w2023-07-23 20:26:01 ERROR Unknown column 'p1_0.productType' in 'field list'
+w2023-07-23 20:28:43 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:28:47 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:28:47 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:28:47 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:28:47 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:28:47 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:28:47 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:28:48 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:28:54 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:29:10 WARN  SQL Error: 1054, SQLState: 42S22
+w2023-07-23 20:29:10 ERROR Unknown column 'p1_0.productType' in 'field list'
+w2023-07-23 20:30:05 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:30:10 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:30:10 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:30:10 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:30:10 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:30:10 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:30:10 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:30:10 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:30:16 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:35:19 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:35:23 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:35:23 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:35:23 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:35:23 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:35:23 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:35:23 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:35:24 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:35:30 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:36:15 WARN  SQL Error: 1064, SQLState: 42000
+w2023-07-23 20:36:15 ERROR You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order as o1_0' at line 1
+w2023-07-23 20:52:43 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:52:47 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:52:47 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:52:47 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:52:47 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:52:47 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:52:47 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:52:47 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:52:53 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:53:23 WARN  SQL Error: 1064, SQLState: 42000
+w2023-07-23 20:53:23 ERROR You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order as o1_0' at line 1
+w2023-07-23 20:54:03 INFO  HHH10001008: Cleaning up connection pool [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:54:03 ERROR Connection leak detected: there are 1 unclosed connections upon shutting down pool jdbc:mysql://localhost:3306/online_shop
+w2023-07-23 20:54:03 ERROR Connection leak detected: there are 1 unclosed connections!
+w2023-07-23 20:57:08 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:57:12 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:57:12 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:57:12 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:57:12 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:57:12 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:57:12 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:57:12 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:57:19 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:57:41 WARN  SQL Error: 1064, SQLState: 42000
+w2023-07-23 20:57:41 ERROR You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order as o1_0' at line 1
+w2023-07-23 20:58:54 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 20:58:58 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 20:58:58 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 20:58:58 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 20:58:58 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 20:58:58 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 20:58:58 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 20:58:58 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 20:59:05 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 20:59:25 WARN  SQL Error: 1064, SQLState: 42000
+w2023-07-23 20:59:25 ERROR You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order as o1_0' at line 1
+w2023-07-23 21:01:23 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:01:25 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:01:25 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:01:25 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:01:25 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:01:25 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:01:25 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:01:25 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:01:28 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:01:28 WARN  SQL Error: 1064, SQLState: 42000
+w2023-07-23 21:01:28 ERROR You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order as o1_0 left outer join customer as c1_0 on o1_0.customer_id = c1_0.id whe' at line 1
+w2023-07-23 21:01:28 INFO  HHH000327: Error performing load command
+w org.hibernate.exception.SQLGrammarException: JDBC exception executing SQL [select o1_0.id, c1_0.id, c1_0.email, c1_0.password, c1_0.username, c1_0.wallet, o1_0.order_status, o1_0.summary_price from order as o1_0 left outer join customer as c1_0 on o1_0.customer_id = c1_0.id where o1_0.id = ?]
+	at org.hibernate.exception.internal.SQLExceptionTypeDelegate.convert(SQLExceptionTypeDelegate.java:63) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:42) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:107) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:93) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:171) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.getResultSet(DeferredResultSetAccess.java:61) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.lambda$processNext$0(JdbcValuesResultSetImpl.java:82) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.advance(JdbcValuesResultSetImpl.java:225) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.processNext(JdbcValuesResultSetImpl.java:78) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.jdbc.internal.AbstractJdbcValues.next(AbstractJdbcValues.java:29) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.next(RowProcessingStateStandardImpl.java:69) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:65) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:24) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:228) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:146) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.list(JdbcSelectExecutorStandardImpl.java:74) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.ast.internal.SingleIdLoadPlan.load(SingleIdLoadPlan.java:117) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.ast.internal.SingleIdLoadPlan.load(SingleIdLoadPlan.java:76) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.ast.internal.SingleIdEntityLoaderStandardImpl.load(SingleIdEntityLoaderStandardImpl.java:71) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.persister.entity.AbstractEntityPersister.doLoad(AbstractEntityPersister.java:4622) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.persister.entity.AbstractEntityPersister.load(AbstractEntityPersister.java:4612) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadFromDatasource(DefaultLoadEventListener.java:554) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.internal.DefaultLoadEventListener.doLoad(DefaultLoadEventListener.java:528) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.internal.DefaultLoadEventListener.load(DefaultLoadEventListener.java:206) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.internal.DefaultLoadEventListener.proxyOrLoad(DefaultLoadEventListener.java:323) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.internal.DefaultLoadEventListener.doOnLoad(DefaultLoadEventListener.java:107) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.internal.DefaultLoadEventListener.onLoad(DefaultLoadEventListener.java:73) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:112) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.internal.SessionImpl.fireLoadNoChecks(SessionImpl.java:1183) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.internal.SessionImpl.fireLoad(SessionImpl.java:1172) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.access.IdentifierLoadAccessImpl.doLoad(IdentifierLoadAccessImpl.java:169) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.access.IdentifierLoadAccessImpl.lambda$load$1(IdentifierLoadAccessImpl.java:143) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.access.IdentifierLoadAccessImpl.perform(IdentifierLoadAccessImpl.java:95) [hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.loader.access.IdentifierLoadAccessImpl.load(IdentifierLoadAccessImpl.java:143) [hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at org.hibernate.internal.SessionImpl.get(SessionImpl.java:966) [hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	at com.company.core.services.persistenceservices.hibernateimpl.OrderPersistenceServiceHibernate.findById(OrderPersistenceServiceHibernate.java:43) [classes/:?]
+	at com.company.core.services.persistenceservices.hibernateimpl.OrderPersistenceServiceHibernate.findById(OrderPersistenceServiceHibernate.java:16) [classes/:?]
+	at com.company.core.services.logicservices.impl.OrderServiceImpl.findOrder(OrderServiceImpl.java:68) [classes/:?]
+	at com.company.core.controllers.OrderController.findOrderById(OrderController.java:21) [classes/:?]
+	at com.company.Main.main(Main.java:18) [classes/:?]
+Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order as o1_0 left outer join customer as c1_0 on o1_0.customer_id = c1_0.id whe' at line 1
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:916) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at com.mysql.cj.jdbc.ClientPreparedStatement.executeQuery(ClientPreparedStatement.java:972) ~[mysql-connector-j-8.0.33.jar:8.0.33]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:150) ~[hibernate-core-6.0.0.Alpha7.jar:6.0.0.Alpha7]
+	... 35 more
+2023-07-23 21:05:21 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:05:26 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:05:26 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:05:26 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:05:26 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:05:26 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:05:26 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:05:26 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:05:35 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:24:34 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:24:36 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:24:36 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:24:36 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:24:36 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:24:36 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:24:36 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:24:36 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:24:39 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:25:22 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:25:24 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:25:24 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:25:24 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:25:24 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:25:24 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:25:24 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:25:24 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:25:27 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:26:21 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:26:23 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:26:23 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:26:23 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:26:23 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:26:23 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:26:23 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:26:23 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:26:26 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:40:35 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:40:37 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:40:37 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:40:37 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:40:37 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:40:37 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:40:37 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:40:37 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:40:40 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:40:41 WARN  SQL Error: 1062, SQLState: 23000
+w2023-07-23 21:40:41 ERROR Duplicate entry '1' for key 'storage.PRIMARY'
+w2023-07-23 21:42:37 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:42:39 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:42:39 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:42:39 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:42:39 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:42:39 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:42:39 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:42:39 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:42:42 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:42:42 WARN  SQL Error: 1062, SQLState: 23000
+w2023-07-23 21:42:42 ERROR Duplicate entry '2' for key 'storages.PRIMARY'
+w2023-07-23 21:51:11 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:51:13 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:51:13 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:51:13 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:51:13 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:51:13 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:51:13 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:51:13 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:51:16 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:52:47 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:52:49 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:52:49 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:52:49 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:52:49 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:52:49 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:52:49 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:52:49 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:52:52 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:55:16 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:55:18 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:55:18 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:55:18 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:55:18 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:55:18 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:55:18 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:55:18 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:55:21 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:56:40 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:56:42 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:56:42 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:56:42 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:56:42 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:56:42 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:56:42 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:56:42 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:56:45 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 21:59:03 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 21:59:05 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 21:59:05 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 21:59:05 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 21:59:05 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 21:59:05 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 21:59:05 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 21:59:05 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 21:59:08 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 22:00:05 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 22:00:07 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 22:00:07 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 22:00:07 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 22:00:07 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 22:00:07 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 22:00:07 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 22:00:07 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 22:00:10 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 22:05:17 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 22:05:19 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 22:05:19 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 22:05:19 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 22:05:19 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 22:05:19 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 22:05:19 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 22:05:20 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 22:05:23 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-23 22:08:14 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-23 22:08:16 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-23 22:08:16 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-23 22:08:16 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-23 22:08:16 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-23 22:08:16 INFO  HHH10001003: Autocommit mode: false
+w2023-07-23 22:08:16 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-23 22:08:17 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-23 22:08:20 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w
