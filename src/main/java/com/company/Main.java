@@ -4,8 +4,10 @@ import com.company.configuration.DependencyManager;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
+import com.company.core.models.goods.ProductType;
 import com.company.core.models.user.customer.Customer;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
@@ -15,8 +17,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             DependencyManager.setStrategy(1);
-            DependencyManager.getInstance().getShopController().addStorage(1L, 4L);
-            DependencyManager.getInstance().getShopController().findShop(1L).getStorages().forEach(storage -> System.out.println(storage.getName()));
+            DependencyManager.getInstance().getShopController().findShop(1L).getStorages().forEach(storage -> System.out.println(storage.getProductWithQuantity(2L)));
         } catch (EntityNotFoundException e) {
             System.out.println("Not found");
         }

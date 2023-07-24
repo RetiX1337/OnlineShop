@@ -27,13 +27,6 @@ public class ProductBase implements Product {
         this.productType = productType;
         this.price = price;
     }
-    public ProductBase(Long id, String brand, String name, ProductType productType, BigDecimal price) {
-        this.id = id;
-        this.brand = brand;
-        this.name = name;
-        this.productType = productType;
-        this.price = price;
-    }
 
     public ProductBase() {}
 

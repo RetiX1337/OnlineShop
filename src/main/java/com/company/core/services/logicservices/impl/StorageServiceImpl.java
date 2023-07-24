@@ -88,7 +88,14 @@ public class StorageServiceImpl implements StorageService {
             return false;
         }
 
+
         for (Storage storage : storages) {
+            ProductWithQuantity productWithQuantity = storage.getProductWithQuantity(productId);
+
+            if (productWithQuantity == null) {
+                continue;
+            }
+
             Integer storageQuantity = storage.getProductWithQuantity(productId).getQuantity();
 
             if (tempQuantity > storageQuantity) {
@@ -115,7 +122,7 @@ public class StorageServiceImpl implements StorageService {
 
         ProductWithQuantity oldProductWithQuantity = storage.getProductWithQuantity(productId);
 
-        if (oldProductWithQuantity!=null) {
+        if (oldProductWithQuantity != null) {
             oldProductWithQuantity.setQuantity(oldProductWithQuantity.getQuantity() + quantity);
         } else {
             storage.addQuantity(productWithQuantity);
@@ -133,7 +140,7 @@ public class StorageServiceImpl implements StorageService {
 
         ProductWithQuantity productWithQuantity = storage.getProductWithQuantity(productId);
 
-        if (productWithQuantity!=null) {
+        if (productWithQuantity != null) {
             productWithQuantity.setQuantity(Math.max(productWithQuantity.getQuantity() - quantity, 0));
             storagePersistenceService.update(storage);
         }

@@ -44,7 +44,7 @@ public class HibernateSessionPool extends ObjectPool<Session> {
     @Override
     public boolean validate(Session o) {
         try {
-            return !sessionFactory.isClosed();
+            return o.isOpen();
         } catch (HibernateException e) {
             logger.error(e);
             throw new HibernateInitializationException();
@@ -54,7 +54,7 @@ public class HibernateSessionPool extends ObjectPool<Session> {
     @Override
     public void expire(Session o) {
         try {
-            sessionFactory.close();
+            o.close();
         } catch (HibernateException e) {
             logger.error(e);
             throw new HibernateInitializationException();

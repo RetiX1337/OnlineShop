@@ -24,8 +24,7 @@ public class ProductPersistenceServiceHibernate implements PersistenceInterface<
         Session session = pool.checkOut();
         Transaction tr = session.beginTransaction();
         try {
-            Long id = (Long) session.save(entity);
-            entity.setId(id);
+            session.persist(entity);
             tr.commit();
         } catch (Exception e) {
             e.printStackTrace();

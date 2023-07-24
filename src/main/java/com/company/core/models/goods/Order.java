@@ -27,16 +27,10 @@ public class Order implements Identifiable {
     public Order(Set<Item> items, Customer customer) {
         this.customer = customer;
         this.items = items;
+        items.forEach(item -> item.setOrder(this));
         countPrice();
     }
 
-    public Order(Long id, Set<Item> items, Customer customer, BigDecimal summaryPrice, OrderStatus orderStatus) {
-        this.id = id;
-        this.customer = customer;
-        this.summaryPrice = summaryPrice;
-        this.orderStatus = orderStatus;
-        this.items = items;
-    }
 
     public Order() {}
 

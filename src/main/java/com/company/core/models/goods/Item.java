@@ -31,14 +31,6 @@ public class Item implements Identifiable {
         countPrice();
     }
 
-    public Item(Long id, ProductBase product, Integer quantity, BigDecimal price, Order order) {
-        this.id = id;
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-        this.order = order;
-    }
-
     public Item() {
     }
 

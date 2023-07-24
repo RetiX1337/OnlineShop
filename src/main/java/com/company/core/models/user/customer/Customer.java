@@ -31,13 +31,6 @@ public class Customer extends User implements Identifiable {
         this.wallet = BigDecimal.valueOf(500);
     }
 
-    public Customer(Long id, String username, String password, String email, BigDecimal wallet) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.wallet = wallet;
-    }
 
     public Customer() {
     }
