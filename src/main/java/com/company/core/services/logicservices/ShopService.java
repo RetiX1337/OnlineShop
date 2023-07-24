@@ -1,9 +1,10 @@
 package com.company.core.services.logicservices;
 
 import com.company.core.models.Shop;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface ShopService {
     Shop createShop(String name, String address);
     void addShop(Shop shop);

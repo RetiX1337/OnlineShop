@@ -1,11 +1,12 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
-import com.company.JDBCConnectionPool;
+import com.company.core.pools.JDBCConnectionPool;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+@Repository
 public class CustomerPersistenceServiceDatabase implements PersistenceInterface<Customer> {
     private final JDBCConnectionPool pool;
     private final String DELETE_SQL = "DELETE FROM customer WHERE customer.id = ?";

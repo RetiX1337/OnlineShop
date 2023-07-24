@@ -1,13 +1,13 @@
 package com.company.core.services.persistenceservices.dbimpl;
 
-import com.company.JDBCConnectionPool;
+import com.company.core.pools.JDBCConnectionPool;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.Storage;
-import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-
+@Repository
 public class StoragePersistenceServiceDatabase implements PersistenceInterface<Storage> {
     private final JDBCConnectionPool pool;
     private final PersistenceInterface<ProductBase> productPersistenceService;

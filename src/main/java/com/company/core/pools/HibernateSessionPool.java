@@ -1,4 +1,4 @@
-package com.company;
+package com.company.core.pools;
 
 import com.company.core.exceptions.HibernateInitializationException;
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HibernateSessionPool extends ObjectPool<Session> {
     private SessionFactory sessionFactory;
     private final static Logger logger = LogManager.getLogger(HibernateSessionPool.class);

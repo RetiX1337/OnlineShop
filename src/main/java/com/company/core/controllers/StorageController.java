@@ -2,7 +2,9 @@ package com.company.core.controllers;
 
 import com.company.core.models.Storage;
 import com.company.core.services.logicservices.StorageService;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class StorageController {
     private final StorageService storageService;
 

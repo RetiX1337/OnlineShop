@@ -1,4 +1,4 @@
-package com.company;
+package com.company.core.pools;
 
 
 import java.sql.Connection;
@@ -8,14 +8,20 @@ import java.sql.SQLException;
 import com.company.core.exceptions.JDBCInitializationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JDBCConnectionPool extends ObjectPool<Connection> {
     private final String dbLink;
     private final String username;
     private final String password;
     private final static Logger logger = LogManager.getLogger(JDBCConnectionPool.class);
 
-    public JDBCConnectionPool(String driver, String dbLink, String username, String password) {
+    public JDBCConnectionPool(@Value("${db.driver}") String driver,
+                              @Value("${db.link}") String dbLink,
+                              @Value("${db.username}") String username,
+                              @Value("${db.password}") String password) {
         super();
         try {
             Class.forName(driver);

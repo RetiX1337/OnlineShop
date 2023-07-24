@@ -2,16 +2,17 @@ package com.company.core.services.persistenceservices.hibernateimpl;
 
 import com.company.core.models.goods.ProductBase;
 import com.company.core.services.persistenceservices.PersistenceInterface;
-import com.company.HibernateSessionPool;
+import com.company.core.pools.HibernateSessionPool;
 import com.company.core.exceptions.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class ProductPersistenceServiceHibernate implements PersistenceInterface<ProductBase> {
     private final HibernateSessionPool pool;
 

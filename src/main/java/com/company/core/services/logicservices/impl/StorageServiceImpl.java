@@ -8,11 +8,12 @@ import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+@Service
 public class StorageServiceImpl implements StorageService {
     private final PersistenceInterface<Storage> storagePersistenceService;
     private final PersistenceInterface<Shop> shopPersistenceService;

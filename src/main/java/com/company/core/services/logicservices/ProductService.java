@@ -3,10 +3,11 @@ package com.company.core.services.logicservices;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+@Service
 public interface ProductService {
     ProductBase createProduct(String brand, String name, ProductType productType, BigDecimal price);
     void addProduct(ProductBase product);

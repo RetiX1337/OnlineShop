@@ -1,6 +1,6 @@
 package com.company.core.services.persistenceservices.hibernateimpl;
 
-import com.company.HibernateSessionPool;
+import com.company.core.pools.HibernateSessionPool;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.services.persistenceservices.PersistenceInterface;
@@ -9,9 +9,10 @@ import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class ItemPersistenceServiceHibernate implements PersistenceInterface<Item> {
     private final HibernateSessionPool pool;
 

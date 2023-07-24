@@ -5,10 +5,11 @@ import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+@Service
 public class ProductServiceImpl implements ProductService {
     private final PersistenceInterface<ProductBase> productPersistenceService;
 

@@ -1,13 +1,12 @@
 package com.company.configuration;
 
-import com.company.HibernateSessionPool;
-import com.company.JDBCConnectionPool;
+import com.company.core.pools.HibernateSessionPool;
+import com.company.core.pools.JDBCConnectionPool;
 import com.company.core.controllers.*;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
-import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.impl.*;
@@ -15,7 +14,6 @@ import com.company.core.services.logicservices.*;
 import com.company.core.services.persistenceservices.*;
 import com.company.core.services.persistenceservices.dbimpl.*;
 import com.company.core.services.persistenceservices.hibernateimpl.*;
-import org.stringtemplate.v4.ST;
 
 public class DependencyManager {
     private final CustomerController customerController;

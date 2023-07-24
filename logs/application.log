@@ -8,8 +8,8 @@ w java.sql.SQLException: Access denied for user 'root'@'localhost' (using passwo
 	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188) ~[mysql-connector-j-8.0.33.jar:8.0.33]
 	at java.sql.DriverManager.getConnection(DriverManager.java:681) ~[java.sql:?]
 	at java.sql.DriverManager.getConnection(DriverManager.java:229) ~[java.sql:?]
-	at com.company.JDBCConnectionPool.create(JDBCConnectionPool.java:36) ~[classes/:?]
-	at com.company.JDBCConnectionPool.<init>(JDBCConnectionPool.java:29) ~[classes/:?]
+	at com.company.core.pools.JDBCConnectionPool.create(JDBCConnectionPool.java:36) ~[classes/:?]
+	at com.company.core.pools.JDBCConnectionPool.<init>(JDBCConnectionPool.java:29) ~[classes/:?]
 	at com.company.configuration.DependencyManager.<init>(DependencyManager.java:27) ~[classes/:?]
 	at com.company.configuration.DependencyManager.getInstance(DependencyManager.java:98) ~[classes/:?]
 	at com.company.presentation.servlet.ServerStartup.contextInitialized(ServerStartup.java:19) ~[classes/:?]
@@ -669,4 +669,23 @@ w2023-07-24 13:40:27 INFO  HHH10001003: Autocommit mode: false
 w2023-07-24 13:40:27 INFO  HHH10001115: Connection pool size: 20 (min=1)
 w2023-07-24 13:40:28 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
 w2023-07-24 13:40:39 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-24 18:51:35 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-24 18:51:37 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-24 18:51:37 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-24 18:51:37 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-24 18:51:37 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-24 18:51:37 INFO  HHH10001003: Autocommit mode: false
+w2023-07-24 18:51:37 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-24 18:51:39 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-24 18:51:45 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-24 18:51:45 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'com.company.core.services.persistenceservices.hibernateimpl.ProductPersistenceServiceHibernate#0' defined in class path resource [ApplicationContext.xml]: Unsatisfied dependency expressed through constructor parameter 0: Could not convert argument value of type [java.lang.String] to required type [com.company.core.pools.HibernateSessionPool]: Failed to convert value of type 'java.lang.String' to required type 'com.company.core.pools.HibernateSessionPool'; Cannot convert value of type 'java.lang.String' to required type 'com.company.core.pools.HibernateSessionPool': no matching editors or conversion strategy found
+w2023-07-24 18:54:56 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-24 18:54:59 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-24 18:54:59 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-24 18:54:59 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-24 18:54:59 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-24 18:54:59 INFO  HHH10001003: Autocommit mode: false
+w2023-07-24 18:54:59 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-24 18:55:02 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-24 18:55:07 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
 w

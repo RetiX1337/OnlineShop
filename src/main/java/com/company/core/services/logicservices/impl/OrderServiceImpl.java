@@ -8,12 +8,13 @@ import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
+@Service
 public class OrderServiceImpl implements OrderService {
     private PersistenceInterface<Order> orderPersistenceService;
     private final StorageService storageService;

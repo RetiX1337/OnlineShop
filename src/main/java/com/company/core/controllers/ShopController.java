@@ -3,7 +3,9 @@ package com.company.core.controllers;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.services.logicservices.ShopService;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class ShopController {
     private final ShopService shopService;
 

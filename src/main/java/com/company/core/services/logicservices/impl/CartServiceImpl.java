@@ -10,9 +10,10 @@ import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.logicservices.CartService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-
+@Service
 public class CartServiceImpl implements CartService {
     private final ItemService itemService;
     private final ProductService productService;

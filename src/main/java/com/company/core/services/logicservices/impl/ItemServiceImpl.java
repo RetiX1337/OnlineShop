@@ -5,7 +5,9 @@ import com.company.core.models.goods.Item;
 import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ItemServiceImpl implements ItemService {
     private final PersistenceInterface<Item> itemPersistenceService;
     private final ProductService productService;

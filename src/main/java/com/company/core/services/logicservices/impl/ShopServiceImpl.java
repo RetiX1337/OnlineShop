@@ -4,9 +4,10 @@ import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.services.logicservices.ShopService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ShopServiceImpl implements ShopService {
     private final PersistenceInterface<Shop> shopPersistenceService;
     private final PersistenceInterface<Storage> storagePersistenceService;

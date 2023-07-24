@@ -2,10 +2,11 @@ package com.company.core.services.logicservices;
 
 import com.company.core.models.Storage;
 import com.company.core.models.goods.ProductWithQuantity;
+import org.springframework.stereotype.Service;
 import org.stringtemplate.v4.ST;
 
 import java.util.List;
-
+@Service
 public interface StorageService {
     Storage createStorage(String name, String address);
     Storage addStorage(Storage storage);
