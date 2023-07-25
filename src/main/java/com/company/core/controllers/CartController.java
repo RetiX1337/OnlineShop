@@ -5,6 +5,7 @@ import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.CartService;
 import com.company.core.services.logicservices.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
@@ -15,7 +16,8 @@ public class CartController {
     private final CartService cartService;
     private final ProductService productService;
 
-    public CartController(CartService cartService, ProductService productService) {
+    public CartController(@Autowired CartService cartService,
+                          @Autowired ProductService productService) {
         this.cartService = cartService;
         this.productService = productService;
     }

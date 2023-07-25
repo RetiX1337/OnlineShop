@@ -688,4 +688,102 @@ w2023-07-24 18:54:59 INFO  HHH10001003: Autocommit mode: false
 w2023-07-24 18:54:59 INFO  HHH10001115: Connection pool size: 20 (min=1)
 w2023-07-24 18:55:02 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
 w2023-07-24 18:55:07 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 14:19:42 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 14:19:44 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 14:19:44 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 14:19:44 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 14:19:44 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 14:19:44 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 14:19:44 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 14:19:45 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 14:19:49 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 14:19:50 WARN  Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.company.core.services.logicservices.impl.StorageServiceImpl
+w2023-07-25 14:19:50 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'cartController' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\controllers\CartController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'cartServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\CartServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'orderServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\OrderServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'storageServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\StorageServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'com.company.core.services.persistenceservices.PersistenceInterface<com.company.core.models.Storage>' available: expected single matching bean but found 2: storagePersistenceServiceDatabase,storagePersistenceServiceHibernate
+w2023-07-25 14:21:38 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 14:21:39 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 14:21:39 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 14:21:39 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 14:21:39 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 14:21:39 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 14:21:39 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 14:21:40 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 14:21:41 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 14:21:41 WARN  Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.company.core.services.persistenceservices.dbimpl.ItemPersistenceServiceDatabase
+w2023-07-25 14:21:41 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'itemPersistenceServiceDatabase' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\persistenceservices\dbimpl\ItemPersistenceServiceDatabase.class]: Unsatisfied dependency expressed through constructor parameter 1: No qualifying bean of type 'com.company.core.services.persistenceservices.PersistenceInterface<com.company.core.models.goods.ProductBase>' available: expected single matching bean but found 2: productPersistenceServiceDatabase,productPersistenceServiceHibernate
+w2023-07-25 14:23:48 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 14:23:51 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 14:23:51 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 14:23:51 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 14:23:51 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 14:23:51 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 14:23:51 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 14:23:52 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 14:23:57 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 14:26:25 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 14:26:29 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 14:26:29 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 14:26:29 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 14:26:29 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 14:26:29 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 14:26:29 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 14:26:31 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 14:26:34 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 14:27:04 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 14:27:05 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 14:27:05 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 14:27:05 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 14:27:05 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 14:27:05 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 14:27:05 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 14:27:06 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 14:27:10 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 15:12:10 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 15:12:12 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 15:12:12 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 15:12:12 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 15:12:12 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 15:12:12 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 15:12:12 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 15:12:15 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 15:12:18 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 15:12:18 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'customerController' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\controllers\CustomerController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customerServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\CustomerServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'com.company.core.PersistenceServiceBeanFactory' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+w2023-07-25 15:13:46 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 15:13:48 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 15:13:48 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 15:13:48 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 15:13:48 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 15:13:48 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 15:13:48 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 15:13:49 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 15:13:53 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 15:13:53 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'customerController' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\controllers\CustomerController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customerServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\CustomerServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'com.company.core.PersistenceServiceBeanFactory' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true), @org.springframework.beans.factory.annotation.Qualifier("persistenceServiceBeanFactory")}
+w2023-07-25 15:14:41 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 15:14:42 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 15:14:42 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 15:14:42 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 15:14:42 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 15:14:42 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 15:14:42 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 15:14:43 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 15:14:45 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 15:14:45 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'customerController' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\controllers\CustomerController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customerServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\CustomerServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'com.company.core.PersistenceServiceBeanFactory' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true), @org.springframework.beans.factory.annotation.Qualifier("persistenceServiceBeanFactory")}
+w2023-07-25 15:15:42 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 15:15:43 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 15:15:43 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 15:15:43 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 15:15:43 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 15:15:43 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 15:15:43 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 15:15:43 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 15:15:45 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+w2023-07-25 15:15:45 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'customerController' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\controllers\CustomerController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'customerServiceImpl' defined in file [C:\Users\matve\IdeaProjects\OnlineShop\target\classes\com\company\core\services\logicservices\impl\CustomerServiceImpl.class]: Failed to instantiate [com.company.core.services.logicservices.impl.CustomerServiceImpl]: Constructor threw exception
+w2023-07-25 15:16:42 INFO  HHH000412: Hibernate ORM core version 6.0.0.Alpha7
+w2023-07-25 15:16:43 WARN  HHH10001002: Using built-in connection pool (not intended for production use)
+w2023-07-25 15:16:43 INFO  HHH10001005: Loaded JDBC driver class: com.mysql.jdbc.Driver
+w2023-07-25 15:16:43 INFO  HHH10001012: Connecting with JDBC URL [jdbc:mysql://localhost:3306/online_shop]
+w2023-07-25 15:16:43 INFO  HHH10001001: Connection properties: {password=****, user=root}
+w2023-07-25 15:16:43 INFO  HHH10001003: Autocommit mode: false
+w2023-07-25 15:16:43 INFO  HHH10001115: Connection pool size: 20 (min=1)
+w2023-07-25 15:16:43 INFO  HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+w2023-07-25 15:16:45 INFO  HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
 w

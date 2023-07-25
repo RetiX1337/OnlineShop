@@ -1,16 +1,23 @@
 package com.company.core.services.logicservices.impl;
 
+import com.company.core.PersistenceServiceBeanFactory;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.CustomerService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
     private final PersistenceInterface<Customer> customerPersistenceService;
 
-    public CustomerServiceImpl(@Autowired PersistenceInterface<Customer> customerPersistenceService) {
+    @Autowired
+    public CustomerServiceImpl(@Autowired PersistenceServiceBeanFactory persistenceServiceBeanFactory) {
+        this.customerPersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Customer.class);
+    }
+
+    public CustomerServiceImpl(PersistenceInterface<Customer> customerPersistenceService) {
         this.customerPersistenceService = customerPersistenceService;
     }
 

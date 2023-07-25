@@ -1,10 +1,13 @@
 package com.company.core.services.logicservices.impl;
 
+import com.company.core.PersistenceServiceBeanFactory;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.goods.Item;
 import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +15,15 @@ public class ItemServiceImpl implements ItemService {
     private final PersistenceInterface<Item> itemPersistenceService;
     private final ProductService productService;
 
-    public ItemServiceImpl(PersistenceInterface<Item> itemPersistenceService, ProductService productService) {
+    @Autowired
+    public ItemServiceImpl(@Autowired PersistenceServiceBeanFactory persistenceServiceBeanFactory,
+                           @Autowired ProductService productService) {
+        this.itemPersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Item.class);
+        this.productService = productService;
+    }
+
+    public ItemServiceImpl(PersistenceInterface<Item> itemPersistenceService,
+                           ProductService productService) {
         this.itemPersistenceService = itemPersistenceService;
         this.productService = productService;
     }

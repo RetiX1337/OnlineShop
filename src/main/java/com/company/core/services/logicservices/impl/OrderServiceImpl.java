@@ -1,5 +1,6 @@
 package com.company.core.services.logicservices.impl;
 
+import com.company.core.PersistenceServiceBeanFactory;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.OrderStatus;
@@ -8,6 +9,8 @@ import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,6 +22,15 @@ public class OrderServiceImpl implements OrderService {
     private PersistenceInterface<Order> orderPersistenceService;
     private final StorageService storageService;
     private ItemService itemService;
+
+    @Autowired
+    public OrderServiceImpl(@Autowired PersistenceServiceBeanFactory persistenceServiceBeanFactory,
+                            @Autowired ItemService itemService,
+                            @Autowired StorageService storageService) {
+        this.orderPersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Order.class);
+        this.itemService = itemService;
+        this.storageService = storageService;
+    }
 
     public OrderServiceImpl(PersistenceInterface<Order> orderPersistenceService,
                             ItemService itemService,

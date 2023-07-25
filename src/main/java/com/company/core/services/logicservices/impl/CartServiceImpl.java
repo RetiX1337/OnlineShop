@@ -10,6 +10,7 @@ import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.logicservices.CartService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,7 +21,10 @@ public class CartServiceImpl implements CartService {
     private final OrderService orderService;
     private final StorageService storageService;
 
-    public CartServiceImpl(ItemService itemService, ProductService productService, OrderService orderService, StorageService storageService) {
+    public CartServiceImpl(@Autowired ItemService itemService,
+                           @Autowired ProductService productService,
+                           @Autowired OrderService orderService,
+                           @Autowired StorageService storageService) {
         this.itemService = itemService;
         this.productService = productService;
         this.orderService = orderService;

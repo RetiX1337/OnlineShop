@@ -2,13 +2,14 @@ package com.company.core.controllers;
 
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class CustomerController {
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(@Autowired CustomerService customerService) {
         this.customerService = customerService;
     }
 

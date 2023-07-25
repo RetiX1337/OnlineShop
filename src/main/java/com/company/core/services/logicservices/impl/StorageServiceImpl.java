@@ -1,5 +1,6 @@
 package com.company.core.services.logicservices.impl;
 
+import com.company.core.PersistenceServiceBeanFactory;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.models.goods.Product;
@@ -8,6 +9,8 @@ import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +21,14 @@ public class StorageServiceImpl implements StorageService {
     private final PersistenceInterface<Storage> storagePersistenceService;
     private final PersistenceInterface<Shop> shopPersistenceService;
     private final ProductService productService;
+
+    @Autowired
+    public StorageServiceImpl(@Autowired PersistenceServiceBeanFactory persistenceServiceBeanFactory,
+                              @Autowired ProductService productService) {
+        this.storagePersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Storage.class);
+        this.shopPersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Shop.class);
+        this.productService = productService;
+    }
 
     public StorageServiceImpl(PersistenceInterface<Storage> storagePersistenceService,
                               PersistenceInterface<Shop> shopPersistenceService,

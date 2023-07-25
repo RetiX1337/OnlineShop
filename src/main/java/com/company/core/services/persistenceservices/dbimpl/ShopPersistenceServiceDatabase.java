@@ -6,6 +6,8 @@ import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -32,7 +34,8 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
     private final String DELETE_SHOP_STORAGE_RELATION = "DELETE FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
     private final String FIND_BOND_SQL = "SELECT * FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
 
-    public ShopPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Storage> storagePersistenceService) {
+    public ShopPersistenceServiceDatabase(@Autowired JDBCConnectionPool pool,
+                                          @Qualifier("storagePersistenceServiceDatabase") PersistenceInterface<Storage> storagePersistenceService) {
         this.pool = pool;
         this.storagePersistenceService = storagePersistenceService;
     }

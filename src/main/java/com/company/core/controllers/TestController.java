@@ -6,6 +6,7 @@ import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class TestController {
                 case 6 -> dependencyManager.getCustomerController().displayCart(customer);
      */
 
-    public TestController(CartService cartService,
-                          OrderService orderService,
-                          ProductService productService,
-                          CustomerService customerService,
-                          StorageService storageService,
-                          ShopService shopService) {
+    public TestController(@Autowired CartService cartService,
+                          @Autowired OrderService orderService,
+                          @Autowired ProductService productService,
+                          @Autowired CustomerService customerService,
+                          @Autowired StorageService storageService,
+                          @Autowired ShopService shopService) {
         this.cartService = cartService;
         this.orderService = orderService;
         this.productService = productService;

@@ -18,7 +18,7 @@ import java.util.List;
 public class StoragePersistenceServiceHibernate implements PersistenceInterface<Storage> {
     private final HibernateSessionPool pool;
 
-    public StoragePersistenceServiceHibernate(@Autowired @Qualifier("hibernateSessionPool") HibernateSessionPool pool) {
+    public StoragePersistenceServiceHibernate(@Autowired HibernateSessionPool pool) {
         this.pool = pool;
     }
 

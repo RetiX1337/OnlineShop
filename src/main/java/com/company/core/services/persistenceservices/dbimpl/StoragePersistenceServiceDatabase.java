@@ -7,6 +7,8 @@ import com.company.core.models.Storage;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductWithQuantity;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -30,7 +32,8 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     private final String FIND_BY_ID_SQL = "SELECT * FROM storages WHERE id = ?";
     private final String GET_QUANTITIES_SQL = "SELECT product_id, quantity FROM product_storage WHERE storage_id = ?";
 
-    public StoragePersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<ProductBase> productPersistenceService) {
+    public StoragePersistenceServiceDatabase(@Autowired JDBCConnectionPool pool,
+                                             @Qualifier("productPersistenceServiceDatabase") PersistenceInterface<ProductBase> productPersistenceService) {
         this.pool = pool;
         this.productPersistenceService = productPersistenceService;
     }

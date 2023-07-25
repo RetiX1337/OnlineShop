@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class CustomerPersistenceServiceHibernate implements PersistenceInterface<Customer> {
     private final HibernateSessionPool pool;
 
-    public CustomerPersistenceServiceHibernate(HibernateSessionPool pool) {
+    public CustomerPersistenceServiceHibernate(@Autowired HibernateSessionPool pool) {
         this.pool = pool;
     }
 

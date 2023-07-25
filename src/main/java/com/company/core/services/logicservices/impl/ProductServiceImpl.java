@@ -1,10 +1,13 @@
 package com.company.core.services.logicservices.impl;
 
+import com.company.core.PersistenceServiceBeanFactory;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,6 +16,11 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final PersistenceInterface<ProductBase> productPersistenceService;
 
+
+    @Autowired
+    public ProductServiceImpl(@Autowired PersistenceServiceBeanFactory persistenceServiceBeanFactory) {
+        this.productPersistenceService = persistenceServiceBeanFactory.getPersistenceBean(ProductBase.class);
+    }
 
     public ProductServiceImpl(PersistenceInterface<ProductBase> productPersistenceService) {
         this.productPersistenceService = productPersistenceService;

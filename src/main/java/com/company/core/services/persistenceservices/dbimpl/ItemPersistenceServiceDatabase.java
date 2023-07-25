@@ -5,6 +5,8 @@ import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.goods.*;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -26,7 +28,8 @@ public class ItemPersistenceServiceDatabase implements PersistenceInterface<Item
     private final String FIND_ALL_SQL = "SELECT item.id, item.product_id, item.quantity, item.price, item.order_id FROM item";
 
 
-    public ItemPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<ProductBase> productPersistenceService) {
+    public ItemPersistenceServiceDatabase(@Autowired JDBCConnectionPool pool,
+                                          @Qualifier("productPersistenceServiceDatabase") PersistenceInterface<ProductBase> productPersistenceService) {
         this.productPersistenceService = productPersistenceService;
         this.pool = pool;
     }

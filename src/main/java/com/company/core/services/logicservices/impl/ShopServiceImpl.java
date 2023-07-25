@@ -1,9 +1,12 @@
 package com.company.core.services.logicservices.impl;
 
+import com.company.core.PersistenceServiceBeanFactory;
 import com.company.core.models.Shop;
 import com.company.core.models.Storage;
 import com.company.core.services.logicservices.ShopService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +14,12 @@ import java.util.List;
 public class ShopServiceImpl implements ShopService {
     private final PersistenceInterface<Shop> shopPersistenceService;
     private final PersistenceInterface<Storage> storagePersistenceService;
+
+    @Autowired
+    public ShopServiceImpl(@Autowired PersistenceServiceBeanFactory persistenceServiceBeanFactory) {
+        this.shopPersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Shop.class);
+        this.storagePersistenceService = persistenceServiceBeanFactory.getPersistenceBean(Storage.class);
+    }
 
     public ShopServiceImpl(PersistenceInterface<Shop> shopPersistenceService,
                            PersistenceInterface<Storage> storagePersistenceService) {

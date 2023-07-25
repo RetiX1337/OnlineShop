@@ -6,6 +6,7 @@ import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.user.customer.Cart;
 import com.company.core.models.user.customer.Customer;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -26,7 +27,7 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
     private final String FIND_BY_ID_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet FROM customer WHERE customer.id = ?";
     private final String FIND_ALL_SQL = "SELECT customer.id, customer.username, customer.email, customer.password, customer.wallet FROM customer";
 
-    public CustomerPersistenceServiceDatabase(JDBCConnectionPool pool) {
+    public CustomerPersistenceServiceDatabase(@Autowired JDBCConnectionPool pool) {
         this.pool = pool;
     }
 

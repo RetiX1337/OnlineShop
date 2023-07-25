@@ -2,13 +2,14 @@ package com.company.core.controllers;
 
 import com.company.core.models.Storage;
 import com.company.core.services.logicservices.StorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class StorageController {
     private final StorageService storageService;
 
-    public StorageController(StorageService storageService) {
+    public StorageController(@Autowired StorageService storageService) {
         this.storageService = storageService;
     }
 

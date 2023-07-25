@@ -14,6 +14,7 @@ import com.company.core.services.logicservices.*;
 import com.company.core.services.persistenceservices.*;
 import com.company.core.services.persistenceservices.dbimpl.*;
 import com.company.core.services.persistenceservices.hibernateimpl.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class DependencyManager {
     private final CustomerController customerController;
@@ -62,6 +63,7 @@ public class DependencyManager {
         OrderService orderService = new OrderServiceImpl(orderPersistenceService, itemService, storageService);
 
         CartService cartService = new CartServiceImpl(itemService, productService, orderService, storageService);
+
 
         CustomerService customerService = new CustomerServiceImpl(customerPersistenceService);
 

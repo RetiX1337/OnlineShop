@@ -5,6 +5,7 @@ import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.goods.*;
 import com.company.core.services.persistenceservices.PersistenceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
     private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product.product_type FROM product";
 
 
-    public ProductPersistenceServiceDatabase(JDBCConnectionPool pool) {
+    public ProductPersistenceServiceDatabase(@Autowired JDBCConnectionPool pool) {
         this.pool = pool;
     }
 
