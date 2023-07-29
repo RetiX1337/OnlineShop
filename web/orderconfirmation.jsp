@@ -23,7 +23,9 @@
     </div>
     <div class="header-right">
         <div class="profile-menu">
-            <span class="username"><%=customer.getUsername()%></span>
+            <span class="username">
+                <%=customer.getUsername()%>
+            </span>
             <div class="dropdown-content">
                 <a href="cart">Show Cart</a>
                 <a href="orders">Show Orders</a>

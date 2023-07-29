@@ -1,12 +1,11 @@
 package com.company.core.models.goods;
 
-import com.company.core.models.ProductDecorator;
-
-public class ProductWithQuantity extends ProductDecorator {
+public class ProductWithQuantity {
     private Integer quantity;
+    private final Product product;
 
-    public ProductWithQuantity(Product decoratedProduct, Integer quantity) {
-        super(decoratedProduct);
+    public ProductWithQuantity(Product product, Integer quantity) {
+        this.product = product;
         this.quantity = quantity;
     }
 
@@ -19,12 +18,12 @@ public class ProductWithQuantity extends ProductDecorator {
     }
 
     public Product getProduct() {
-        return decoratedProduct;
+        return product;
     }
 
     @Override
     public String toString() {
-        return decoratedProduct +
+        return product +
                 " Quantity: " + quantity;
     }
 }

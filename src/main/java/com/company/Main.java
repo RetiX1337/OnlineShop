@@ -15,7 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            DependencyManager.getInstance().getCustomerController().findCustomer(3L);
+            System.out.println(DependencyManager.getInstance().getCustomerController().findCustomer(1L));
+            System.out.println(DependencyManager.getInstance().getShopController().findShop(1L));
         } catch (EntityNotFoundException e) {
             System.out.println("Not found");
         }

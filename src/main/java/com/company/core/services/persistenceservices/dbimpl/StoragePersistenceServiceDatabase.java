@@ -21,12 +21,12 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
     private final String FIND_QUANTITY_SQL = "SELECT * FROM product_storage WHERE product_id = ? AND storage_id = ?";
     private final String UPDATE_QUANTITY_SQL = "UPDATE product_storage SET quantity = ? WHERE storage_id = ? AND product_id = ?";
     private final String ADD_QUANTITY_SQL = "INSERT INTO product_storage (storage_id, product_id, quantity) VALUES (?, ?, ?)";
-    private final String SAVE_SQL = "INSERT INTO storage (name, address) VALUES (?, ?)";
-    private final String FIND_ALL_SQL = "SELECT id, name, address FROM storage";
-    private final String UPDATE_SQL = "UPDATE storage SET id = ?, name = ?, address = ? WHERE id = ?";
-    private final String DELETE_SQL = "DELETE FROM storage WHERE id = ?";
-    private final String ALL_SQL = "SELECT * FROM storage";
-    private final String FIND_BY_ID_SQL = "SELECT * FROM storage WHERE id = ?";
+    private final String SAVE_SQL = "INSERT INTO storages (name, address) VALUES (?, ?)";
+    private final String FIND_ALL_SQL = "SELECT id, name, address FROM storages";
+    private final String UPDATE_SQL = "UPDATE storages SET id = ?, name = ?, address = ? WHERE id = ?";
+    private final String DELETE_SQL = "DELETE FROM storages WHERE id = ?";
+    private final String ALL_SQL = "SELECT * FROM storages";
+    private final String FIND_BY_ID_SQL = "SELECT * FROM storages WHERE id = ?";
     private final String GET_QUANTITIES_SQL = "SELECT product_id, quantity FROM product_storage WHERE storage_id = ?";
 
     public StoragePersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Product> productPersistenceService) {

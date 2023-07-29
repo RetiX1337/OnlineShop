@@ -3,8 +3,8 @@
 <%@ page import="com.company.core.models.goods.Item" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Collection" %>
-<%@ page import="com.company.core.models.goods.Product" %>
 <%@ page import="com.company.core.models.user.customer.Customer" %>
+<%@ page import="com.company.core.models.goods.Product" %>
 <%--
   Created by IntelliJ IDEA.
   User: matve
@@ -20,7 +20,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="<c:url value="/styles/styles.css"/>"/>
-    <title>Order <%=order.getId()%></title>
+    <title>Order <%=order.getId()%>
+    </title>
 </head>
 <body>
 <header>
@@ -63,7 +64,8 @@
                 </div>
                 <div><span class="field-label">Quantity:</span> <%= item.getQuantity() %>
                 </div>
-                <div><span class="field-label">Summary price of item:</span> <%= item.getPrice()%> </div>
+                <div><span class="field-label">Summary price of item:</span> <%= item.getPrice()%>
+                </div>
             </div>
             <% } %>
         </div>

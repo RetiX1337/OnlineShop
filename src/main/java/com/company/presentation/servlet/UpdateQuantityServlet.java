@@ -21,8 +21,6 @@ public class UpdateQuantityServlet extends HttpServlet {
         Long productId = Long.valueOf(request.getParameter("productId"));
         Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
 
-        String error = "";
-
         if (action.equals("add")) {
             if (!DependencyManager.getInstance().getCartController().addToCart(customer, shopId, productId)) {
                 request.getSession().setAttribute("browseProductsQuantityModifyError", "You can't add!");

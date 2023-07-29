@@ -17,11 +17,11 @@ import java.util.List;
 public class ProductPersistenceServiceDatabase implements PersistenceInterface<Product> {
     private final JDBCConnectionPool pool;
     private final String DELETE_SQL = "DELETE FROM product WHERE product.id = ?";
-    private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type_id = ? WHERE product.id = ?";
+    private final String UPDATE_SQL = "UPDATE product SET product.brand = ?, product.name = ?, product.price = ?, product_type = ? WHERE product.id = ?";
     private final String ALL_SQL = "SELECT * FROM product";
-    private final String SAVE_SQL = "INSERT INTO product (brand, name, price, product_type_id) VALUES (?, ?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id WHERE product.id = ?";
-    private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product_type.product_type FROM product INNER JOIN product_type ON product.product_type_id = product_type.id";
+    private final String SAVE_SQL = "INSERT INTO product (brand, name, price, product_type) VALUES (?, ?, ?, ?)";
+    private final String FIND_BY_ID_SQL = "SELECT product.id, product.brand, product.name, product.price, product.product_type FROM product WHERE product.id = ?";
+    private final String FIND_ALL_SQL = "SELECT product.id, product.brand, product.name, product.price, product.product_type FROM product";
 
 
     public ProductPersistenceServiceDatabase(JDBCConnectionPool pool) {
@@ -37,7 +37,7 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
             preparedStatement.setString(1, entity.getBrand());
             preparedStatement.setString(2, entity.getName());
             preparedStatement.setBigDecimal(3, entity.getPrice());
-            preparedStatement.setLong(4, entity.getType().ordinal() + 1);
+            preparedStatement.setString(4, entity.getType().name());
             preparedStatement.executeUpdate();
             pool.commitTransaction(connection);
 
@@ -141,15 +141,15 @@ public class ProductPersistenceServiceDatabase implements PersistenceInterface<P
 
     public Product mapProduct(ResultSet resultSet) {
         try {
-            ProductBase productBase = new ProductBase();
+            Product product = new Product();
 
-            productBase.setId(resultSet.getLong("id"));
-            productBase.setBrand(resultSet.getString("brand"));
-            productBase.setName(resultSet.getString("name"));
-            productBase.setPrice(resultSet.getBigDecimal("price"));
-            productBase.setProductType(ProductType.valueOf(resultSet.getString("product_type")));
+            product.setId(resultSet.getLong("id"));
+            product.setBrand(resultSet.getString("brand"));
+            product.setName(resultSet.getString("name"));
+            product.setPrice(resultSet.getBigDecimal("price"));
+            product.setProductType(ProductType.valueOf(resultSet.getString("product_type")));
 
-            return productBase;
+            return product;
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         }

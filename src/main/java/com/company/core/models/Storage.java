@@ -51,7 +51,7 @@ public class Storage implements Identifiable {
 
     public void updateQuantity(Long productId, Integer quantity) {
         productQuantities.stream()
-                .filter(product -> product.getId().equals(productId))
+                .filter(product -> product.getProduct().getId().equals(productId))
                 .findFirst()
                 .ifPresent(productWithQuantity -> productWithQuantity.setQuantity(quantity));
     }
@@ -62,7 +62,7 @@ public class Storage implements Identifiable {
 
     public ProductWithQuantity getProductWithQuantity(Long productId) {
         return productQuantities.stream()
-                .filter(product -> product.getId().equals(productId))
+                .filter(product -> product.getProduct().getId().equals(productId))
                 .findFirst()
                 .orElse(null);
     }

@@ -4,7 +4,6 @@ import com.company.configuration.DependencyManager;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.models.user.customer.Customer;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +14,10 @@ import java.io.IOException;
 public class LoginProcessingServlet extends HttpServlet {
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long parameterCustomerId = Long.valueOf(request.getParameter("customerId"));
-        Long parameterShopId = Long.valueOf(request.getParameter("shopId"));
+//        Long parameterShopId = Long.valueOf(request.getParameter("shopId"));
+        Long parameterShopId = 1L;
         try {
             Customer customer = DependencyManager.getInstance().getCustomerController().findCustomer(parameterCustomerId);
             Long shopId = DependencyManager.getInstance().getShopController().findShop(parameterShopId).getId();

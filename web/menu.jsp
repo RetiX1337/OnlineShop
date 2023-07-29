@@ -13,17 +13,26 @@
 </head>
 <body>
 <% Customer customer = (Customer) session.getAttribute("customer"); %>
+<%
+    boolean isLoggedIn = customer != null;
+%>
 <header>
     <div class="header-left">
-        <a href="/browse-products">Browse Products</a>
+        <a href="browse-products">Browse Products</a>
     </div>
     <div class="header-right">
         <div class="profile-menu">
-            <span class="username"><%=customer.getUsername()%></span>
+            <% if (isLoggedIn) { %>
+            <span class="username">
+                <%=customer.getUsername()%>
+            </span>
             <div class="dropdown-content">
-                <a href="/cart">Show Cart</a>
-                <a href="/orders">Show Orders</a>
+                <a href="cart">Show Cart</a>
+                <a href="orders">Show Orders</a>
             </div>
+            <%} else { %>
+            <a href="/login">Login</a>
+            <% } %>
         </div>
     </div>
 </header>

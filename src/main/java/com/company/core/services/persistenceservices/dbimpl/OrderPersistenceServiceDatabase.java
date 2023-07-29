@@ -18,12 +18,12 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
     private final JDBCConnectionPool pool;
     private final PersistenceInterface<Item> itemPersistenceService;
     private final PersistenceInterface<Customer> customerPersistenceService;
-    private final String DELETE_SQL = "DELETE FROM online_shop.order WHERE online_shop.order.id = ?";
-    private final String UPDATE_SQL = "UPDATE product SET online_shop.order.customer_id = ?, online_shop.order.summary_price = ?, order_status_id = ? WHERE online_shop.order.id = ?";
-    private final String ALL_SQL = "SELECT * FROM online_shop.order";
-    private final String SAVE_SQL = "INSERT INTO online_shop.order (customer_id, summary_price, order_status_id) VALUES (?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT online_shop.order.id, online_shop.order.customer_id, online_shop.order.summary_price, order_status.order_status FROM online_shop.order INNER JOIN order_status ON online_shop.order.order_status_id = order_status.id WHERE online_shop.order.id = ?";
-    private final String FIND_ALL_SQL = "SELECT online_shop.order.id, online_shop.order.customer_id, online_shop.order.summary_price, order_status.order_status FROM online_shop.order INNER JOIN order_status ON online_shop.order.order_status_id = order_status.id";
+    private final String DELETE_SQL = "DELETE FROM orders WHERE orders.id = ?";
+    private final String UPDATE_SQL = "UPDATE orders SET orders.customer_id = ?, orders.summary_price = ?, orders.order_status = ? WHERE orders.id = ?";
+    private final String ALL_SQL = "SELECT * FROM orders";
+    private final String SAVE_SQL = "INSERT INTO orders (customer_id, summary_price, order_status) VALUES (?, ?, ?)";
+    private final String FIND_BY_ID_SQL = "SELECT orders.id, orders.customer_id, orders.summary_price, orders.order_status FROM orders WHERE orders.id = ?";
+    private final String FIND_ALL_SQL = "SELECT orders.id, orders.customer_id, orders.summary_price, orders.order_status FROM orders";
     private final String GET_ITEMS_BY_ORDER = "SELECT id FROM item WHERE order_id = ?";
 
     public OrderPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Item> itemPersistenceService, PersistenceInterface<Customer> customerPersistenceService) {
@@ -40,7 +40,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, entity.getCustomer().getId());
             preparedStatement.setBigDecimal(2, entity.getSummaryPrice());
-            preparedStatement.setLong(3, entity.getOrderStatus().ordinal()+1);
+            preparedStatement.setString(3, entity.getOrderStatus().name());
             preparedStatement.executeUpdate();
             pool.commitTransaction(connection);
 

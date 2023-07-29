@@ -62,8 +62,7 @@ public class CustomerPersistenceServiceDatabase implements PersistenceInterface<
             ResultSet resultSet = preparedStatement.executeQuery();
             pool.commitTransaction(connection);
             resultSet.next();
-            Customer customer = mapCustomer(resultSet);
-            return customer;
+            return mapCustomer(resultSet);
         } catch (SQLException e) {
             throw new EntityNotFoundException();
         } finally {

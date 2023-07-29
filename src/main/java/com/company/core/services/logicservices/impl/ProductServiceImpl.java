@@ -1,7 +1,6 @@
 package com.company.core.services.logicservices.impl;
 
 import com.company.core.models.goods.Product;
-import com.company.core.models.goods.ProductBase;
 import com.company.core.models.goods.ProductType;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
@@ -19,7 +18,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(String brand, String name, ProductType productType, BigDecimal price) {
-        return new ProductBase(brand, name, productType, price);
+        return new Product(brand, name, productType, price);
     }
 
     @Override

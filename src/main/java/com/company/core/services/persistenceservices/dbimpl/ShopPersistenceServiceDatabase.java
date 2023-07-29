@@ -26,7 +26,7 @@ public class ShopPersistenceServiceDatabase implements PersistenceInterface<Shop
     private final String DELETE_SQL = "DELETE FROM shop WHERE id = ?";
     private final String ALL_SQL = "SELECT * FROM shop";
     private final String FIND_BY_ID_SQL = "SELECT * FROM shop WHERE id = ?";
-    private final String GET_STORAGES_BY_SHOP_SQL = "SELECT s.id FROM storage s INNER JOIN shop_storage ss ON s.id = ss.storage_id INNER JOIN shop sh ON ss.shop_id = sh.id WHERE sh.id = ?";
+    private final String GET_STORAGES_BY_SHOP_SQL = "SELECT s.id FROM storages s INNER JOIN shop_storage ss ON s.id = ss.storage_id INNER JOIN shop sh ON ss.shop_id = sh.id WHERE sh.id = ?";
     private final String ADD_SHOP_STORAGE_RELATION = "INSERT INTO shop_storage (shop_id, storage_id) VALUES (?, ?)";
     private final String DELETE_SHOP_STORAGE_RELATION = "DELETE FROM shop_storage WHERE shop_id = ? AND storage_id = ?";
     private final String FIND_BOND_SQL = "SELECT * FROM shop_storage WHERE shop_id = ? AND storage_id = ?";

@@ -88,7 +88,13 @@ public class StorageServiceImpl implements StorageService {
         }
 
         for (Storage storage : storages) {
-            Integer storageQuantity = storage.getProductWithQuantity(productId).getQuantity();
+            ProductWithQuantity productWithQuantity = storage.getProductWithQuantity(productId);
+
+            if (productWithQuantity == null) {
+                continue;
+            }
+
+            Integer storageQuantity = productWithQuantity.getQuantity();
 
             if (tempQuantity > storageQuantity) {
                 tempQuantity -= storageQuantity;
