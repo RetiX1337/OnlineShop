@@ -11,3 +11,10 @@
 */target/*
 target/*
 /target/
+
+*/logs/*
+logs/
+/logs/
+
+/OnlineShop.iml
+*/OnlineShop.iml
