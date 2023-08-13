@@ -7,23 +7,23 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class Cart {
-    private final Set<Item> cart = new HashSet<>();
-    private BigDecimal summaryPrice = BigDecimal.valueOf(0);
+    private final Set<Item> items = new HashSet<>();
+    private BigDecimal summaryPrice = BigDecimal.ZERO;
 
-    public Set<Item> getProductsFromCart() {
-        return cart;
+    public Set<Item> getCartItems() {
+        return items;
     }
 
     public void addItem(Item item) {
-        cart.add(item);
+        items.add(item);
     }
 
     public void deleteItem(Item item) {
-        cart.remove(item);
+        items.remove(item);
     }
 
     public Item getItem(Product product) {
-        return cart.stream()
+        return items.stream()
                 .filter(item -> product.getId().equals(item.getProduct().getId()))
                 .findFirst()
                 .orElse(null);
@@ -38,18 +38,18 @@ public class Cart {
     }
 
     public void clear() {
-        cart.clear();
+        items.clear();
         summaryPrice = new BigDecimal(0);
     }
 
     public boolean isEmpty() {
-        return cart.isEmpty();
+        return items.isEmpty();
     }
 
     @Override
     public String toString() {
         String result = "";
-        ArrayList<Item> items = new ArrayList<>(cart);
+        ArrayList<Item> items = new ArrayList<>(this.items);
         for (Item item : items) {
             result = result.concat("> " + item + ", Product ID: " + item.getProduct().getId() + "\n");
         }

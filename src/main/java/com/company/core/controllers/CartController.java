@@ -37,7 +37,7 @@ public class CartController {
     }
 
     public Collection<Item> displayCart(Customer customer) {
-        return List.copyOf(customer.getShoppingCart().getProductsFromCart());
+        return List.copyOf(customer.getShoppingCart().getCartItems());
     }
 
     public Integer getProductQuantity(Customer customer, Long productId) {

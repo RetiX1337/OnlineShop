@@ -82,7 +82,7 @@ public class CartServiceImpl implements CartService {
             return false;
         }
 
-        Order order = orderService.createOrder(customer.getShoppingCart().getProductsFromCart(), customer);
+        Order order = orderService.createOrder(customer.getShoppingCart().getCartItems(), customer);
 
         if (orderService.processOrder(order, customer, shopId)) {
             customer.getShoppingCart().clear();
@@ -102,7 +102,7 @@ public class CartServiceImpl implements CartService {
 
     private void countPrice(Cart cart) {
         BigDecimal summaryPrice = BigDecimal.valueOf(0);
-        for (Item it : cart.getProductsFromCart()) {
+        for (Item it : cart.getCartItems()) {
             summaryPrice = summaryPrice.add(it.getPrice());
         }
         cart.setSummaryPrice(summaryPrice);
@@ -113,7 +113,7 @@ public class CartServiceImpl implements CartService {
     }
 
     private boolean containsProduct(Cart cart, Product product) {
-        return cart.getProductsFromCart().stream().anyMatch(item -> item.getProduct().equals(product));
+        return cart.getCartItems().stream().anyMatch(item -> item.getProduct().equals(product));
     }
 
 }
