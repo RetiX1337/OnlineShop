@@ -12,6 +12,7 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
     private final ProductService productService;
+    private final int PRODUCT_QUANTITY_CONSTANT = 1;
 
     public CartController(CartService cartService, ProductService productService) {
         this.cartService = cartService;
@@ -19,13 +20,13 @@ public class CartController {
     }
 
 
-    public boolean addToCart(Customer customer, Long shopId, Long productId) {
-        return cartService.addToCart(customer.getShoppingCart(), productId, 1, shopId);
+    public boolean addConstQuantityToCart(Customer customer, Long shopId, Long productId) {
+        return cartService.addToCart(customer.getShoppingCart(), productId, PRODUCT_QUANTITY_CONSTANT, shopId);
     }
 
 
-    public boolean deleteFromCart(Customer customer, Long productId) {
-        return cartService.deleteFromCart(customer.getShoppingCart(), productId, 1);
+    public boolean deleteConstQuantityFromCart(Customer customer, Long productId) {
+        return cartService.deleteFromCart(customer.getShoppingCart(), productId, PRODUCT_QUANTITY_CONSTANT);
     }
 
     public boolean checkoutCart(Customer customer, Long shopId) {
