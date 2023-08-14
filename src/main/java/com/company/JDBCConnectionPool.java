@@ -4,6 +4,7 @@ package com.company;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import com.company.core.exceptions.JDBCInitializationException;
 import org.apache.logging.log4j.LogManager;

@@ -22,11 +22,11 @@ public class UpdateQuantityServlet extends HttpServlet {
         Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
 
         if (action.equals("add")) {
-            if (!DependencyManager.getInstance().getCartController().addToCart(customer, shopId, productId)) {
+            if (!DependencyManager.getInstance().getCartController().addConstQuantityToCart(customer, shopId, productId)) {
                 request.getSession().setAttribute("browseProductsQuantityModifyError", "You can't add!");
             }
         } else if (action.equals("delete")) {
-            if (!DependencyManager.getInstance().getCartController().deleteFromCart(customer, productId)) {
+            if (!DependencyManager.getInstance().getCartController().deleteConstQuantityFromCart(customer, productId)) {
                 request.getSession().setAttribute("browseProductsQuantityModifyError", "You can't delete!");
             }
         }
