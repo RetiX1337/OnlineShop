@@ -188,6 +188,8 @@ public class StoragePersistenceServiceDatabase implements PersistenceInterface<S
 
     private void updateQuantity(ProductWithQuantity productWithQuantity, Long storageId) {
         Connection connection = pool.checkOut();
+        System.out.println(productWithQuantity);
+        System.out.println(storageId);
         try {
             pool.startTransaction(connection);
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUANTITY_SQL);

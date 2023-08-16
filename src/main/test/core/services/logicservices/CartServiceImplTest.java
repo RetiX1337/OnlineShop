@@ -4,8 +4,8 @@ import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.goods.ProductType;
+import com.company.core.models.user.User;
 import com.company.core.models.user.customer.Cart;
-import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.ProductService;
@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static javax.management.Query.eq;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -75,11 +74,12 @@ public class CartServiceImplTest {
 
     @Test
     void testCheckoutCart_whenEmptyCart() {
-        Customer customer = new Customer();
-        customer.setCart(new Cart());
+        User user = new User();
+        Cart cart = new Cart();
+        cart.setUser(user);
 
-        assertFalse(cartService.checkoutCart(customer, 1L));
-        assertEquals(0, customer.getShoppingCart().getCartItems().size());
+        assertFalse(cartService.checkoutCart(cart, 1L));
+        assertEquals(0, cart.getCartItems().size());
     }
 
     @Test
@@ -87,16 +87,16 @@ public class CartServiceImplTest {
         Mockito.when(orderService.createOrder(any(), any())).thenReturn(new Order());
         Mockito.when(orderService.processOrder(any(), any(), any())).thenReturn(true);
 
-        Customer customer = new Customer();
+        User user = new User();
         Cart cart = new Cart();
-        customer.setCart(cart);
+        cart.setUser(user);
         Product product = new Product(1L, "null", "null", ProductType.FOOD, BigDecimal.valueOf(10));
         Item item = new Item(product, 5);
         cart.addItem(item);
 
-        assertTrue(cartService.checkoutCart(customer, 1L));
-        assertTrue(customer.getShoppingCart().isEmpty());
-        Mockito.verify(orderService, Mockito.times(1)).createOrder(cart.getCartItems(), customer);
-        Mockito.verify(orderService, Mockito.times(1)).processOrder(any(), ArgumentMatchers.eq(customer), ArgumentMatchers.eq(1L));
+        assertTrue(cartService.checkoutCart(cart, 1L));
+        assertTrue(cart.isEmpty());
+        Mockito.verify(orderService, Mockito.times(1)).createOrder(cart.getCartItems(), user);
+        Mockito.verify(orderService, Mockito.times(1)).processOrder(any(), ArgumentMatchers.eq(user), ArgumentMatchers.eq(1L));
     }
 }

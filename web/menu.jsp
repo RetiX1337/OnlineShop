@@ -1,4 +1,5 @@
-<%@ page import="com.company.core.models.user.customer.Customer" %><%--
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.company.core.models.user.User" %><%--
   Created by IntelliJ IDEA.
   User: matve
   Date: 02.07.2023
@@ -8,38 +9,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="styles/styles.css"/>
+    <link rel="stylesheet" href="<c:url value="/styles/styles.css"/>"/>
     <title>Menu</title>
 </head>
 <body>
-<% Customer customer = (Customer) session.getAttribute("customer"); %>
+<% User user = (User) session.getAttribute("user"); %>
 <%
-    boolean isLoggedIn = customer != null;
+    boolean isLoggedIn = user != null;
 %>
 <header>
     <div class="header-left">
-        <a href="browse-products">Browse Products</a>
+        <a href=/browse-products>Browse Products</a>
     </div>
     <div class="header-right">
         <div class="profile-menu">
             <% if (isLoggedIn) { %>
             <span class="username">
-                <%=customer.getUsername()%>
+                <%=user.getUsername()%>
             </span>
             <div class="dropdown-content">
-                <a href="cart">Show Cart</a>
-                <a href="orders">Show Orders</a>
+                <a href="<c:url value="/c/cart"/>">Show Cart</a>
+                <a href="<c:url value="/c/orders"/>">Show Orders</a>
             </div>
             <%} else { %>
-            <a href="/login">Login</a>
+                <a href="<c:url value="/login"/>">Login</a>
             <% } %>
         </div>
     </div>
 </header>
 <div class="grid">
-    <a class="button" href="browse-products">Browse products</a>
-    <a class="button" href="orders">Display orders</a>
-    <a class="button" href="cart">Display cart</a>
+    <a class="button" href="<c:url value="/browse-products"/>">Browse products</a>
+    <a class="button" href="<c:url value="/c/orders"/>">Display orders</a>
+    <a class="button" href="<c:url value="/c/cart"/>">Display cart</a>
 </div>
 </body>
 </html>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.company.configuration.DependencyManager" %><%--
   Created by IntelliJ IDEA.
   User: matve
@@ -8,17 +9,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="styles/styles.css"/>
+    <link rel="stylesheet" href="<c:url value="/styles/styles.css"/>"/>
     <title>Login</title>
 </head>
 <body>
 <div class="container">
     <h1>Login</h1>
-    <form action="login-processing" method="post">
-        <label for="customerId">Customer ID:</label>
-        <input type="text" name="customerId" id="customerId" required><br>
-        <label for="shopId">Shop ID:</label>
-        <input type="text" name="shopId" id="shopId" required><br>
+    <form action="<c:url value="authentication"/>" method="post">
+        <label for="email">Email address:</label>
+        <input type="text" name="email" id="email" required><br>
+        <label for="password">Password:</label>
+        <input type="text" name="password" id="password" required><br>
         <input class="input-submit" type="submit" value="Submit">
     </form>
     <% if (session.getAttribute("loginError") != null) { %>

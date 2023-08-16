@@ -2,6 +2,7 @@ package com.company.core.models.user.customer;
 
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
+import com.company.core.models.user.User;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -9,9 +10,21 @@ import java.util.*;
 public class Cart {
     private final Set<Item> items = new HashSet<>();
     private BigDecimal summaryPrice = BigDecimal.ZERO;
+    private User user;
+
+    public Cart() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Set<Item> getCartItems() {
-        return items;
+        return Set.copyOf(items);
     }
 
     public void addItem(Item item) {
@@ -39,7 +52,7 @@ public class Cart {
 
     public void clear() {
         items.clear();
-        summaryPrice = new BigDecimal(0);
+        summaryPrice = BigDecimal.ZERO;
     }
 
     public boolean isEmpty() {

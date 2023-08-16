@@ -17,7 +17,7 @@
     <p>
         Some error has occurred. Try again later!
         <br/>
-        <a href="/menu">Go to main menu</a>
+        <a href="<c:url value="/menu"/>">Go to main menu</a>
     </p>
 </div>
 </body>

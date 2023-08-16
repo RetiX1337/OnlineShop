@@ -1,13 +1,23 @@
 <%@ page import="com.company.core.models.goods.ProductWithQuantity" %>
 <%@ page import="com.company.configuration.DependencyManager" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.company.core.models.user.customer.Customer" %>
 <%@ page import="java.util.Collection" %>
+<%@ page import="com.company.core.models.user.User" %>
+<%@ page import="com.company.core.models.user.customer.Cart" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    //    Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
+    Long shopId = 1L;
+    User user = (User) session.getAttribute("user");
+    Cart cart = (Cart) session.getAttribute("cart");
+    Collection<ProductWithQuantity> products = DependencyManager.getInstance().getProductController().getProductsWithQuantity(shopId);
+    request.setAttribute("products", products);
+    boolean isLoggedIn = user != null;
+    boolean hasCart = cart != null;
+%>
 <html>
 <head>
-    <link rel="stylesheet" href="styles/styles.css"/>
+    <link rel="stylesheet" href="<c:url value="/styles/styles.css"/>"/>
     <title>Product Browse</title>
     <script>
         function closeErrorMessage() {
@@ -16,18 +26,6 @@
     </script>
 </head>
 <body>
-<%
-//    Long shopId = Long.valueOf(request.getSession().getAttribute("shopId").toString());
-    Long shopId = 1L;
-    Customer customer = (Customer) session.getAttribute("customer");
-%>
-<%
-    Collection<ProductWithQuantity> products = DependencyManager.getInstance().getProductController().getProductsWithQuantity(shopId);
-    request.setAttribute("products", products);
-%>
-<%
-    boolean isLoggedIn = customer != null;
-%>
 <header>
     <div class="header-left">
         <a href="browse-products">Browse Products</a>
@@ -36,14 +34,14 @@
         <div class="profile-menu">
             <% if (isLoggedIn) { %>
             <span class="username">
-                <%=customer.getUsername()%>
+                <%=user.getUsername()%>
             </span>
             <div class="dropdown-content">
-                <a href="cart">Show Cart</a>
-                <a href="orders">Show Orders</a>
+                <a href="<c:url value="/c/cart"/>">Show Cart</a>
+                <a href="<c:url value="/c/orders"/>">Show Orders</a>
             </div>
             <%} else { %>
-            <a href="/login">Login</a>
+            <a href="<c:url value="/login"/>">Login</a>
             <% } %>
         </div>
     </div>
@@ -67,15 +65,15 @@
             </p>
             <p class="product-card-element">Storage quantity: <%=productWithQuantity.getQuantity()%>
             </p>
-            <%if (isLoggedIn) {%>
+            <%if (isLoggedIn && hasCart) {%>
             <p class="product-card-element">Cart
-                quantity: <%=DependencyManager.getInstance().getCartController().getProductQuantity(customer, productWithQuantity.getProduct().getId())%>
+                quantity: <%=DependencyManager.getInstance().getCartController().getProductQuantity(cart, productWithQuantity.getProduct().getId())%>
             </p>
             <% } %>
-            <form method="POST" action="update-quantity?action=add&productId=<%=productWithQuantity.getProduct().getId()%>">
+            <form method="POST" action="/c/update-quantity?action=add&productId=<%=productWithQuantity.getProduct().getId()%>">
                 <input class="btn-add" type="submit" value="+"/>
             </form>
-            <form method="POST" action="update-quantity?action=delete&productId=<%=productWithQuantity.getProduct().getId()%>">
+            <form method="POST" action="/c/update-quantity?action=delete&productId=<%=productWithQuantity.getProduct().getId()%>">
                 <input class="btn-delete" type="submit" value="-"/>
             </form>
         </div>

@@ -3,8 +3,8 @@
 <%@ page import="com.company.core.models.goods.Item" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Collection" %>
-<%@ page import="com.company.core.models.user.customer.Customer" %>
 <%@ page import="com.company.core.models.goods.Product" %>
+<%@ page import="com.company.core.models.user.User" %>
 <%--
   Created by IntelliJ IDEA.
   User: matve
@@ -15,7 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Order order = (Order) request.getAttribute("order");
-    Customer customer = (Customer) session.getAttribute("customer");
+    User user = (User) session.getAttribute("user");
 %>
 <html>
 <head>
@@ -30,10 +30,10 @@
     </div>
     <div class="header-right">
         <div class="profile-menu">
-            <span class="username"><%=customer.getUsername()%></span>
+            <span class="username"><%=user.getUsername()%></span>
             <div class="dropdown-content">
-                <a href="<c:url value="/cart"/>">Show Cart</a>
-                <a href="<c:url value="/orders"/>">Show Orders</a>
+                <a href="<c:url value="/c/cart"/>">Show Cart</a>
+                <a href="<c:url value="/c/orders"/>">Show Orders</a>
             </div>
         </div>
     </div>

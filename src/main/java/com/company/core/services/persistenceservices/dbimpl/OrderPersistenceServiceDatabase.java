@@ -4,7 +4,7 @@ import com.company.JDBCConnectionPool;
 import com.company.core.exceptions.EntityNotFoundException;
 import com.company.core.exceptions.EntityNotSavedException;
 import com.company.core.models.goods.*;
-import com.company.core.models.user.customer.Customer;
+import com.company.core.models.user.User;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.sql.Connection;
@@ -17,19 +17,19 @@ import java.util.*;
 public class OrderPersistenceServiceDatabase implements PersistenceInterface<Order> {
     private final JDBCConnectionPool pool;
     private final PersistenceInterface<Item> itemPersistenceService;
-    private final PersistenceInterface<Customer> customerPersistenceService;
+    private final PersistenceInterface<User> userPersistenceService;
     private final String DELETE_SQL = "DELETE FROM orders WHERE orders.id = ?";
-    private final String UPDATE_SQL = "UPDATE orders SET orders.customer_id = ?, orders.summary_price = ?, orders.order_status = ? WHERE orders.id = ?";
+    private final String UPDATE_SQL = "UPDATE orders SET orders.user_id = ?, orders.summary_price = ?, orders.order_status = ? WHERE orders.id = ?";
     private final String ALL_SQL = "SELECT * FROM orders";
-    private final String SAVE_SQL = "INSERT INTO orders (customer_id, summary_price, order_status) VALUES (?, ?, ?)";
-    private final String FIND_BY_ID_SQL = "SELECT orders.id, orders.customer_id, orders.summary_price, orders.order_status FROM orders WHERE orders.id = ?";
-    private final String FIND_ALL_SQL = "SELECT orders.id, orders.customer_id, orders.summary_price, orders.order_status FROM orders";
+    private final String SAVE_SQL = "INSERT INTO orders (user_id, summary_price, order_status) VALUES (?, ?, ?)";
+    private final String FIND_BY_ID_SQL = "SELECT orders.id, orders.user_id, orders.summary_price, orders.order_status FROM orders WHERE orders.id = ?";
+    private final String FIND_ALL_SQL = "SELECT orders.id, orders.user_id, orders.summary_price, orders.order_status FROM orders";
     private final String GET_ITEMS_BY_ORDER = "SELECT id FROM item WHERE order_id = ?";
 
-    public OrderPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Item> itemPersistenceService, PersistenceInterface<Customer> customerPersistenceService) {
+    public OrderPersistenceServiceDatabase(JDBCConnectionPool pool, PersistenceInterface<Item> itemPersistenceService, PersistenceInterface<User> userPersistenceService) {
         this.pool = pool;
         this.itemPersistenceService = itemPersistenceService;
-        this.customerPersistenceService = customerPersistenceService;
+        this.userPersistenceService = userPersistenceService;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
         try {
             pool.startTransaction(connection);
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, entity.getCustomer().getId());
+            preparedStatement.setLong(1, entity.getUser().getId());
             preparedStatement.setBigDecimal(2, entity.getSummaryPrice());
             preparedStatement.setString(3, entity.getOrderStatus().name());
             preparedStatement.executeUpdate();
@@ -107,7 +107,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
         try {
             pool.startTransaction(connection);
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL);
-            preparedStatement.setLong(1, entity.getCustomer().getId());
+            preparedStatement.setLong(1, entity.getUser().getId());
             preparedStatement.setBigDecimal(2, entity.getSummaryPrice());
             preparedStatement.setLong(3, entity.getOrderStatus().ordinal()+1);
             preparedStatement.setLong(4, entity.getId());
@@ -196,7 +196,7 @@ public class OrderPersistenceServiceDatabase implements PersistenceInterface<Ord
             Order order = new Order();
 
             order.setId(resultSet.getLong("id"));
-            order.setCustomer(customerPersistenceService.findById(resultSet.getLong("customer_id")));
+            order.setUser(userPersistenceService.findById(resultSet.getLong("user_id")));
             order.setSummaryPrice(resultSet.getBigDecimal("summary_price"));
             order.setOrderStatus(OrderStatus.valueOf(resultSet.getString("order_status")));
             Set<Item> items = getItemsByOrder(order.getId());

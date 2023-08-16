@@ -1,26 +1,26 @@
 package com.company.core.models.goods;
 
-import com.company.core.models.user.customer.Customer;
+import com.company.core.models.user.User;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 public class Order implements Identifiable {
     private Set<Item> items;
-    private Customer customer;
+    private User user;
     private Long id;
     private OrderStatus orderStatus;
     private BigDecimal summaryPrice = BigDecimal.valueOf(0);
 
-    public Order(Set<Item> items, Customer customer) {
-        this.customer = customer;
+    public Order(Set<Item> items, User user) {
+        this.user = user;
         this.items = items;
         countPrice();
     }
 
-    public Order(Long id, Set<Item> items, Customer customer, BigDecimal summaryPrice, OrderStatus orderStatus) {
+    public Order(Long id, Set<Item> items, User user, BigDecimal summaryPrice, OrderStatus orderStatus) {
         this.id = id;
-        this.customer = customer;
+        this.user = user;
         this.summaryPrice = summaryPrice;
         this.orderStatus = orderStatus;
         this.items = items;
@@ -52,12 +52,12 @@ public class Order implements Identifiable {
         this.items = items;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Order implements Identifiable {
         String result = "";
         List<Item> list = new ArrayList<>(items);
         result = result.concat("ID: " + id +
-                "\nCustomer: " + customer.getUsername() +
+                "\nUser: " + user.getUsername() +
                 "\nOrder Status: " + orderStatus +
                 "\nItems: ");
         for (Item item : list) {

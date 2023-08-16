@@ -2,12 +2,10 @@ package com.company.core.controllers;
 
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Product;
-import com.company.core.models.user.customer.Customer;
+import com.company.core.models.user.User;
+import com.company.core.models.user.customer.Cart;
 import com.company.core.services.logicservices.CartService;
 import com.company.core.services.logicservices.ProductService;
-
-import java.util.Collection;
-import java.util.List;
 
 public class CartController {
     private final CartService cartService;
@@ -19,36 +17,33 @@ public class CartController {
         this.productService = productService;
     }
 
+    public Cart createUserCart(User user) {
+        Cart cart = new Cart();
+        cart.setUser(user);
+        return cart;
+    }
 
-    public boolean addConstQuantityToCart(Customer customer, Long shopId, Long productId) {
-        return cartService.addToCart(customer.getShoppingCart(), productId, PRODUCT_QUANTITY_CONSTANT, shopId);
+    public boolean addConstQuantityToCart(Cart cart, Long shopId, Long productId) {
+        return cartService.addToCart(cart, productId, PRODUCT_QUANTITY_CONSTANT, shopId);
+    }
+
+    public boolean deleteConstQuantityFromCart(Cart cart, Long productId) {
+        return cartService.deleteFromCart(cart, productId, PRODUCT_QUANTITY_CONSTANT);
+    }
+
+    public boolean checkoutCart(Cart cart, Long shopId) {
+        return cartService.checkoutCart(cart, shopId);
     }
 
 
-    public boolean deleteConstQuantityFromCart(Customer customer, Long productId) {
-        return cartService.deleteFromCart(customer.getShoppingCart(), productId, PRODUCT_QUANTITY_CONSTANT);
-    }
-
-    public boolean checkoutCart(Customer customer, Long shopId) {
-        return cartService.checkoutCart(customer, shopId);
-    }
-
-    public void deleteItem(Customer customer, Item item) {
-        customer.getShoppingCart().deleteItem(item);
-    }
-
-    public Collection<Item> displayCart(Customer customer) {
-        return List.copyOf(customer.getShoppingCart().getCartItems());
-    }
-
-    public Integer getProductQuantity(Customer customer, Long productId) {
+    public Integer getProductQuantity(Cart cart, Long productId) {
         Product product = productService.getProduct(productId);
 
         if (product == null) {
             return 0;
         }
 
-        Item item = customer.getShoppingCart().getItem(product);
+        Item item = cart.getItem(product);
         if (item != null) {
             return item.getQuantity();
         } else {

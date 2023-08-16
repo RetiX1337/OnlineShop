@@ -2,7 +2,6 @@ package com.company.core.models.goods;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class Item implements Identifiable {
     private Long id;
