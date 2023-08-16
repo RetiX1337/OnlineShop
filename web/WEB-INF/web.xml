@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <welcome-file-list>
-        <welcome-file>/menu.jsp</welcome-file>
+        <welcome-file>/login.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet>
@@ -58,7 +58,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>cart</servlet-name>
-        <url-pattern>/cart</url-pattern>
+        <url-pattern>/c/cart</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -67,7 +67,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>order-confirmation</servlet-name>
-        <url-pattern>/order-confirmation</url-pattern>
+        <url-pattern>/c/order-confirmation</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -76,7 +76,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>orders</servlet-name>
-        <url-pattern>/orders</url-pattern>
+        <url-pattern>/c/orders</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -85,7 +85,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>order-page</servlet-name>
-        <url-pattern>/order-page</url-pattern>
+        <url-pattern>/c/order-page</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>choose-role</servlet-name>
+        <jsp-file>/chooserole.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>choose-role</servlet-name>
+        <url-pattern>/choose-role</url-pattern>
     </servlet-mapping>
 
     <filter>
@@ -98,12 +107,16 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>orders-filter</filter-name>
-        <filter-class>com.company.presentation.servlet.OrdersFilter</filter-class>
+        <filter-name>authorization-filter</filter-name>
+        <filter-class>com.company.presentation.servlet.AuthorizationFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>orders-filter</filter-name>
-        <url-pattern>/orders/*</url-pattern>
+        <filter-name>authorization-filter</filter-name>
+        <url-pattern>/a/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>authorization-filter</filter-name>
+        <url-pattern>/c/*</url-pattern>
     </filter-mapping>
 
     <error-page>

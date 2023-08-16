@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AuthenticationFilter implements Filter {
     private static final String[] loginRequiredURLs = {
-            "/orders", "/update-quantity", "/cart"
+            "/orders", "/update-quantity", "/cart", "/choose-role"
     };
 
     private HttpServletRequest httpRequest;
@@ -38,7 +38,7 @@ public class AuthenticationFilter implements Filter {
 
         HttpSession session = httpRequest.getSession();
 
-        boolean isLoggedIn = (session != null && session.getAttribute("customer") != null);
+        boolean isLoggedIn = (session != null && session.getAttribute("user") != null);
 
         boolean isLoginPage = path.contains("/login");
 

@@ -36,7 +36,6 @@ public class JDBCConnectionPool extends ObjectPool<Connection> {
         try {
             return (DriverManager.getConnection(dbLink, username, password));
         } catch (SQLException e) {
-            System.out.println("why is it not writing down in a log bro");
             logger.error("Connection creation error", e);
             throw new JDBCInitializationException();
         }

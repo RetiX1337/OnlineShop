@@ -4,7 +4,6 @@ import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.Product;
 import com.company.core.models.user.customer.Cart;
-import com.company.core.models.user.customer.Customer;
 import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.ProductService;
 import com.company.core.services.logicservices.OrderService;
@@ -77,15 +76,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean checkoutCart(Customer customer, Long shopId) {
-        if (customer.getShoppingCart().isEmpty()) {
+    public boolean checkoutCart(Cart cart, Long shopId) {
+        if (cart.isEmpty()) {
             return false;
         }
 
-        Order order = orderService.createOrder(customer.getShoppingCart().getCartItems(), customer);
+        Order order = orderService.createOrder(cart.getCartItems(), cart.getUser());
 
-        if (orderService.processOrder(order, customer, shopId)) {
-            customer.getShoppingCart().clear();
+        if (orderService.processOrder(order, cart.getUser(), shopId)) {
+            cart.clear();
             return true;
         }
         return false;

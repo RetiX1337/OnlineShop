@@ -3,14 +3,13 @@ package com.company.core.services.logicservices.impl;
 import com.company.core.models.goods.Item;
 import com.company.core.models.goods.Order;
 import com.company.core.models.goods.OrderStatus;
-import com.company.core.models.user.customer.Customer;
+import com.company.core.models.user.User;
 import com.company.core.services.logicservices.ItemService;
 import com.company.core.services.logicservices.OrderService;
 import com.company.core.services.logicservices.StorageService;
 import com.company.core.services.persistenceservices.PersistenceInterface;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -28,15 +27,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order createOrder(Set<Item> items, Customer customer) {
-        Order order = new Order(items, customer);
+    public Order createOrder(Set<Item> items, User user) {
+        Order order = new Order(items, user);
         order.setOrderStatus(OrderStatus.NEW);
         return order;
     }
 
     @Override
-    public boolean processOrder(Order order, Customer customer, Long shopId) {
-        if (processPayment(customer, order)) {
+    public boolean processOrder(Order order, User user, Long shopId) {
+        if (processPayment(user, order)) {
             order.setOrderStatus(OrderStatus.PAID);
             addOrder(order);
             for (Item item : order.getItems()) {
@@ -69,16 +68,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByCustomer(Long customerId) {
+    public List<Order> findByUser(Long userId) {
         return orderPersistenceService.findAll().stream()
-                .filter(order -> order.getCustomer()!=null)
-                .filter(order -> order.getCustomer().getId().equals(customerId))
+                .filter(order -> order.getUser()!=null)
+                .filter(order -> order.getUser().getId().equals(userId))
                 .toList();
     }
 
-    private boolean processPayment(Customer customer, Order order) {
-        if (enoughMoney(customer.getWallet(), order.getSummaryPrice())) {
-            customer.setWallet(customer.getWallet().subtract(order.getSummaryPrice()));
+    //TODO implement payment logic separately
+    //these methods are stubs
+    private boolean processPayment(User user, Order order) {
+        if (enoughMoney(BigDecimal.valueOf(500), order.getSummaryPrice())) {
+        //    customer.setWallet(customer.getWallet().subtract(order.getSummaryPrice()));
             return true;
         }
         return false;
