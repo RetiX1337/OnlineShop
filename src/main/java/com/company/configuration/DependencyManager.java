@@ -28,7 +28,7 @@ public class DependencyManager {
     private static int strategy = -1;
 
     private DependencyManager() {
-        JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "matretsk82004");
+        JDBCConnectionPool pool = new JDBCConnectionPool("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/online_shop", "root", "");
         HibernateSessionPool hibernateSessionPool = new HibernateSessionPool();
 
         PersistenceInterface<ProductBase> productPersistenceService;
